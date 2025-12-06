@@ -88,12 +88,12 @@ const Catalog = () => {
   const toggleGroup = (slug: string) =>
     setExpandedGroups((prev) => ({ ...prev, [slug]: !prev[slug] }));
 
-  return (
+    return (
     <div className="min-h-screen bg-background">
       <TopBar />
       <Header onCallbackClick={() => setIsCallbackOpen(true)} />
 
-      <main>
+        <main>
         <section className="section-padding">
           <div className="container-custom space-y-10">
             <nav className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -235,14 +235,14 @@ const Catalog = () => {
         </section>
 
         <ContactCTA onCallbackClick={() => setIsCallbackOpen(true)} />
-      </main>
+        </main>
 
       <Footer />
-      <FloatingButtons />
-      <ChatWidget />
+        <FloatingButtons />
+        <ChatWidget />
       <CallbackModal isOpen={isCallbackOpen} onClose={() => setIsCallbackOpen(false)} />
     </div>
-  );
+    );
 };
 
 export default Catalog;

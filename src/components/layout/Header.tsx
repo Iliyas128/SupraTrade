@@ -53,7 +53,7 @@ const Header = ({ onCallbackClick }: HeaderProps) => {
   };
 
   return (
-    <header className="bg-background sticky top-0 z-50 shadow-custom-md">
+    <header className="bg-background sticky top-0 z-50">
       <div className="container-custom py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -80,16 +80,21 @@ const Header = ({ onCallbackClick }: HeaderProps) => {
           </nav>
 
           {/* Desktop Actions */}
-          <div className="hidden lg:flex items-center gap-4">
-            <form onSubmit={submitSearch} className="relative w-72">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <input
-                type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Найти товар..."
-                className="w-full rounded-lg border border-border bg-background pl-9 pr-3 py-2 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/30"
-              />
+          <div className="hidden lg:flex items-center gap-3">
+            <form onSubmit={submitSearch} className="flex items-center gap-2">
+              <div className="relative w-42">
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <input
+                  type="text"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Найти товар..."
+                  className="w-full rounded-lg border border-border bg-background pl-9 pr-3 py-2 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/30"
+                />
+              </div>
+              <Button type="submit" size="sm" className="whitespace-nowrap">
+                Искать
+              </Button>
             </form>
           </div>
 
@@ -106,15 +111,20 @@ const Header = ({ onCallbackClick }: HeaderProps) => {
         {isMenuOpen && (
           <nav className="lg:hidden mt-4 pb-4 border-t border-border pt-4">
             <div className="flex flex-col gap-2">
-              <form onSubmit={submitSearch} className="relative">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <input
-                  type="text"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Найти товар..."
-                  className="w-full rounded-lg border border-border bg-background pl-9 pr-3 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/30"
-                />
+              <form onSubmit={submitSearch} className="flex items-center gap-2">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                  <input
+                    type="text"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder="Найти товар..."
+                    className="w-full rounded-lg border border-border bg-background pl-9 pr-3 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/30"
+                  />
+                </div>
+                <Button type="submit" size="sm">
+                  Искать
+                </Button>
               </form>
               {navItems.map((item) => (
                 <button
