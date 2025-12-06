@@ -18,8 +18,8 @@ const App = () => (
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/catalog" element={<Catalog />} />
-        <Route path="/catalog/:primarySlug" element={<CatalogCategory />} />
-        <Route path="/catalog/:primarySlug/:subSlug" element={<CatalogCategory />} />
+        <Route path="/catalog/:primarySlug/*" element={<CatalogCategory />} />
+        <Route path="/catalog/:primarySlug/:subSlug/*" element={<CatalogCategory />} />
         <Route path="/catalog/:primarySlug/:subSlug/:rest*" element={<CatalogProduct />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

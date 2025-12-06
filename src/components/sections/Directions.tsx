@@ -5,7 +5,7 @@ import heroIndustrial from "@/assets/hero-industrial.jpg";
 import categoryChemicals from "@/assets/category-chemicals.jpg";
 import categoryWelding from "@/assets/category-welding.jpg";
 import categoryPipes from "@/assets/category-pipes.jpg";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const directions = [
   {
@@ -47,8 +47,6 @@ const directions = [
 ];
 
 const Directions = () => {
-  const navigate = useNavigate();
-
   return (
     <section id="directions" className="section-padding bg-background">
       <div className="container-custom">
@@ -61,9 +59,9 @@ const Directions = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {directions.map((direction) => (
-            <a
+            <Link
               key={direction.id}
-              href={`/catalog/${direction.id}`}
+              to={`/catalog/${direction.id}`}
               className="group bg-card rounded-xl overflow-hidden shadow-custom-sm hover:shadow-custom-lg transition-all duration-300 card-hover"
             >
               <div className="relative h-48 overflow-hidden">
@@ -86,7 +84,7 @@ const Directions = () => {
                   <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
                 </div>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
       </div>
