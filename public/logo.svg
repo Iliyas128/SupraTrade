@@ -1,0 +1,20 @@
+<svg width="500" height="250" viewBox="0 0 500 250" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .text { font-family: 'Segoe UI', Arial, sans-serif; fill: #3F5364; }
+      .supra { font-size: 80px; letter-spacing: 2px; }
+      .trade { font-size: 80px; letter-spacing: 2px; font-weight: bold; }
+    </style>
+  </defs>
+
+  <g transform="translate(50, 40) scale(1.2)">
+    <path d="M 90 0 L 140 0 L 60 80 L 10 80 Z" fill="#C2F36E" />
+    
+    <path d="M 60 80 L 110 80 L 70 120 L 35 120 Z" fill="#8EDA5F" />
+    
+    <path d="M 35 120 L 70 120 L 110 160 L 55 160 Z" fill="#00C853" />
+    <path d="M 60 80 L 35 120 L 70 120 Z" fill="#4CAF50" opacity="0.4" /> </g>
+
+  <text x="210" y="115" class="text supra">SUPRA</text>
+  <text x="210" y="205" class="text trade">TRADE</text>
+</svg>

@@ -1,0 +1,265 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 215 25% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 215 25% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 25% 15%;
+
+    --primary: 201 100% 48%;
+    --primary-foreground: 0 0% 100%;
+    --primary-dark: 201 100% 40%;
+
+    --secondary: 215 25% 95%;
+    --secondary-foreground: 215 25% 15%;
+
+    --muted: 215 20% 96%;
+    --muted-foreground: 215 15% 45%;
+
+    --accent: 38 100% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 215 20% 88%;
+    --input: 215 20% 88%;
+    --ring: 201 100% 48%;
+
+    --radius: 0.5rem;
+
+    /* Custom colors */
+    --hero-overlay: 201 100% 25%;
+    --section-alt: 210 20% 97%;
+    --success: 142 76% 36%;
+    --warning: 38 92% 50%;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(201, 100%, 48%) 0%, hsl(201, 100%, 35%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsla(201, 100%, 25%, 0.9) 0%, hsla(201, 100%, 15%, 0.95) 100%);
+    --gradient-dark: linear-gradient(180deg, hsl(215, 25%, 12%) 0%, hsl(215, 25%, 8%) 100%);
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 hsla(215, 25%, 15%, 0.05);
+    --shadow-md: 0 4px 6px -1px hsla(215, 25%, 15%, 0.1), 0 2px 4px -2px hsla(215, 25%, 15%, 0.1);
+    --shadow-lg: 0 10px 15px -3px hsla(215, 25%, 15%, 0.1), 0 4px 6px -4px hsla(215, 25%, 15%, 0.1);
+    --shadow-xl: 0 20px 25px -5px hsla(215, 25%, 15%, 0.1), 0 8px 10px -6px hsla(215, 25%, 15%, 0.1);
+    --shadow-glow: 0 0 30px hsla(201, 100%, 48%, 0.3);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 215 25% 8%;
+    --foreground: 210 20% 95%;
+
+    --card: 215 25% 12%;
+    --card-foreground: 210 20% 95%;
+
+    --popover: 215 25% 12%;
+    --popover-foreground: 210 20% 95%;
+
+    --primary: 201 100% 48%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 215 25% 18%;
+    --secondary-foreground: 210 20% 95%;
+
+    --muted: 215 25% 18%;
+    --muted-foreground: 215 15% 60%;
+
+    --accent: 38 100% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 215 25% 20%;
+    --input: 215 25% 20%;
+    --ring: 201 100% 48%;
+    
+    --section-alt: 215 25% 10%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  /* Page wrapper with global background */
+  .page-background {
+    min-height: 100vh;
+    background-color: #f7fbf9;
+    background-image: url("/background.png");
+    background-repeat: repeat;
+    background-size: auto;
+    background-position: top center;
+    background-attachment: fixed;
+  }
+}
+
+@layer components {
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-padding {
+    @apply py-16 md:py-24;
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: var(--gradient-primary);
+  }
+
+  .btn-primary {
+    @apply bg-primary text-primary-foreground font-semibold px-6 py-3 rounded-lg transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5;
+  }
+
+  .btn-outline {
+    @apply border-2 border-primary text-primary font-semibold px-6 py-3 rounded-lg transition-all duration-300 hover:bg-primary hover:text-primary-foreground;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+  }
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.6s ease-out forwards;
+  }
+
+  .animate-slide-in-right {
+    animation: slideInRight 0.6s ease-out forwards;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.5s ease-out forwards;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-pulse-glow {
+    animation: pulseGlow 2s ease-in-out infinite;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 20px hsla(201, 100%, 48%, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 40px hsla(201, 100%, 48%, 0.6);
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary-dark));
+}
+
+/* Let global background be visible through sections */
+.bg-background {
+  background-color: rgba(255, 255, 255, 0.50) !important;
+}
+
+.bg-section-alt {
+  background-color: rgba(255, 255, 255, 0.58) !important;
+}
