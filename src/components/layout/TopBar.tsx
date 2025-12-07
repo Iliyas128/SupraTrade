@@ -6,7 +6,7 @@ interface TopBarProps {
 
 const TopBar = ({ onCallbackClick }: TopBarProps) => {
   return (
-    <div className="bg-background hidden lg:block border-b">
+    <div className="bg-white hidden lg:block border-b">
       <div className="container-custom p-4">
         <div className="flex items-center justify-between gap-6">
           <a href="/" className="flex items-center gap-3">

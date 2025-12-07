@@ -53,7 +53,7 @@ const Header = ({ onCallbackClick }: HeaderProps) => {
   };
 
   return (
-    <header className="bg-background sticky top-0 z-50">
+    <header className="bg-white sticky top-0 z-50 shadow-sm border-b border-border">
       <div className="container-custom px-4 py-3">
         {/* Мобильная верхняя полоса */}
         <div className="flex items-center justify-between gap-3 lg:hidden">
@@ -64,17 +64,12 @@ const Header = ({ onCallbackClick }: HeaderProps) => {
               <div className="text-[10px] text-muted-foreground uppercase tracking-wide">Industrial Solutions</div>
             </div>
           </a>
-          <div className="flex items-center gap-2">
-            <Button size="sm" variant="callback" onClick={onCallbackClick} className="whitespace-nowrap">
-              Звонок
-            </Button>
-            <button
-              className="p-2 text-foreground"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
+          <button
+            className="p-2 text-foreground"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
 
         {/* Настольная полоса навигации + поиск */}
@@ -117,19 +112,6 @@ const Header = ({ onCallbackClick }: HeaderProps) => {
         {isMenuOpen && (
           <nav className="lg:hidden mt-4 pb-4 border-t border-border pt-4">
             <div className="flex flex-col gap-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <CatalogDropdown
-                    isOpen={isCatalogOpen}
-                    onToggle={() => setIsCatalogOpen(!isCatalogOpen)}
-                    onClose={() => setIsCatalogOpen(false)}
-                  />
-                </div>
-                <Button size="sm" variant="callback" onClick={onCallbackClick}>
-                  Заказать звонок
-                </Button>
-              </div>
-
               <form onSubmit={submitSearch} className="flex items-center gap-2">
                 <div className="relative flex-1">
                   <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -141,6 +123,9 @@ const Header = ({ onCallbackClick }: HeaderProps) => {
                     className="w-full rounded-lg border border-border bg-background pl-9 pr-3 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/30"
                   />
                 </div>
+                <Button type="submit" size="sm" variant="outline" className="px-3">
+                  <Search className="h-4 w-4" />
+                </Button>
               </form>
 
               {navItems.map((item) => (
