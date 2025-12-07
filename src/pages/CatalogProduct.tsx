@@ -59,7 +59,7 @@ const CatalogProduct = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <TopBar />
+      <TopBar onCallbackClick={() => setIsCallbackOpen(true)}/>
       <Header onCallbackClick={() => setIsCallbackOpen(true)} />
 
       <main className="pb-16">

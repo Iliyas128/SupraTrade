@@ -175,6 +175,12 @@
   .animate-pulse-glow {
     animation: pulseGlow 2s ease-in-out infinite;
   }
+  .animate-spin-slow {
+    animation: spin 12s linear infinite;
+  }
+  .animate-spin-slower {
+    animation: spin 18s linear infinite;
+  }
 }
 
 @keyframes fadeIn {
