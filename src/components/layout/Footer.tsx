@@ -72,16 +72,6 @@ const Footer = () => {
               </li>
               <li>
                 <a href="#" className="text-primary-foreground/70 hover:text-primary transition-colors">
-                  Новости
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-primary-foreground/70 hover:text-primary transition-colors">
-                  Отзывы
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-primary-foreground/70 hover:text-primary transition-colors">
                   Вакансии
                 </a>
               </li>

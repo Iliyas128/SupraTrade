@@ -21,10 +21,6 @@ const AboutSection = () => {
               alt="О компании"
               className="rounded-2xl shadow-custom-xl"
             />
-            <div className="absolute -bottom-6 -right-6 bg-primary text-primary-foreground p-6 rounded-xl shadow-custom-lg hidden md:block">
-              <div className="text-4xl font-bold">2022</div>
-              <div className="text-sm">год основания</div>
-            </div>
           </div>
 
           <div>

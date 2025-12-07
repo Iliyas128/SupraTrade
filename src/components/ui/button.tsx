@@ -23,7 +23,8 @@ const buttonVariants = cva(
         catalog: "bg-foreground text-background hover:bg-foreground/90 gap-2",
         floating: "bg-success text-primary-foreground rounded-full shadow-custom-xl hover:shadow-glow hover:scale-110",
         floatingPhone: "bg-primary text-primary-foreground rounded-full shadow-custom-xl hover:shadow-glow hover:scale-110",
-        callback: "bg-accent text-accent-foreground font-bold hover:bg-accent/90 hover:shadow-lg",
+        callback:
+          "border-2 border-primary bg-transparent text-primary font-bold hover:bg-primary hover:text-primary-foreground",
       },
       size: {
         default: "h-10 px-4 py-2",

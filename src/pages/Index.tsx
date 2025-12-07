@@ -8,8 +8,6 @@ import Advantages from "@/components/sections/Advantages";
 import Services from "@/components/sections/Services";
 import Stats from "@/components/sections/Stats";
 import AboutSection from "@/components/sections/AboutSection";
-import Reviews from "@/components/sections/Reviews";
-import News from "@/components/sections/News";
 import Partners from "@/components/sections/Partners";
 import Licenses from "@/components/sections/Licenses";
 import ContactCTA from "@/components/sections/ContactCTA";
@@ -23,7 +21,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <TopBar />
+      <TopBar onCallbackClick={() => setIsCallbackOpen(true)} />
       <Header onCallbackClick={() => setIsCallbackOpen(true)} />
       
       <main>
@@ -34,8 +32,6 @@ const Index = () => {
         <Services />
         <Stats />
         <AboutSection />
-        <Reviews />
-        <News />
         <Partners />
         <Licenses />
         <ContactCTA onCallbackClick={() => setIsCallbackOpen(true)} />

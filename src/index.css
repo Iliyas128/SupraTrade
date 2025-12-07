@@ -15,9 +15,9 @@
     --popover: 0 0% 100%;
     --popover-foreground: 215 25% 15%;
 
-    --primary: 201 100% 48%;
+    --primary: 95 70% 55%;
     --primary-foreground: 0 0% 100%;
-    --primary-dark: 201 100% 40%;
+    --primary-dark: 95 70% 45%;
 
     --secondary: 215 25% 95%;
     --secondary-foreground: 215 25% 15%;
@@ -33,19 +33,19 @@
 
     --border: 215 20% 88%;
     --input: 215 20% 88%;
-    --ring: 201 100% 48%;
+    --ring: 95 70% 55%;
 
     --radius: 0.5rem;
 
     /* Custom colors */
-    --hero-overlay: 201 100% 25%;
+    --hero-overlay: 95 70% 25%;
     --section-alt: 210 20% 97%;
     --success: 142 76% 36%;
     --warning: 38 92% 50%;
     
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(201, 100%, 48%) 0%, hsl(201, 100%, 35%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsla(201, 100%, 25%, 0.9) 0%, hsla(201, 100%, 15%, 0.95) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(95, 70%, 55%) 0%, hsl(95, 70%, 42%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsla(95, 70%, 25%, 0.9) 0%, hsla(95, 70%, 15%, 0.95) 100%);
     --gradient-dark: linear-gradient(180deg, hsl(215, 25%, 12%) 0%, hsl(215, 25%, 8%) 100%);
     
     /* Shadows */
@@ -53,7 +53,7 @@
     --shadow-md: 0 4px 6px -1px hsla(215, 25%, 15%, 0.1), 0 2px 4px -2px hsla(215, 25%, 15%, 0.1);
     --shadow-lg: 0 10px 15px -3px hsla(215, 25%, 15%, 0.1), 0 4px 6px -4px hsla(215, 25%, 15%, 0.1);
     --shadow-xl: 0 20px 25px -5px hsla(215, 25%, 15%, 0.1), 0 8px 10px -6px hsla(215, 25%, 15%, 0.1);
-    --shadow-glow: 0 0 30px hsla(201, 100%, 48%, 0.3);
+    --shadow-glow: 0 0 30px hsla(95, 70%, 55%, 0.3);
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -75,7 +75,7 @@
     --popover: 215 25% 12%;
     --popover-foreground: 210 20% 95%;
 
-    --primary: 201 100% 48%;
+    --primary: 95 70% 55%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 215 25% 18%;
@@ -92,7 +92,7 @@
 
     --border: 215 25% 20%;
     --input: 215 25% 20%;
-    --ring: 201 100% 48%;
+    --ring: 95 70% 55%;
     
     --section-alt: 215 25% 10%;
   }
@@ -230,10 +230,10 @@
 
 @keyframes pulseGlow {
   0%, 100% {
-    box-shadow: 0 0 20px hsla(201, 100%, 48%, 0.4);
+    box-shadow: 0 0 20px hsla(95, 70%, 55%, 0.4);
   }
   50% {
-    box-shadow: 0 0 40px hsla(201, 100%, 48%, 0.6);
+    box-shadow: 0 0 40px hsla(95, 70%, 55%, 0.6);
   }
 }
 
