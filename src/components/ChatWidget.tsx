@@ -195,7 +195,7 @@ const ChatWidget = () => {
             </div>
             <p className="text-xs text-muted-foreground text-center mt-2">
               {isWebhookConfigured
-                ? "Сообщение уйдет в ваш n8n webhook"
+                ? "ответ будет в течений нескольких минут."
                 : "Добавьте VITE_N8N_WEBHOOK_URL в .env"}
             </p>
           </div>
