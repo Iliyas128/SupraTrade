@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowUpRight, Loader2 } from "lucide-react";
 import TopBar from "@/components/layout/TopBar";
 import Header from "@/components/layout/Header";
@@ -13,29 +13,17 @@ import { Badge } from "@/components/ui/badge";
 import { catalogApi } from "@/lib/api";
 import { cn, slugify } from "@/lib/utils";
 import { catalogCategories } from "@/data/catalogData";
-import type { ApiProduct } from "@/types/catalog";
+import type { ApiProduct, CategoryNode } from "@/types/catalog";
 
 const PAGE_SIZE = 15;
+type TreeNode = CategoryNode & { fullSlug: string; children?: TreeNode[] };
 
 const CatalogCategory = () => {
-  const { primarySlug, subSlug } = useParams();
-  const categorySlug = (subSlug ?? primarySlug) as string | undefined;
+  const location = useLocation();
   const [isCallbackOpen, setIsCallbackOpen] = useState(false);
-  const [directions] = useState(
-    catalogCategories.map((cat) => ({
-      name: cat.name,
-      slug: cat.slug ?? slugify(cat.name),
-      groups: cat.groups.map((group) => ({
-        title: group.title,
-        slug: group.slug ?? slugify(group.title),
-        items: group.items.map((item) => ({
-          name: item.name,
-          slug: item.slug ?? slugify(item.name),
-        })),
-      })),
-    })),
-  );
+  const [tree, setTree] = useState<TreeNode[]>([]);
   const [products, setProducts] = useState<ApiProduct[]>([]);
+  const [fallbackProducts, setFallbackProducts] = useState<ApiProduct[]>([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(true);
@@ -45,39 +33,98 @@ const CatalogCategory = () => {
   const productsRef = useRef<HTMLDivElement | null>(null);
   const autoScrolledRef = useRef(false);
 
-  const normalizedDirections = useMemo(() => directions, [directions]);
+  const categoryPath = useMemo(
+    () => location.pathname.replace(/^\/?catalog\/?/, "").replace(/\/+$/, ""),
+    [location],
+  );
 
-  const directionInfo = useMemo(() => {
-    if (!primarySlug) return null;
-    return normalizedDirections.find((dir) => dir.slug === primarySlug);
-  }, [normalizedDirections, primarySlug]);
+  const withPaths = (nodes: CategoryNode[], parent = ""): TreeNode[] =>
+    nodes.map((n) => {
+      const fullSlug = [parent, n.slug].filter(Boolean).join("/");
+      return { ...n, fullSlug, children: n.children ? withPaths(n.children, fullSlug) : [] };
+    });
 
-  const groupInfo = useMemo(() => {
-    if (!directionInfo || !subSlug) return null;
-    return directionInfo.groups.find((group) => group.slug === subSlug);
-  }, [directionInfo, subSlug]);
+  const fallbackTree = useMemo<TreeNode[]>(() => {
+    return catalogCategories.map((cat) => {
+      const catSlug = cat.slug ?? slugify(cat.name);
+      return {
+        _id: catSlug,
+        name: cat.name,
+        slug: catSlug,
+        fullSlug: catSlug,
+        children: cat.groups.map((group) => {
+          const groupSlug = group.slug ?? slugify(group.title);
+          return {
+            _id: `${catSlug}-${groupSlug}`,
+            name: group.title,
+            slug: groupSlug,
+            fullSlug: `${catSlug}/${groupSlug}`,
+            children: (group.items ?? []).map((item) => {
+              const itemSlug = item.slug ?? slugify(item.name);
+              return {
+                _id: `${catSlug}-${groupSlug}-${itemSlug}`,
+                name: item.name,
+                slug: itemSlug,
+                fullSlug: `${catSlug}/${groupSlug}/${itemSlug}`,
+              } as TreeNode;
+            }),
+          } as TreeNode;
+        }),
+      } as TreeNode;
+    });
+  }, []);
+
+  useEffect(() => {
+    const loadTree = async () => {
+      try {
+        const res = await catalogApi.getCategoryTree().catch(() => ({ tree: [] }));
+        const t = withPaths(res.tree || []);
+        setTree(t.length ? t : fallbackTree);
+      } catch {
+        setTree(fallbackTree);
+      }
+    };
+    loadTree();
+  }, [fallbackTree]);
 
   const loadProducts = useCallback(
     async (pageToLoad: number, append = false) => {
-      if (!categorySlug) return;
+      if (!categoryPath) return;
       try {
         append ? setLoadingMore(true) : setLoading(true);
-        const res = await catalogApi.getProductsByCategory(categorySlug, pageToLoad, PAGE_SIZE);
+        const res = await catalogApi.getProductsByCategory(categoryPath, pageToLoad, PAGE_SIZE);
         setProducts((prev) => (append ? [...prev, ...res.products] : res.products));
         setHasMore((res.totalPages ?? 1) > pageToLoad);
         setPage(pageToLoad);
+        if (!append && (res.products?.length ?? 0) === 0) {
+          // если нет прямых товаров, попробуем поиск по последнему сегменту
+          const last = categoryPath.split("/").filter(Boolean).pop() || "";
+          if (last) {
+            try {
+              const searchRes = await catalogApi.searchProducts(last, 1, 30);
+              const shuffled = [...(searchRes.products ?? [])].sort(() => Math.random() - 0.5);
+              setFallbackProducts(shuffled.slice(0, 15));
+            } catch {
+              setFallbackProducts([]);
+            }
+          } else {
+            setFallbackProducts([]);
+          }
+        } else if (!append) {
+          setFallbackProducts([]);
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : "Не удалось загрузить товары");
       } finally {
         append ? setLoadingMore(false) : setLoading(false);
       }
     },
-    [categorySlug],
+    [categoryPath],
   );
 
   useEffect(() => {
     const bootstrap = async () => {
-      if (!categorySlug) {
+      if (!categoryPath) {
         navigate("/catalog");
         return;
       }
@@ -85,7 +132,7 @@ const CatalogCategory = () => {
     };
     bootstrap();
     autoScrolledRef.current = false;
-  }, [categorySlug, loadProducts, navigate]);
+  }, [categoryPath, loadProducts, navigate]);
 
   useEffect(() => {
     if (loading || products.length === 0 || autoScrolledRef.current) return;
@@ -96,29 +143,72 @@ const CatalogCategory = () => {
     }
   }, [loading, products]);
 
+  const findPathNodes = (nodes: TreeNode[], segments: string[]): TreeNode[] => {
+    if (segments.length === 0) return [];
+    const [head, ...rest] = segments;
+    for (const n of nodes) {
+      if (n.slug === head) {
+        if (rest.length === 0) return [n];
+        const childPath = findPathNodes(n.children || [], rest);
+        if (childPath.length) return [n, ...childPath];
+      }
+    }
+    return [];
+  };
+
+  const pathSegments = useMemo(() => categoryPath.split("/").filter(Boolean), [categoryPath]);
+  const activePath = useMemo(() => findPathNodes(tree, pathSegments), [tree, pathSegments]);
+  const activeLeaf = activePath[activePath.length - 1];
+  const childCategories = useMemo(() => activeLeaf?.children ?? [], [activeLeaf]);
+  const childSample = useMemo(() => {
+    if (!childCategories.length) return [];
+    const shuffled = [...childCategories].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, 15);
+  }, [childCategories]);
+
   const breadcrumbs = [
     { label: "Главная", href: "/" },
     { label: "Каталог", href: "/catalog" },
+    ...activePath.map((node, idx) => ({
+      label: node.name,
+      href: `/catalog/${activePath.slice(0, idx + 1).map((n) => n.slug).join("/")}`,
+    })),
   ];
 
-  if (directionInfo) {
-    breadcrumbs.push({ label: directionInfo.name, href: `/catalog/${directionInfo.slug}` });
-  }
-
-  if (groupInfo) {
-    breadcrumbs.push({
-      label: groupInfo.title,
-      href: `/catalog/${directionInfo?.slug}/${groupInfo.slug}`,
-    });
-  }
+  const renderTree = (nodes: TreeNode[], level = 0) => (
+    <ul className={level === 0 ? "space-y-3" : "space-y-1 pl-3 border-l border-border/30"}>
+      {nodes.map((node) => {
+        const isActive = activeLeaf?.fullSlug === node.fullSlug;
+        return (
+          <li key={node.fullSlug} className="rounded-xl border border-border/40 bg-background/80">
+            <Link
+              to={`/catalog/${node.fullSlug}`}
+              className={cn(
+                "flex w-full items-center justify-between px-4 py-3 text-left text-sm font-semibold transition hover:text-primary",
+                isActive && "text-primary",
+              )}
+            >
+              <span>{node.name}</span>
+              <ArrowUpRight className="h-4 w-4" />
+            </Link>
+            {node.children && node.children.length > 0 && (
+              <div className="border-t border-border/30 px-4 py-3 text-sm text-muted-foreground">
+                {renderTree(node.children, level + 1)}
+              </div>
+            )}
+          </li>
+        );
+      })}
+    </ul>
+  );
 
   return (
     <div className="min-h-screen bg-background">
-      <TopBar />
+      <TopBar onCallbackClick={() => setIsCallbackOpen(true)} />
       <Header onCallbackClick={() => setIsCallbackOpen(true)} />
 
-      <main className="pb-16">
-        <section className="border-b border-border/40 bg-gradient-to-b from-primary/5 to-transparent py-10">
+      <main>
+        <section className="bg-gradient-to-b from-primary/5 to-transparent py-6">
           <div className="container-custom space-y-6">
             <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
               {breadcrumbs.map((crumb, index) => (
@@ -133,17 +223,11 @@ const CatalogCategory = () => {
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-                  {groupInfo ? "Подсекция" : "Направление"}
+                  Категория
                 </p>
                 <h1 className="text-3xl font-bold text-foreground md:text-4xl">
-                  {groupInfo?.title ?? directionInfo?.name ?? "Категория"}
+                  {activeLeaf?.name ?? "Категория"}
                 </h1>
-                {directionInfo && (
-                  <p className="mt-3 max-w-2xl text-muted-foreground">
-                    Каталог оборудования и материалов для отрасли «{directionInfo.name}». Уточните спецификацию через форму
-                    обратной связи или оставьте заявку на подбор.
-                  </p>
-                )}
               </div>
               <Button variant="outline" className="gap-2" onClick={() => navigate(-1)}>
                 <ArrowLeft className="h-4 w-4" />
@@ -153,55 +237,52 @@ const CatalogCategory = () => {
           </div>
         </section>
 
+        {childSample.length > 0 && (
+          <section>
+            <div className="container-custom space-y-6">
+              <div className="flex items-center justify-between">
+                <Badge variant="outline" className="border-border/60 bg-background/60">
+                  {childSample.length} из {childCategories.length}
+                </Badge>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                {childSample.map((child) => (
+                  <Link
+                    to={`/catalog/${child.fullSlug}`}
+                    key={child.fullSlug}
+                    className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border/60 bg-card/80 shadow-custom-md transition hover:-translate-y-1 hover:border-primary/40 hover:shadow-custom-lg"
+                  >
+                    <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+                      <img
+                        src={
+                          (child as any).image ||
+                          (child as any).icon ||
+                          (child as any).thumbnail ||
+                          (child as any).thumb ||
+                          (child as any).cover ||
+                          "/placeholder.svg"
+                        }
+                        alt={child.name}
+                        className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                        loading="lazy"
+                      />
+                    </div>
+                    <div className="flex flex-1 items-center justify-between gap-2 px-4 py-3">
+                      <span className="font-semibold text-sm text-foreground">{child.name}</span>
+                      <ArrowUpRight className="h-4 w-4 shrink-0 text-muted-foreground" />
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
         <section className="section-padding">
           <div className="container-custom grid gap-10 lg:grid-cols-[300px,minmax(0,1fr)]">
             <aside className="h-fit rounded-2xl border border-border/70 bg-card/70 p-6 shadow-custom-lg lg:sticky lg:top-24">
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">Направления</p>
-              <div className="mt-4 space-y-3">
-                {normalizedDirections.map((direction) => (
-                  <div key={direction.slug} className="rounded-xl border border-border/40 bg-background/80">
-                    <Link
-                      to={`/catalog/${direction.slug}`}
-                      className={cn(
-                        "flex w-full items-center justify-between px-4 py-3 text-left text-sm font-semibold transition",
-                        direction.slug === primarySlug ? "text-primary" : "text-foreground",
-                      )}
-                    >
-                      {direction.name}
-                      <ArrowUpRight className="h-4 w-4" />
-                    </Link>
-                    {direction.slug === primarySlug && (
-                      <ul className="space-y-3 border-t border-border/30 px-4 py-3 text-xs text-muted-foreground">
-                        {direction.groups.map((group) => (
-                          <li key={group.slug} className="space-y-1">
-                            <div
-                              className={cn(
-                                "flex items-center justify-between",
-                                group.slug === subSlug && "text-primary",
-                              )}
-                            >
-                              <span className="font-semibold text-foreground">{group.title}</span>
-                              <ArrowUpRight className="h-4 w-4" />
-                            </div>
-                            <ul className="space-y-1">
-                              {group.items.map((item) => (
-                                <li key={item.slug}>
-                                  <Link
-                                    to={`/catalog/${direction.slug}/${group.slug}`}
-                                    className="flex items-center justify-between rounded-lg px-2 py-1 transition hover:bg-primary/5 hover:text-primary"
-                                  >
-                                    {item.name}
-                                  </Link>
-                                </li>
-                              ))}
-                            </ul>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                ))}
-              </div>
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">Категории</p>
+              <div className="mt-4">{renderTree(tree)}</div>
             </aside>
 
             <div className="space-y-8" ref={productsRef}>
@@ -213,7 +294,7 @@ const CatalogCategory = () => {
                 <div className="rounded-2xl border border-destructive/40 bg-destructive/10 p-6 text-destructive shadow-custom-lg">
                   {error}
                 </div>
-              ) : products.length === 0 ? (
+              ) : (products.length === 0 && fallbackProducts.length === 0) ? (
                 <div className="rounded-2xl border border-border/70 bg-card/80 p-10 text-center shadow-custom-lg">
                   В этой категории пока нет товаров.
                 </div>
@@ -221,25 +302,25 @@ const CatalogCategory = () => {
                 <>
                   <div className="flex flex-wrap items-center justify-between gap-4">
                     <div>
-                      <p className="text-sm font-semibold uppercase tracking-[0.3em] text-muted-foreground">Товары</p>
-                      <h2 className="text-2xl font-bold text-foreground">
-                        {groupInfo?.title ?? directionInfo?.name ?? "Категория"}
-                      </h2>
+                      <p className="text-sm font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+                        Товары
+                      </p>
+                      <h2 className="text-2xl font-bold text-foreground">{activeLeaf?.name ?? "Категория"}</h2>
                     </div>
                     <Badge variant="outline" className="border-border/60 bg-background/60">
-                      {products.length} позиций
+                      {(products.length || fallbackProducts.length)} позиций
                     </Badge>
                   </div>
 
-                  <div className="grid gap-6 md:grid-cols-2">
-                    {products.map((product) => (
+                  <div className="grid gap-6 md:grid-cols-3">
+                    {(products.length ? products : fallbackProducts).map((product) => (
                       <article
                         key={product.id}
                         className="flex h-full flex-col rounded-2xl border border-border/60 bg-card/80 shadow-custom-md transition hover:-translate-y-1 hover:border-primary/40 hover:shadow-custom-lg"
                       >
                         <div className="relative overflow-hidden rounded-t-2xl">
                           <img
-                            src={product.smallImage}
+                            src={product.smallImage || (product as any).small_image || product.bigImages?.[0] || "/placeholder.svg"}
                             alt={product.shortTitle}
                             loading="lazy"
                             className="mx-auto"
@@ -247,13 +328,16 @@ const CatalogCategory = () => {
                         </div>
                         <div className="flex flex-1 flex-col gap-3 p-6">
                           <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
-                            {product.categories?.[product.categories.length - 1]?.name}
+                            {product.categoryPath?.[product.categoryPath.length - 1]?.name ??
+                              product.categories?.[product.categories.length - 1]?.name}
                           </p>
                           <h3 className="text-lg font-semibold text-foreground">{product.shortTitle}</h3>
                           <p className="line-clamp-3 text-sm text-muted-foreground">{product.description}</p>
                           <div className="mt-auto flex items-center justify-between gap-3">
                             <Button variant="outline" size="sm" asChild>
-                              <Link to={product.fullUrl}>Подробнее</Link>
+                              <Link to={`/product/${product.fullUrl.replace(/^\/?product\//, "").replace(/^\/catalog\//, "")}`}>
+                                Подробнее
+                              </Link>
                             </Button>
                             <Button size="sm" onClick={() => setIsCallbackOpen(true)}>
                               Получить КП
@@ -264,7 +348,7 @@ const CatalogCategory = () => {
                     ))}
                   </div>
 
-                  {hasMore && (
+                  {products.length > 0 && hasMore && (
                     <div className="text-center">
                       <Button
                         variant="outline"

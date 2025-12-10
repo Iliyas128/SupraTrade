@@ -4,7 +4,9 @@ import type {
   ApiProductListResponse,
   CategoriesResponse,
   DetailedProduct,
+  ProductCategory,
 } from "@/types/catalog";
+import { slugify } from "@/lib/utils";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "/api";
 
@@ -16,14 +18,36 @@ const mapProduct = (product: any): ApiProduct => {
         ? product._id.$oid
         : crypto.randomUUID();
 
+  const categoryPath: ProductCategory[] | undefined = product.categoryPath
+    ? product.categoryPath.map((c: any) => ({ name: c.name, slug: c.slug }))
+    : product.categories;
+
+  const safeUrl =
+    product.url && String(product.url).trim().length
+      ? String(product.url).trim()
+      : slugify(product.short_title || product.full_title || product.name || "product");
+
+  const fallbackCategoryFullSlug =
+    product.categoryFullSlug ||
+    (categoryPath && categoryPath.length ? categoryPath.map((c) => c.slug).join("/") : undefined);
+
+  const fullUrl =
+    product.fullUrl ??
+    (fallbackCategoryFullSlug && safeUrl
+      ? `/catalog/${fallbackCategoryFullSlug}/${safeUrl}`
+      : `/catalog/${safeUrl.replace(/^catalog\//, "")}`);
+
   return {
     id,
     shortTitle: product.short_title ?? product.full_title ?? product.name ?? "Без названия",
     description: product.description ?? "",
     smallImage: product.small_image ?? product.big_images?.[0] ?? "",
-    categories: product.categories ?? [],
-    url: product.url ?? "",
-    fullUrl: product.fullUrl ?? `/catalog/${product.url?.replace(/^catalog\//, "") ?? ""}`,
+    categories: categoryPath,
+    categoryId: product.categoryId,
+    categoryPath,
+    categoryFullSlug: fallbackCategoryFullSlug,
+    url: safeUrl,
+    fullUrl,
   };
 };
 
@@ -52,6 +76,10 @@ export const catalogApi = {
       throw new Error("Не удалось получить категории");
     }
     return Object.values(res.mainCategories);
+  },
+
+  async getCategoryTree() {
+    return handleResponse<{ success: boolean; tree: any[] }>(await fetch(`${API_BASE}/categories/tree`));
   },
 
   async getProductsByCategory(slug: string, page = 1, limit = 15): Promise<ApiProductListResponse> {

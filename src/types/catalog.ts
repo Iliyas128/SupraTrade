@@ -3,12 +3,26 @@ export interface ProductCategory {
   slug: string;
 }
 
+export interface CategoryNode {
+  _id: string;
+  name: string;
+  slug: string;
+  parentId?: string | null;
+  order?: number;
+  image?: string;
+  children?: CategoryNode[];
+}
+
 export interface ApiProduct {
   id: string;
   shortTitle: string;
   description: string;
   smallImage: string;
-  categories: ProductCategory[];
+  bigImages?: string[];
+  categories?: ProductCategory[];
+  categoryId?: string;
+  categoryPath?: ProductCategory[];
+  categoryFullSlug?: string;
   url: string;
   fullUrl: string;
 }
@@ -39,6 +53,5 @@ export interface DetailedProduct extends ApiProduct {
   fullTitle?: string;
   characteristics?: Record<string, string>;
   tags?: string[];
-  description?: string;
 }
 
