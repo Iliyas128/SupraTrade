@@ -174,18 +174,25 @@ const AdminProducts = () => {
 
   return (
     <div className="min-h-screen bg-background px-4 py-8">
-      <div className="mx-auto max-w-6xl space-y-6">
-        <div className="flex items-center justify-between gap-4">
-          <div>
+      <div className="mx-auto w-full max-w-6xl space-y-6">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div className="space-y-1">
             <p className="text-sm text-muted-foreground">Админ-панель каталога</p>
             <h1 className="text-2xl font-bold text-foreground">Товары: управление</h1>
           </div>
-          <div className="flex items-center gap-2">
-            {token && <Badge variant="outline">JWT: {tokenShort}</Badge>}
-            <Button variant="outline" onClick={() => navigate("/admin/catalog")}>
+          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-end">
+            {token && <Badge variant="outline" className="w-full sm:w-auto text-left">JWT: {tokenShort}</Badge>}
+            <Button variant="outline" className="w-full sm:w-auto" onClick={() => navigate("/admin/catalog")}>
               Создание
             </Button>
-            <Button variant="outline" onClick={() => { adminAuth.clearToken(); navigate("/admin/login"); }}>
+            <Button
+              variant="outline"
+              className="w-full sm:w-auto"
+              onClick={() => {
+                adminAuth.clearToken();
+                navigate("/admin/login");
+              }}
+            >
               Выйти
             </Button>
           </div>
@@ -203,11 +210,24 @@ const AdminProducts = () => {
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
               />
-              <Button type="submit">Искать</Button>
-              <Button type="button" variant="ghost" onClick={() => { setQ(""); onSearch(); }}>
+              <Button type="submit" className="w-full sm:w-auto">Искать</Button>
+              <Button
+                type="button"
+                variant="ghost"
+                className="w-full sm:w-auto"
+                onClick={() => {
+                  setQ("");
+                  onSearch();
+                }}
+              >
                 Сброс
               </Button>
-              <Button type="button" variant="secondary" onClick={() => loadProducts(page, q)}>
+              <Button
+                type="button"
+                variant="secondary"
+                className="w-full sm:w-auto"
+                onClick={() => loadProducts(page, q)}
+              >
                 Обновить
               </Button>
             </form>
@@ -277,12 +297,16 @@ const AdminProducts = () => {
             )}
 
             {totalPages > 1 && (
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-3">
                 <Button
                   variant="outline"
                   size="sm"
                   disabled={page <= 1}
-                  onClick={() => { setPage((p) => Math.max(1, p - 1)); loadProducts(page - 1, q); }}
+                  className="w-full sm:w-auto"
+                  onClick={() => {
+                    setPage((p) => Math.max(1, p - 1));
+                    loadProducts(page - 1, q);
+                  }}
                 >
                   Назад
                 </Button>
@@ -293,7 +317,11 @@ const AdminProducts = () => {
                   variant="outline"
                   size="sm"
                   disabled={page >= totalPages}
-                  onClick={() => { setPage((p) => Math.min(totalPages, p + 1)); loadProducts(page + 1, q); }}
+                  className="w-full sm:w-auto"
+                  onClick={() => {
+                    setPage((p) => Math.min(totalPages, p + 1));
+                    loadProducts(page + 1, q);
+                  }}
                 >
                   Далее
                 </Button>
@@ -371,11 +399,11 @@ const AdminProducts = () => {
                     <AlertDescription>{saveError}</AlertDescription>
                   </Alert>
                 )}
-                <div className="flex gap-2">
-                  <Button disabled={saving} onClick={saveEdit}>
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <Button className="w-full sm:w-auto" disabled={saving} onClick={saveEdit}>
                     Сохранить
                   </Button>
-                  <Button variant="ghost" onClick={() => setEditing(null)}>
+                  <Button className="w-full sm:w-auto" variant="ghost" onClick={() => setEditing(null)}>
                     Отмена
                   </Button>
                 </div>

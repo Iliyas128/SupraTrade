@@ -284,18 +284,25 @@ const AdminCatalog = () => {
 
   return (
     <div className="min-h-screen bg-background px-4 py-8">
-      <div className="mx-auto max-w-6xl space-y-6">
-        <div className="flex items-center justify-between gap-4">
-          <div>
+      <div className="mx-auto w-full max-w-6xl space-y-6">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div className="space-y-1">
             <p className="text-sm text-muted-foreground">Админ-панель каталога</p>
             <h1 className="text-2xl font-bold text-foreground">Каталог</h1>
           </div>
-          <div className="flex items-center gap-2">
-            {token && <Badge variant="outline">JWT: {tokenShort}</Badge>}
-            <Button variant="outline" onClick={() => navigate("/admin/products")}>
+          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-end">
+            {token && <Badge variant="outline" className="w-full sm:w-auto text-left">JWT: {tokenShort}</Badge>}
+            <Button variant="outline" className="w-full sm:w-auto" onClick={() => navigate("/admin/products")}>
               Управление товарами
             </Button>
-            <Button variant="outline" onClick={() => { adminAuth.clearToken(); navigate("/admin/login"); }}>
+            <Button
+              variant="outline"
+              className="w-full sm:w-auto"
+              onClick={() => {
+                adminAuth.clearToken();
+                navigate("/admin/login");
+              }}
+            >
               Выйти
             </Button>
           </div>
@@ -343,7 +350,9 @@ const AdminCatalog = () => {
                 <AlertDescription>{categorySuccess}</AlertDescription>
               </Alert>
             )}
-            <Button onClick={handleCreateCategory}>Создать категорию</Button>
+            <Button className="w-full sm:w-auto" onClick={handleCreateCategory}>
+              Создать категорию
+            </Button>
 
             <div className="max-h-[400px] overflow-auto rounded-md border border-border/60 bg-card/60 p-3">
               {categories.length === 0 ? (
@@ -429,7 +438,9 @@ const AdminCatalog = () => {
               </Alert>
             )}
 
-            <Button onClick={handleCreateProduct}>Создать товар</Button>
+            <Button className="w-full sm:w-auto" onClick={handleCreateProduct}>
+              Создать товар
+            </Button>
           </CardContent>
         </Card>
 

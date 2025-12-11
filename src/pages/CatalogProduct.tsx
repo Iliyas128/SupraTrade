@@ -100,6 +100,12 @@ const CatalogProduct = () => {
     loadProduct();
   }, [catalogPath]);
 
+  const galleryImages = useMemo(() => {
+    if (!product) return [];
+    const imgs = product.bigImages?.length ? product.bigImages : product.smallImage ? [product.smallImage] : [];
+    return imgs.filter(Boolean);
+  }, [product]);
+
   const findPathNodes = (nodes: TreeNode[], segments: string[]): TreeNode[] => {
     if (segments.length === 0) return [];
     const [head, ...rest] = segments;
@@ -139,10 +145,10 @@ const CatalogProduct = () => {
       <TopBar onCallbackClick={() => setIsCallbackOpen(true)}/>
       <Header onCallbackClick={() => setIsCallbackOpen(true)} />
 
-      <main>
-        <section className="border-b border-border/40 bg-gradient-to-b from-primary/5 to-transparent py-4">
-          <div className="container-custom space-y-4">
-            <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+      <main className="pb-20 md:pb-16">
+        <section className="border-b border-border/40 bg-gradient-to-b from-primary/5 to-transparent py-3 md:py-4">
+          <div className="container-custom space-y-3 md:space-y-4">
+            <div className="flex flex-wrap items-center gap-1.5 md:gap-2 text-xs md:text-sm text-muted-foreground">
               {breadcrumbs.map((crumb, index) => (
                 <span key={crumb.href}>
                   <Link to={crumb.href} className="transition-colors hover:text-primary">
@@ -154,8 +160,8 @@ const CatalogProduct = () => {
             </div>
           </div>
         </section>
-         <section className="mt-6 mb-8">
-          <div className="container-custom">
+        <section className="mt-6 mb-10 md:mb-12">
+          <div className="container-custom space-y-6 md:space-y-8">
             {loading ? (
               <div className="rounded-2xl border border-border/70 bg-card/80 p-10 text-center shadow-custom-lg">
                 <Loader2 className="mx-auto h-8 w-8 animate-spin text-primary" />
@@ -165,56 +171,61 @@ const CatalogProduct = () => {
                 {error}
               </div>
             ) : product ? (
-              <div className="space-y-10">
-                <div className="space-y-3">
-                  <h1 className="text-3xl font-bold text-foreground">{product.fullTitle ?? product.shortTitle}</h1>
+              <div className="space-y-8 md:space-y-10">
+                <div className="space-y-2 md:space-y-3">
+                  <h1 className="text-2xl md:text-3xl font-bold text-foreground leading-tight">
+                    {product.fullTitle ?? product.shortTitle}
+                  </h1>
                 </div>
 
-                <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] items-stretch">
-                  <div className="space-y-4 h-full pb-[90px]">
-                    <div className="overflow-hidden rounded-2xl border border-border/60 bg-card/60 shadow-custom-lg h-full min-h-[260px]">
-                      <div className="flex h-full min-h-[300px] items-center justify-center bg-background">
+                <div className="grid gap-6 md:gap-8 lg:grid-cols-2 xl:grid-cols-[1.05fr_0.95fr] items-start">
+                  <div className="space-y-4 h-full">
+                    <div className="overflow-hidden rounded-2xl bg-card/60 shadow-custom-lg h-full">
+                      <div className="relative w-full bg-background flex items-center justify-center aspect-[4/3] min-h-[220px] md:min-h-[320px] border-b border-border/60">
                         <img
-                          src={activeImage || product.bigImages?.[0] || product.smallImage || "/placeholder.svg"}
+                          src={activeImage || galleryImages[0] || "/placeholder.svg"}
                           alt={product.shortTitle}
-                          className="max-h-[280px] w-auto object-contain"
+                          className="w-full h-full object-cover"
+                          loading="lazy"
                         />
                       </div>
+                      {galleryImages.length > 0 && (
+                        <div className="bg-card/70 px-4 py-3">
+                          <div className="flex gap-3 overflow-x-auto scrollbar-none pb-1">
+                            {galleryImages.map((img) => (
+                              <button
+                                key={img}
+                                onClick={() => setActiveImage(img)}
+                                className={cn(
+                                  "min-w-[82px] max-w-[110px] overflow-hidden rounded-xl border bg-background transition hover:border-primary/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary/80",
+                                  activeImage === img ? "border-primary ring-2 ring-primary/40" : "border-border/60",
+                                )}
+                              >
+                                <img src={img} alt="thumb" className="h-20 w-full object-cover" loading="lazy" />
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
-                    {(product.bigImages?.length || 0) > 1 && (
-                      <div className="grid grid-cols-4 gap-3 md:grid-cols-5">
-                        {product.bigImages?.map((img) => (
-                          <button
-                            key={img}
-                            onClick={() => setActiveImage(img)}
-                            className={cn(
-                              "overflow-hidden rounded-xl border transition hover:border-primary/50",
-                              activeImage === img ? "border-primary ring-2 ring-primary/40" : "border-border/60",
-                            )}
-                          >
-                            <img src={img} alt="thumb" className="h-24 w-full object-cover" />
-                          </button>
-                        ))}
-                      </div>
-                    )}
                   </div>
 
                   <div className="space-y-4 h-full">
-                    <div className="rounded-2xl border border-border/60 bg-card/70 p-6 shadow-custom-md h-full min-h-[440px] flex flex-col gap-4">
+                    <div className="rounded-2xl border border-border/60 bg-card/70 p-5 md:p-6 shadow-custom-md h-full flex flex-col gap-4">
                       <div className="space-y-1">
-                        <div className="text-2xl font-bold text-foreground">Цена по запросу</div>
-                        <div className="text-sm text-emerald-600 font-semibold">В наличии</div>
+                        <div className="text-xl md:text-2xl font-bold text-foreground">Цена по запросу</div>
+                        <div className="text-xs md:text-sm text-emerald-600 font-semibold">В наличии</div>
                       </div>
                       {product.characteristics && Object.keys(product.characteristics).length > 0 && (
                         <div className="space-y-2">
-                          <h2 className="text-base font-semibold text-foreground">Технические характеристики</h2>
-                          <dl className="space-y-2 text-sm text-muted-foreground">
+                          <h2 className="text-base md:text-lg font-semibold text-foreground">Технические характеристики</h2>
+                          <dl className="space-y-2 text-sm md:text-base text-muted-foreground">
                             {Object.entries(product.characteristics)
                               .slice(0, 3)
                               .map(([key, value]) => (
-                                <div key={key} className="grid grid-cols-[1fr,1.4fr] gap-3">
+                                <div key={key} className="grid grid-cols-[1fr,1.2fr] md:grid-cols-[1fr,1.4fr] gap-3">
                                   <dt className="font-semibold text-foreground">{key}</dt>
-                                  <dd>{value}</dd>
+                                  <dd className="break-words">{value}</dd>
                                 </div>
                               ))}
                           </dl>
@@ -228,33 +239,33 @@ const CatalogProduct = () => {
                           )}
                         </div>
                       )}
-                      <div className="mt-auto flex flex-wrap gap-3">
-                        <Button size="lg" onClick={() => setIsCallbackOpen(true)}>
+                      <div className="mt-auto flex flex-col sm:flex-row flex-wrap gap-3">
+                        <Button size="lg" className="w-full sm:w-auto" onClick={() => setIsCallbackOpen(true)}>
                           Запросить КП
                         </Button>
-                        <Button variant="outline" size="lg" asChild>
+                        <Button variant="outline" size="lg" asChild className="w-full sm:w-auto">
                           <Link to="/catalog">Вернуться в каталог</Link>
                         </Button>
                       </div>
-                    </div>
 
-                    {product.tags && product.tags.length > 0 && (
-                      <div className="space-y-2">
-                        <p className="text-sm font-semibold text-foreground">Теги</p>
-                        <div className="flex flex-wrap gap-2">
-                          {product.tags.slice(0, 12).map((tag) => (
-                            <Badge key={tag} variant="outline" className="border-border/60 bg-background/60">
-                              {tag}
-                            </Badge>
-                          ))}
+                      {product.tags && product.tags.length > 0 && (
+                        <div className="space-y-2 pt-2">
+                          <p className="text-sm md:text-base font-semibold text-foreground">Теги</p>
+                          <div className="flex flex-wrap gap-2 pr-2">
+                            {product.tags.slice(0, 12).map((tag) => (
+                              <Badge key={tag} variant="outline" className="border-border/60 bg-background/60">
+                                {tag}
+                              </Badge>
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </div>
                 </div>
 
-                <div className="space-y-4">
-                  <div className="flex flex-wrap gap-2">
+                <div className="rounded-2xl border border-border/70 bg-card/80 p-5 md:p-6 shadow-custom-lg space-y-4 md:space-y-5">
+                  <div className="flex gap-2 overflow-x-auto scrollbar-none pr-4 -mr-2 pb-2 pl-1 md:pr-0 md:mr-0">
                     {[
                       { id: "description", label: "Описание" },
                       { id: "specs", label: "Характеристики" },
@@ -273,71 +284,69 @@ const CatalogProduct = () => {
                     ))}
                   </div>
 
-                  <div className="rounded-2xl border border-border/70 bg-card/80 p-6 shadow-custom-lg">
-                    {activeTab === "description" && (
-                      <div className="space-y-3">
-                        <h2 className="text-xl font-semibold text-foreground">Описание</h2>
-                        <p className="text-muted-foreground whitespace-pre-line">
-                          {product.description || "Описание будет доступно по запросу."}
-                        </p>
-                      </div>
-                    )}
+                  {activeTab === "description" && (
+                    <div className="space-y-3 md:space-y-4">
+                      <h2 className="text-lg md:text-xl font-semibold text-foreground">Описание</h2>
+                      <p className="text-sm md:text-base text-muted-foreground whitespace-pre-line leading-relaxed">
+                        {product.description || "Описание будет доступно по запросу."}
+                      </p>
+                    </div>
+                  )}
 
-                    {activeTab === "specs" && (
-                      <div className="space-y-4">
-                        <h2 className="text-xl font-semibold text-foreground">Технические характеристики</h2>
-                        {product.characteristics && Object.keys(product.characteristics).length > 0 ? (
-                          <dl className="grid gap-3 text-sm text-muted-foreground">
-                            {Object.entries(product.characteristics).map(([key, value]) => (
-                              <div
-                                key={key}
-                                className="grid grid-cols-[1fr,2fr] items-start gap-3 border-b border-border/30 pb-3 last:border-b-0 last:pb-0"
-                              >
-                                <dt className="font-semibold text-foreground">{key}</dt>
-                                <dd>{value}</dd>
-                              </div>
-                            ))}
-                          </dl>
-                        ) : (
-                          <p className="text-muted-foreground">Характеристики отсутствуют.</p>
-                        )}
-                      </div>
-                    )}
+                  {activeTab === "specs" && (
+                    <div className="space-y-3 md:space-y-4">
+                      <h2 className="text-lg md:text-xl font-semibold text-foreground">Технические характеристики</h2>
+                      {product.characteristics && Object.keys(product.characteristics).length > 0 ? (
+                        <dl className="grid gap-3 text-sm md:text-base text-muted-foreground">
+                          {Object.entries(product.characteristics).map(([key, value]) => (
+                            <div
+                              key={key}
+                              className="grid grid-cols-[1fr,1.6fr] md:grid-cols-[1fr,2fr] items-start gap-3 border-b border-border/30 pb-3 last:border-b-0 last:pb-0"
+                            >
+                              <dt className="font-semibold text-foreground">{key}</dt>
+                              <dd className="break-words">{value}</dd>
+                            </div>
+                          ))}
+                        </dl>
+                      ) : (
+                        <p className="text-muted-foreground">Характеристики отсутствуют.</p>
+                      )}
+                    </div>
+                  )}
 
-                    {activeTab === "guarantee" && (
-                      <div className="space-y-3">
-                        <h2 className="text-xl font-semibold text-foreground">Гарантии</h2>
-                        <ul className="list-disc space-y-2 pl-5 text-sm text-muted-foreground">
-                          <li>Сертифицированный товар</li>
-                          <li>Официальная гарантия 12 месяцев</li>
-                          <li>Собственный сервисный центр</li>
-                          <li>Возврат без проблем</li>
-                        </ul>
-                      </div>
-                    )}
+                  {activeTab === "guarantee" && (
+                    <div className="space-y-3 md:space-y-4">
+                      <h2 className="text-lg md:text-xl font-semibold text-foreground">Гарантии</h2>
+                      <ul className="list-disc space-y-2 pl-5 text-sm md:text-base text-muted-foreground leading-relaxed">
+                        <li>Сертифицированный товар</li>
+                        <li>Официальная гарантия 12 месяцев</li>
+                        <li>Собственный сервисный центр</li>
+                        <li>Возврат без проблем</li>
+                      </ul>
+                    </div>
+                  )}
 
-                    {activeTab === "delivery" && (
-                      <div className="space-y-3">
-                        <h2 className="text-xl font-semibold text-foreground">Доставка</h2>
-                        <ul className="list-disc space-y-2 pl-5 text-sm text-muted-foreground">
-                          <li>Доставка по всему Казахстану</li>
-                          <li>Самовывоз со склада</li>
-                          <li>Курьерская доставка по городу</li>
-                          <li>Проверка товара перед отправкой</li>
-                        </ul>
-                      </div>
-                    )}
+                  {activeTab === "delivery" && (
+                    <div className="space-y-3 md:space-y-4">
+                      <h2 className="text-lg md:text-xl font-semibold text-foreground">Доставка</h2>
+                      <ul className="list-disc space-y-2 pl-5 text-sm md:text-base text-muted-foreground leading-relaxed">
+                        <li>Доставка по всему Казахстану</li>
+                        <li>Самовывоз со склада</li>
+                        <li>Курьерская доставка по городу</li>
+                        <li>Проверка товара перед отправкой</li>
+                      </ul>
+                    </div>
+                  )}
 
-                    {activeTab === "payment" && (
-                      <div className="space-y-3">
-                        <h2 className="text-xl font-semibold text-foreground">Оплата</h2>
-                        <ul className="list-disc space-y-2 pl-5 text-sm text-muted-foreground">
-                          <li>Заказы принимаются после 100% предоплаты или по согласованию</li>
-                          <li>Договор и акт при необходимости</li>
-                        </ul>
-                      </div>
-                    )}
-                  </div>
+                  {activeTab === "payment" && (
+                    <div className="space-y-3 md:space-y-4">
+                      <h2 className="text-lg md:text-xl font-semibold text-foreground">Оплата</h2>
+                      <ul className="list-disc space-y-2 pl-5 text-sm md:text-base text-muted-foreground leading-relaxed">
+                        <li>Заказы принимаются после 100% предоплаты или по согласованию</li>
+                        <li>Договор и акт при необходимости</li>
+                      </ul>
+                    </div>
+                  )}
                 </div>
               </div>
             ) : (

@@ -51,7 +51,7 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4">
+    <div className="min-h-screen flex items-center justify-center bg-background px-4 py-8">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Вход для администратора</CardTitle>
@@ -95,11 +95,22 @@ const AdminLogin = () => {
             </Alert>
           )}
 
-          <div className="flex gap-2">
-            <Button type="button" variant="outline" className="w-1/2" onClick={requestOtp} disabled={status !== "idle"}>
+          <div className="flex flex-col sm:flex-row gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full sm:w-1/2"
+              onClick={requestOtp}
+              disabled={status !== "idle"}
+            >
               {status === "requesting" ? "Отправляем..." : "Получить код"}
             </Button>
-            <Button type="button" className="w-1/2" onClick={verifyOtp} disabled={status !== "idle"}>
+            <Button
+              type="button"
+              className="w-full sm:w-1/2"
+              onClick={verifyOtp}
+              disabled={status !== "idle"}
+            >
               {status === "verifying" ? "Входим..." : "Войти"}
             </Button>
           </div>
