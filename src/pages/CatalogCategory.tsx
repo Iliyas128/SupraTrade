@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ArrowLeft, ArrowUpRight, Loader2 } from "lucide-react";
+import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import TopBar from "@/components/layout/TopBar";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -17,6 +17,26 @@ import type { ApiProduct, CategoryNode } from "@/types/catalog";
 
 const PAGE_SIZE = 15;
 type TreeNode = CategoryNode & { fullSlug: string; children?: TreeNode[] };
+
+const ProductCardSkeleton = () => (
+  <div className="flex h-full flex-col rounded-2xl border border-border/60 bg-card/80 shadow-custom-md">
+    <div className="relative overflow-hidden rounded-t-2xl bg-muted">
+      <div className="aspect-[4/3] w-full animate-pulse bg-muted-foreground/10" />
+    </div>
+    <div className="flex flex-1 flex-col gap-3 p-6">
+      <div className="h-3 w-24 animate-pulse rounded bg-muted-foreground/10" />
+      <div className="h-5 w-3/4 animate-pulse rounded bg-muted-foreground/10" />
+      <div className="space-y-2">
+        <div className="h-3 w-full animate-pulse rounded bg-muted-foreground/10" />
+        <div className="h-3 w-5/6 animate-pulse rounded bg-muted-foreground/10" />
+      </div>
+      <div className="mt-auto flex items-center gap-3">
+        <div className="h-10 w-24 animate-pulse rounded bg-muted-foreground/10" />
+        <div className="h-10 w-24 animate-pulse rounded bg-muted-foreground/10" />
+      </div>
+    </div>
+  </div>
+);
 
 const CatalogCategory = () => {
   const location = useLocation();
@@ -287,8 +307,19 @@ const CatalogCategory = () => {
 
             <div className="space-y-8" ref={productsRef}>
               {loading ? (
-                <div className="rounded-2xl border border-border/70 bg-card/80 p-10 text-center shadow-custom-lg">
-                  <Loader2 className="mx-auto h-8 w-8 animate-spin text-primary" />
+                <div className="space-y-4">
+                  <div className="flex flex-wrap items-center justify-between gap-4">
+                    <div>
+                      <div className="h-3 w-24 animate-pulse rounded bg-muted-foreground/10" />
+                      <div className="mt-2 h-6 w-40 animate-pulse rounded bg-muted-foreground/10" />
+                    </div>
+                    <div className="h-6 w-20 animate-pulse rounded bg-muted-foreground/10" />
+                  </div>
+                  <div className="grid gap-6 md:grid-cols-3">
+                    {Array.from({ length: 6 }).map((_, idx) => (
+                      <ProductCardSkeleton key={idx} />
+                    ))}
+                  </div>
                 </div>
               ) : error ? (
                 <div className="rounded-2xl border border-destructive/40 bg-destructive/10 p-6 text-destructive shadow-custom-lg">
@@ -318,29 +349,33 @@ const CatalogCategory = () => {
                         key={product.id}
                         className="flex h-full flex-col rounded-2xl border border-border/60 bg-card/80 shadow-custom-md transition hover:-translate-y-1 hover:border-primary/40 hover:shadow-custom-lg"
                       >
-                        <div className="relative overflow-hidden rounded-t-2xl">
+                        <div className="relative overflow-hidden rounded-t-2xl bg-muted aspect-[4/3] flex items-center justify-center p-6">
+                          <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/0 to-black/0" />
                           <img
                             src={product.smallImage || (product as any).small_image || product.bigImages?.[0] || "/placeholder.svg"}
                             alt={product.shortTitle}
                             loading="lazy"
-                            className="mx-auto"
+                            className="mx-auto h-full w-full object-contain"
                           />
                         </div>
-                        <div className="flex flex-1 flex-col gap-3 p-6">
+                        <div className="flex flex-1 flex-col gap-4 p-6">
                           <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
                             {product.categoryPath?.[product.categoryPath.length - 1]?.name ??
-                              product.categories?.[product.categories.length - 1]?.name}
+                              product.categories?.[product.categories.length - 1]?.name ??
+                              "Категория"}
                           </p>
-                          <h3 className="text-lg font-semibold text-foreground">{product.shortTitle}</h3>
-                          <p className="line-clamp-3 text-sm text-muted-foreground">{product.description}</p>
+                          <div>
+                            <h3 className="text-lg font-semibold text-foreground">{product.shortTitle}</h3>
+                            <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">{product.description}</p>
+                          </div>
                           <div className="mt-auto flex items-center justify-between gap-3">
-                            <Button variant="outline" size="sm" asChild>
-                              <Link to={`/product/${product.fullUrl.replace(/^\/?product\//, "").replace(/^\/catalog\//, "")}`}>
-                                Подробнее
-                              </Link>
+                            <Button className="flex-1" size="sm" onClick={() => setIsCallbackOpen(true)}>
+                              Запросить КП
                             </Button>
-                            <Button size="sm" onClick={() => setIsCallbackOpen(true)}>
-                              Получить КП
+                            <Button variant="outline" size="icon" asChild>
+                              <Link to={`/product/${product.fullUrl.replace(/^\/?product\//, "").replace(/^\/catalog\//, "")}`}>
+                                <ArrowUpRight className="h-4 w-4" />
+                              </Link>
                             </Button>
                           </div>
                         </div>

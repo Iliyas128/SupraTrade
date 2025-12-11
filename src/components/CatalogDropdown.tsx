@@ -154,14 +154,14 @@ const CatalogDropdown = ({ isOpen, onToggle, onClose }: CatalogDropdownProps) =>
                 {active && active.children.length === 0 ? (
                   <div className="text-sm text-muted-foreground">Нет подкатегорий</div>
                 ) : (
-                  <div className="grid grid-cols-3 gap-6">
+                <div className="grid grid-cols-3 gap-6">
                     {active?.children.map((child) => (
                       <div key={child.fullSlug}>
                         <Link
                           to={`/catalog/${child.fullSlug}`}
                           className="font-semibold text-foreground mb-2 text-sm block hover:text-primary transition-colors"
-                          onClick={onClose}
-                        >
+                              onClick={onClose}
+                            >
                           {child.name}
                         </Link>
                         {child.children && child.children.length > 0 && (
@@ -169,9 +169,9 @@ const CatalogDropdown = ({ isOpen, onToggle, onClose }: CatalogDropdownProps) =>
                             {renderSubcategories(child.children)}
                           </div>
                         )}
-                      </div>
-                    ))}
-                  </div>
+                    </div>
+                  ))}
+                </div>
                 )}
               </div>
             </div>

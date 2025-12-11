@@ -19,6 +19,26 @@ const RANDOM_CARDS_LIMIT = 15;
 
 type TreeNode = CategoryNode & { fullSlug: string; children?: TreeNode[] };
 
+const ProductCardSkeleton = () => (
+  <article className="flex h-full flex-col rounded-2xl border border-border/60 bg-card/80 shadow-custom-md">
+    <div className="relative overflow-hidden rounded-t-2xl bg-muted">
+      <div className="aspect-[4/3] w-full animate-pulse bg-muted-foreground/10" />
+    </div>
+    <div className="flex flex-1 flex-col gap-3 p-6">
+      <div className="h-3 w-24 animate-pulse rounded bg-muted-foreground/10" />
+      <div className="h-5 w-3/4 animate-pulse rounded bg-muted-foreground/10" />
+      <div className="space-y-2">
+        <div className="h-3 w-full animate-pulse rounded bg-muted-foreground/10" />
+        <div className="h-3 w-5/6 animate-pulse rounded bg-muted-foreground/10" />
+      </div>
+      <div className="mt-auto flex items-center gap-3">
+        <div className="h-10 w-24 animate-pulse rounded bg-muted-foreground/10" />
+        <div className="h-10 w-10 animate-pulse rounded-full bg-muted-foreground/10" />
+      </div>
+    </div>
+  </article>
+);
+
 const Catalog = () => {
   const [isCallbackOpen, setIsCallbackOpen] = useState(false);
   const [tree, setTree] = useState<TreeNode[]>([]);
@@ -209,8 +229,29 @@ const Catalog = () => {
             )}
 
             {loading ? (
-              <div className="rounded-2xl border border-border/70 bg-card/80 p-10 text-center shadow-custom-lg">
-                Загружаем каталог...
+              <div className="grid gap-10 lg:grid-cols-[320px,minmax(0,1fr)]">
+                <aside className="h-fit rounded-2xl border border-border/70 bg-card/70 p-6 shadow-custom-lg lg:sticky lg:top-24">
+                  <div className="h-3 w-24 animate-pulse rounded bg-muted-foreground/10" />
+                  <div className="mt-4 space-y-3">
+                    {Array.from({ length: 4 }).map((_, idx) => (
+                      <div key={idx} className="h-10 w-full animate-pulse rounded-lg bg-muted-foreground/10" />
+                    ))}
+                  </div>
+                </aside>
+                <div className="space-y-6">
+                  <div className="flex flex-wrap items-center justify-between gap-4">
+                    <div>
+                      <div className="h-3 w-32 animate-pulse rounded bg-muted-foreground/10" />
+                      <div className="mt-2 h-6 w-48 animate-pulse rounded bg-muted-foreground/10" />
+                    </div>
+                    <div className="h-6 w-20 animate-pulse rounded bg-muted-foreground/10" />
+                  </div>
+                  <div className="grid gap-6 md:grid-cols-3">
+                    {Array.from({ length: 6 }).map((_, idx) => (
+                      <ProductCardSkeleton key={idx} />
+                    ))}
+                  </div>
+                </div>
               </div>
             ) : (
               <div className="grid gap-10 lg:grid-cols-[320px,minmax(0,1fr)]">
@@ -243,12 +284,12 @@ const Catalog = () => {
                           key={product.id}
                           className="flex h-full flex-col rounded-2xl border border-border/60 bg-card/80 shadow-custom-md transition hover:-translate-y-1 hover:border-primary/40 hover:shadow-custom-lg"
                         >
-                          <div className="relative overflow-hidden rounded-t-2xl p-6">
+                          <div className="relative overflow-hidden rounded-t-2xl bg-muted aspect-[4/3] flex items-center justify-center">
                             <img
                               src={product.smallImage || product.bigImages?.[0] || "/placeholder.svg"}
                               alt={product.shortTitle}
                               loading="lazy"
-                              className="mx-auto"
+                              className="mx-auto h-full w-full object-contain"
                             />
                           </div>
                           <div className="flex flex-1 flex-col gap-4 p-6">
