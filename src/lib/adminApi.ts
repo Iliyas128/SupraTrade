@@ -6,7 +6,21 @@ const TOKEN_KEY = "admin_token";
 const handleResponse = async <T>(res: Response): Promise<T> => {
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(text || `Ошибка запроса (${res.status})`);
+    let errorMessage = `Ошибка запроса (${res.status})`;
+    try {
+      const json = JSON.parse(text);
+      if (json.error) {
+        errorMessage = json.error;
+      } else if (json.message) {
+        errorMessage = json.message;
+      }
+    } catch {
+      // Если не JSON, используем текст как есть
+      if (text) {
+        errorMessage = text;
+      }
+    }
+    throw new Error(errorMessage);
   }
   return res.json();
 };

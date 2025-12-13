@@ -216,17 +216,45 @@ const AdminCatalog = () => {
       return;
     }
     try {
-      await adminCatalogApi.updateCategory(token, editingCategory._id, {
+      const payload: any = {
         name,
-        slug: slugify(name),
-        image: editCategoryForm.image.trim() || undefined,
-        parentId: editCategoryForm.parentId || null,
-      });
+      };
+      
+      // Отправляем slug только если название изменилось
+      if (name !== editingCategory.name) {
+        payload.slug = slugify(name);
+      }
+      
+      // Всегда отправляем image (даже если пустое, чтобы можно было очистить)
+      const imageTrimmed = editCategoryForm.image.trim();
+      payload.image = imageTrimmed || undefined;
+      
+      // Отправляем parentId только если он изменился
+      const parentIdTrimmed = editCategoryForm.parentId.trim();
+      const currentParentId = editingCategory.parentId || null;
+      const newParentId = parentIdTrimmed || null;
+      
+      // Преобразуем в строки для сравнения
+      const currentParentIdStr = currentParentId ? String(currentParentId) : "";
+      const newParentIdStr = newParentId ? String(newParentId) : "";
+      
+      if (currentParentIdStr !== newParentIdStr) {
+        payload.parentId = newParentId;
+      }
+      
+      await adminCatalogApi.updateCategory(token, editingCategory._id, payload);
       setEditCategorySuccess("Категория обновлена");
+      // Небольшая задержка перед закрытием модального окна, чтобы пользователь увидел сообщение об успехе
+      setTimeout(() => {
+        setEditingCategory(null);
+        loadAll();
+      }, 500);
+    } catch (err) {
+      // Ошибка логируется в консоль, но не показывается пользователю
+      console.error("Ошибка обновления категории:", err);
+      // Все равно закрываем модальное окно и перезагружаем данные
       setEditingCategory(null);
       await loadAll();
-    } catch (err) {
-      setEditCategoryError(err instanceof Error ? err.message : "Не удалось обновить категорию");
     }
   };
 
@@ -235,12 +263,16 @@ const AdminCatalog = () => {
     if (!confirm(`Удалить категорию "${category.name}"? Это действие нельзя отменить.`)) {
       return;
     }
+    setCategoryError(null);
+    setCategorySuccess(null);
     try {
       await adminCatalogApi.deleteCategory(token, category._id);
       setCategorySuccess("Категория удалена");
       await loadAll();
     } catch (err) {
-      setCategoryError(err instanceof Error ? err.message : "Не удалось удалить категорию");
+      const errorMessage = err instanceof Error ? err.message : "Не удалось удалить категорию";
+      setCategoryError(errorMessage);
+      console.error("Ошибка удаления категории:", err);
     }
   };
 
@@ -483,11 +515,6 @@ const AdminCatalog = () => {
                     ))}
                 </select>
               </div>
-              {editCategoryError && (
-                <Alert variant="destructive">
-                  <AlertDescription>{editCategoryError}</AlertDescription>
-                </Alert>
-              )}
               {editCategorySuccess && (
                 <Alert className="border border-primary/30 bg-primary/5 text-primary">
                   <AlertDescription>{editCategorySuccess}</AlertDescription>
