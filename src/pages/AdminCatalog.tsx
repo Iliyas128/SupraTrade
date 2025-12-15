@@ -176,19 +176,15 @@ const AdminCatalog = () => {
       setCategoryError("Введите название категории");
       return;
     }
-    if (!parentId) {
-      setCategoryError("Выберите родительскую категорию");
-      return;
-    }
     try {
       await adminCatalogApi.createCategory(token, {
         name,
         slug: slugify(name),
-        parentId,
+        parentId: parentId || null,
         image: image || undefined,
       });
       setNewCategory({ name: "", parentId: "", image: "" });
-      setCategorySuccess("Категория создана");
+      setCategorySuccess(parentId ? "Подкатегория создана" : "Родительская категория создана");
       await loadAll();
     } catch (err) {
       setCategoryError(err instanceof Error ? err.message : "Не удалось создать категорию");
@@ -342,7 +338,7 @@ const AdminCatalog = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>Категории (6 направлений)</CardTitle>
+            <CardTitle>Категории</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -357,13 +353,13 @@ const AdminCatalog = () => {
                 onChange={(e) => handleCategoryField("image", e.target.value)}
               />
               <div className="flex flex-col gap-1">
-                <label className="text-sm text-muted-foreground">Родитель (обязателен)</label>
+                <label className="text-sm text-muted-foreground">Родитель (опционально, оставьте пустым для корневой категории)</label>
                 <select
                   className="h-10 rounded-md border border-input bg-background px-3 text-sm"
                   value={newCategory.parentId}
                   onChange={(e) => handleCategoryField("parentId", e.target.value)}
                 >
-                  <option value="">Выберите родителя</option>
+                  <option value="">Корневая категория (без родителя)</option>
                   {categoryOptions.map((opt) => (
                     <option key={opt.id} value={opt.id}>
                       {opt.label}

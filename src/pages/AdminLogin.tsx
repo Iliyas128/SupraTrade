@@ -9,7 +9,6 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
-  const [password, setPassword] = useState("");
   const [status, setStatus] = useState<"idle" | "requesting" | "verifying">("idle");
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -23,7 +22,7 @@ const AdminLogin = () => {
     setStatus("requesting");
     try {
       await adminAuth.requestOtp(trimmedEmail);
-      setMessage("Код отправлен на master email. Введите код и пароль для входа.");
+      setMessage("Код отправлен на master email. Введите код для входа.");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Не удалось отправить код");
     } finally {
@@ -33,14 +32,14 @@ const AdminLogin = () => {
 
   const verifyOtp = async () => {
     const trimmedEmail = email.trim().toLowerCase();
-    if (!trimmedEmail || !code.trim() || !password.trim()) {
-      return setError("Укажите email, код и пароль");
+    if (!trimmedEmail || !code.trim()) {
+      return setError("Укажите email и код");
     }
     setError(null);
     setMessage(null);
     setStatus("verifying");
     try {
-      const res = await adminAuth.verifyOtp(trimmedEmail, code.trim(), password.trim());
+      const res = await adminAuth.verifyOtp(trimmedEmail, code.trim());
       adminAuth.setToken(res.token);
       navigate("/admin/catalog");
     } catch (err) {
@@ -67,16 +66,7 @@ const AdminLogin = () => {
             />
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium text-foreground">Пароль</label>
-            <Input
-              type="password"
-              placeholder="Пароль (мин. 6 символов)"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-foreground">Код из письма</label>
+            <label className="text-sm font-medium text-foreground">Код из SMS</label>
             <Input
               placeholder="Например 123456"
               value={code}

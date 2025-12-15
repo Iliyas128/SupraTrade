@@ -44,12 +44,12 @@ export const adminAuth = {
       }),
     );
   },
-  async verifyOtp(email: string, code: string, password: string) {
+  async verifyOtp(email: string, code: string) {
     return handleResponse<{ success: boolean; token: string; expiresIn: number; user: { email: string } }>(
       await fetch(`${API_BASE}/admin/verify-otp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, code, password }),
+        body: JSON.stringify({ email, code }),
       }),
     );
   },
@@ -174,6 +174,15 @@ export const adminCatalogApi = {
     return handleResponse<{ success: boolean }>(
       await fetch(`${API_BASE}/admin/categories/${id}`, {
         method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      }),
+    );
+  },
+
+  async initCategories(token: string) {
+    return handleResponse<{ success: boolean; results: Array<{ name: string; inserted: boolean; message?: string; id?: any }> }>(
+      await fetch(`${API_BASE}/admin/init-categories`, {
+        method: "POST",
         headers: { Authorization: `Bearer ${token}` },
       }),
     );
