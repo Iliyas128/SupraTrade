@@ -236,7 +236,8 @@ const Catalog = () => {
 
             {loading ? (
               <div className="grid gap-10 lg:grid-cols-[320px,minmax(0,1fr)]">
-                <aside className="h-fit rounded-2xl border border-border/70 bg-card/70 p-6 shadow-custom-lg lg:sticky lg:top-24">
+                {/* Скелетон сайдбара - скрыт на мобильных */}
+                <aside className="hidden lg:block h-fit rounded-2xl border border-border/70 bg-card/70 p-6 shadow-custom-lg lg:sticky lg:top-24">
                   <div className="h-3 w-24 animate-pulse rounded bg-muted-foreground/10" />
                   <div className="mt-4 space-y-3">
                     {Array.from({ length: 4 }).map((_, idx) => (
@@ -261,7 +262,8 @@ const Catalog = () => {
               </div>
             ) : (
               <div className="grid gap-10 lg:grid-cols-[320px,minmax(0,1fr)]">
-                <aside className="h-fit rounded-2xl border border-border/70 bg-card/70 p-6 shadow-custom-lg lg:sticky lg:top-24">
+                {/* Древовидный каталог - скрыт на мобильных */}
+                <aside className="hidden lg:block h-fit rounded-2xl border border-border/70 bg-card/70 p-6 shadow-custom-lg lg:sticky lg:top-24">
                   <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">Категории</p>
                   <div className="mt-4">{renderTree(tree)}</div>
                 </aside>

@@ -1,130 +1,215 @@
-import { Mail, Phone, MapPin, Clock } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Mail, Phone, MapPin, Clock, ChevronRight, Send } from "lucide-react";
+import { catalogApi } from "@/lib/api";
+import { catalogCategories } from "@/data/catalogData";
+import { slugify } from "@/lib/utils";
+
+interface CategoryLink {
+  name: string;
+  slug: string;
+}
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const navigate = useNavigate();
+  const [categories, setCategories] = useState<CategoryLink[]>([]);
+
+  // Загружаем реальные категории из API
+  useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        const res = await catalogApi.getCategoryTree();
+        if (res.tree && res.tree.length > 0) {
+          // Берём первые 5 родительских категорий из API
+          const apiCategories = res.tree.slice(0, 5).map((cat: any) => ({
+            name: cat.name,
+            slug: cat.slug,
+          }));
+          setCategories(apiCategories);
+        } else {
+          // Fallback на локальные данные
+          setCategories(
+            catalogCategories.slice(0, 5).map((cat) => ({
+              name: cat.name,
+              slug: cat.slug ?? slugify(cat.name),
+            }))
+          );
+        }
+      } catch {
+        // Fallback на локальные данные при ошибке
+        setCategories(
+          catalogCategories.slice(0, 5).map((cat) => ({
+            name: cat.name,
+            slug: cat.slug ?? slugify(cat.name),
+          }))
+        );
+      }
+    };
+    loadCategories();
+  }, []);
+
+  // Переход со скроллом наверх
+  const handleNavigate = (path: string) => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+    navigate(path);
+  };
 
   return (
-    <footer className="bg-foreground text-primary-foreground">
-      <div className="container-custom py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-          {/* Company Info */}
+    <footer className="relative bg-gradient-to-b from-slate-900 to-slate-950 text-white overflow-hidden">
+      {/* Декоративный фон */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-primary/5 rounded-full blur-3xl" />
+      </div>
+
+      {/* Основной контент */}
+      <div className="relative container-custom pt-16 pb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-12">
+          
+          {/* Логотип и описание */}
           <div>
-            <a href="/" className="flex items-center gap-2 mb-6">
-              <div className="w-15 h-10  rounded-lg flex items-center justify-center">
-              <img src="/favicon.ico" alt="SUPRA TRADE" className="w-15 h-10 rounded-lg" />
+            <button 
+              onClick={() => handleNavigate("/")} 
+              className="inline-flex items-center gap-3 mb-5 group"
+            >
+              <div className="w-11 h-11 bg-white/10 backdrop-blur rounded-xl flex items-center justify-center group-hover:bg-white/15 transition-colors">
+                <img src="/favicon.ico" alt="SUPRA TRADE" className="w-8 h-8 rounded" />
               </div>
-              <div>
-                <span className="text-primary font-bold text-xl">SUPRA</span>
-                <span className="text-primary-foreground font-bold text-xl ml-1">TRADE</span>
+              <div className="flex items-baseline">
+                <span className="text-primary font-bold text-xl tracking-tight">SUPRA</span>
+                <span className="text-white font-bold text-xl ml-1.5 tracking-tight">TRADE</span>
               </div>
-            </a>
-            <p className="text-primary-foreground/70 mb-6">
-              Надёжный поставщик металлопроката, химических реактивов, 
-              медицинского и промышленного оборудования
+            </button>
+            <p className="text-slate-400 text-sm leading-relaxed mb-6">
+              Комплексное снабжение предприятий материалами, комплектующими и оборудованием для промышленных и коммерческих нужд.
             </p>
+            <div className="flex items-center gap-3">
+              <a 
+                href="mailto:sales@supratrade.kz" 
+                className="w-10 h-10 bg-white/5 hover:bg-primary/20 border border-white/10 rounded-lg flex items-center justify-center transition-all hover:border-primary/50"
+                aria-label="Email"
+              >
+                <Mail size={18} className="text-slate-300" />
+              </a>
+              <a 
+                href="tel:+77083767189" 
+                className="w-10 h-10 bg-white/5 hover:bg-primary/20 border border-white/10 rounded-lg flex items-center justify-center transition-all hover:border-primary/50"
+                aria-label="Телефон"
+              >
+                <Phone size={18} className="text-slate-300" />
+              </a>
+              <a 
+                href="https://wa.me/77083767189" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-white/5 hover:bg-emerald-500/20 border border-white/10 rounded-lg flex items-center justify-center transition-all hover:border-emerald-500/50"
+                aria-label="WhatsApp"
+              >
+                <Send size={18} className="text-slate-300" />
+              </a>
+            </div>
           </div>
 
-          {/* Каталог */}
+          {/* Каталог (динамический из API) */}
           <div>
-            <h3 className="font-bold text-lg mb-6">Каталог</h3>
-            <ul className="space-y-3">
+            <h3 className="font-semibold text-white text-base mb-5 flex items-center gap-2">
+              <span className="w-1.5 h-5 bg-primary rounded-full" />
+              Каталог
+            </h3>
+            <ul className="space-y-2.5">
+              {categories.map((cat) => (
+                <li key={cat.slug}>
+                  <button 
+                    onClick={() => handleNavigate(`/catalog/${cat.slug}`)}
+                    className="group flex items-center text-slate-400 hover:text-white text-sm transition-colors w-full text-left"
+                  >
+                    <ChevronRight size={14} className="mr-1.5 text-slate-600 group-hover:text-primary transition-colors flex-shrink-0" />
+                    <span className="truncate">{cat.name}</span>
+                  </button>
+                </li>
+              ))}
               <li>
-                <a href="#" className="text-primary-foreground/70 hover:text-primary transition-colors">
-                  Металлопрокат
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-primary-foreground/70 hover:text-primary transition-colors">
-                  Медицинское оборудование
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-primary-foreground/70 hover:text-primary transition-colors">
-                  Промышленное оборудование
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-primary-foreground/70 hover:text-primary transition-colors">
-                  Химические реактивы
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-primary-foreground/70 hover:text-primary transition-colors">
-                  Сварочное оборудование
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* О компании */}
-          <div>
-            <h3 className="font-bold text-lg mb-6">О компании</h3>
-            <ul className="space-y-3">
-              <li>
-                <a href="#" className="text-primary-foreground/70 hover:text-primary transition-colors">
-                  О нас
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-primary-foreground/70 hover:text-primary transition-colors">
-                  Услуги
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-primary-foreground/70 hover:text-primary transition-colors">
-                  Вакансии
-                </a>
+                <button 
+                  onClick={() => handleNavigate("/catalog")}
+                  className="inline-flex items-center text-primary hover:text-primary/80 text-sm font-medium mt-1 transition-colors"
+                >
+                  Все направления
+                  <ChevronRight size={14} className="ml-0.5" />
+                </button>
               </li>
             </ul>
           </div>
 
           {/* Контакты */}
           <div>
-            <h3 className="font-bold text-lg mb-6">Контакты</h3>
+            <h3 className="font-semibold text-white text-base mb-5 flex items-center gap-2">
+              <span className="w-1.5 h-5 bg-primary rounded-full" />
+              Контакты
+            </h3>
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
-                <MapPin size={18} className="text-primary mt-1 flex-shrink-0" />
-                <span className="text-primary-foreground/70">
-                г. Кокшетау, ул.Магзи Абулкасымова, 115
+                <div className="w-8 h-8 bg-white/5 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <MapPin size={15} className="text-primary" />
+                </div>
+                <span className="text-slate-400 text-sm leading-relaxed">
+                  г. Кокшетау,<br />ул. Магзи Абулкасымова, 115
                 </span>
               </li>
               <li className="flex items-center gap-3">
-                <Phone size={18} className="text-primary flex-shrink-0" />
-                <a href="tel:+77083767189" className="text-primary-foreground/70 hover:text-primary transition-colors">
+                <div className="w-8 h-8 bg-white/5 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Phone size={15} className="text-primary" />
+                </div>
+                <a 
+                  href="tel:+77083767189" 
+                  className="text-slate-400 hover:text-white text-sm transition-colors"
+                >
                   +7 708 376 71 89
                 </a>
               </li>
               <li className="flex items-center gap-3">
-                <Mail size={18} className="text-primary flex-shrink-0" />
-                <a href="mailto:sales@supratrade.kz " className="text-primary-foreground/70 hover:text-primary transition-colors">
-                  sales@supratrade.kz 
+                <div className="w-8 h-8 bg-white/5 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Mail size={15} className="text-primary" />
+                </div>
+                <a 
+                  href="mailto:sales@supratrade.kz" 
+                  className="text-slate-400 hover:text-white text-sm transition-colors"
+                >
+                  sales@supratrade.kz
                 </a>
               </li>
               <li className="flex items-start gap-3">
-                <Clock size={18} className="text-primary mt-1 flex-shrink-0" />
-                <span className="text-primary-foreground/70">
-                  Пн-Пт: 9:00 - 18:00<br />
-                  Сб: 10:00 - 15:00
-                </span>
+                <div className="w-8 h-8 bg-white/5 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <Clock size={15} className="text-primary" />
+                </div>
+                <div className="text-slate-400 text-sm leading-relaxed">
+                  <span className="text-slate-300">Пн-Пт:</span> 9:00 – 18:00<br />
+                  <span className="text-slate-300">Сб:</span> 10:00 – 15:00
+                </div>
               </li>
             </ul>
           </div>
         </div>
-      </div>
 
-      {/* Copyright */}
-      <div className="border-t border-primary-foreground/10">
-        <div className="container-custom py-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-primary-foreground/50">
-            <p>© {currentYear} SUPRA TRADE. Все права защищены.</p>
-            <div className="flex gap-6">
-              <a href="#" className="hover:text-primary transition-colors">
-                Политика конфиденциальности
-              </a>
-              <a href="#" className="hover:text-primary transition-colors">
-                Условия использования
-              </a>
-            </div>
+        {/* Разделитель */}
+        <div className="h-px bg-gradient-to-r from-transparent via-slate-700/50 to-transparent my-8" />
+
+        {/* Copyright */}
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-500">
+          <p>© {currentYear} SUPRA TRADE. Все права защищены.</p>
+          <div className="flex gap-6">
+            <button 
+              onClick={() => handleNavigate("/about")} 
+              className="hover:text-slate-300 transition-colors"
+            >
+              О компании
+            </button>
+            <button 
+              onClick={() => handleNavigate("/catalog")} 
+              className="hover:text-slate-300 transition-colors"
+            >
+              Каталог
+            </button>
           </div>
         </div>
       </div>

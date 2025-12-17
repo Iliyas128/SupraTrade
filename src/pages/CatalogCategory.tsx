@@ -309,7 +309,8 @@ const CatalogCategory = () => {
 
         <section className="section-padding">
           <div className="container-custom grid gap-10 lg:grid-cols-[300px,minmax(0,1fr)]">
-            <aside className="h-fit rounded-2xl border border-border/70 bg-card/70 p-6 shadow-custom-lg lg:sticky lg:top-24">
+            {/* Древовидный каталог - скрыт на мобильных */}
+            <aside className="hidden lg:block h-fit rounded-2xl border border-border/70 bg-card/70 p-6 shadow-custom-lg lg:sticky lg:top-24">
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">Категории</p>
               <div className="mt-4">{renderTree(tree)}</div>
             </aside>
