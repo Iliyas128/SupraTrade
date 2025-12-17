@@ -1,26 +1,32 @@
-import { ArrowRight, Wrench, Settings, Package } from "lucide-react";
+import { Link } from "react-router-dom";
+import complexImage from "@/assets/complex.png";
+import selectmentImage from "@/assets/selectment.jpg";
+import industrializationImage from "@/assets/industrialization.jpg";
 
 const services = [
   {
     id: 1,
-    icon: Wrench,
-    title: "Изготовление деталей из металла на заказ",
-    description: "Производство металлических деталей любой сложности по вашим чертежам",
-    href: "#service-1",
+    title: "Комплексное снабжение предприятий",
+    description:
+      "Организуем полный цикл поставок для вашего бизнеса: подбор, закупку и доставку необходимых материалов, комплектующих и оборудования для стабильной и бесперебойной работы производства.",
+    image: complexImage,
+    href: "#",
   },
   {
     id: 2,
-    icon: Settings,
-    title: "Профессиональная металлообработка",
-    description: "Резка, гибка, сварка и другие виды обработки металла",
-    href: "#service-2",
+    title: "Производство изделий под заказ",
+    description:
+      "Изготавливаем изделия и компоненты по индивидуальным чертежам и техническим требованиям. Работаем с различными материалами, обеспечивая точность, качество и соблюдение сроков.",
+    image: industrializationImage,
+    href: "#",
   },
   {
     id: 3,
-    icon: Package,
-    title: "Комплексная поставка",
-    description: "Полный цикл снабжения вашего производства необходимыми материалами",
-    href: "#service-3",
+    title: "Подбор промышленной продукции",
+    description:
+      "Подберем широкий ассортимент промышленной продукции: подшипники, электротехнические компоненты, герметики и расходные материалы для различных отраслей.",
+    image: selectmentImage,
+    href: "#",
   },
 ];
 
@@ -32,30 +38,35 @@ const Services = () => {
           Наши <span className="text-primary">услуги</span>
         </h2>
         <p className="text-muted-foreground text-center mb-12 max-w-2xl mx-auto">
-          Комплексные решения для вашего бизнеса
+          Решения под ключ для задач вашего производства
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {services.map((service) => (
-            <a
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          {services.map((service, index) => (
+            <Link
               key={service.id}
-              href={service.href}
-              className="group bg-card rounded-xl p-8 card-hover border border-border"
+              to={service.href}
+              className="service-item group relative overflow-hidden rounded-xl bg-cover bg-center bg-no-repeat min-h-[550px] flex flex-col justify-end transition-all duration-300 hover:shadow-xl"
+              style={{ backgroundImage: `url(${service.image})` }}
             >
-              <div className="w-16 h-16 mb-6 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary transition-all duration-300">
-                <service.icon className="w-8 h-8 text-primary group-hover:text-primary-foreground transition-colors" />
+              {/* Red overlay on hover */}
+              <div className="absolute inset-0 bg-green-600/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-[1]" />
+              
+              {/* Overlay gradient */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-90 group-hover:opacity-95 transition-opacity duration-300 z-[2]" />
+
+              {/* Content */}
+              <div className="itemtext relative z-10 p-6 text-white">
+                <div className="title text-xl md:text-2xl font-bold mb-3 group-hover:text-white transition-colors">
+                  {service.title}
+                </div>
+                <div className="hidden-text opacity-0 group-hover:opacity-100 transition-all duration-300 max-h-0 group-hover:max-h-96 overflow-hidden">
+                  <p className="text-sm md:text-base text-white/90 mb-4 leading-relaxed">
+                    {service.description}
+                  </p>
+                </div>
               </div>
-              <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">
-                {service.title}
-              </h3>
-              <p className="text-muted-foreground mb-4">
-                {service.description}
-              </p>
-              <div className="flex items-center gap-2 text-primary font-semibold">
-                <span>перейти</span>
-                <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
-              </div>
-            </a>
+            </Link>
           ))}
         </div>
       </div>

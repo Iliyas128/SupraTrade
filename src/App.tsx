@@ -7,6 +7,7 @@ import NotFound from "./pages/NotFound";
 import Catalog from "./pages/Catalog";
 import CatalogCategory from "./pages/CatalogCategory";
 import CatalogProduct from "./pages/CatalogProduct";
+import About from "./pages/About";
 import AdminLogin from "./pages/AdminLogin";
 import AdminCatalog from "./pages/AdminCatalog";
 import AdminProducts from "./pages/AdminProducts";
@@ -20,12 +21,13 @@ const App = () => (
       <ScrollToTop />
         <Routes>
           <Route path="/" element={<Index />} />
-        <Route path="/catalog" element={<Catalog />} />
-        <Route path="/catalog/:primarySlug/*" element={<CatalogCategory />} />
-        <Route path="/product/*" element={<CatalogProduct />} />
-        <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin/catalog" element={<AdminCatalog />} />
-        <Route path="/admin/products" element={<AdminProducts />} />
+          <Route path="/catalog" element={<Catalog />} />
+          <Route path="/catalog/:primarySlug/*" element={<CatalogCategory />} />
+          <Route path="/product/*" element={<CatalogProduct />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/catalog" element={<AdminCatalog />} />
+          <Route path="/admin/products" element={<AdminProducts />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

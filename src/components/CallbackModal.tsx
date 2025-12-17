@@ -22,8 +22,22 @@ const CallbackModal = ({ isOpen, onClose }: CallbackModalProps) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    // Формируем сообщение для WhatsApp
+    const message = `Заявка с сайта SUPRA TRADE
+
+👤 Имя: ${formData.name}
+📞 Телефон: ${formData.phone}
+${formData.email ? `📧 Email: ${formData.email}` : ''}
+${formData.message ? `💬 Сообщение: ${formData.message}` : ''}
+
+Прошу связаться со мной.`;
+
+    // Номер WhatsApp (без + и пробелов)
+    const whatsappNumber = "77083767189";
+    
+    // Открываем WhatsApp с сообщением
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
 
     toast({
       title: "Заявка отправлена!",

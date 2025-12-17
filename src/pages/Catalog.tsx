@@ -14,6 +14,7 @@ import { catalogApi } from "@/lib/api";
 import { slugify } from "@/lib/utils";
 import { catalogCategories } from "@/data/catalogData";
 import type { ApiProduct, CategoryNode } from "@/types/catalog";
+import SEO from "@/components/SEO";
 
 const RANDOM_CARDS_LIMIT = 15;
 
@@ -153,6 +154,11 @@ const Catalog = () => {
 
     return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="Каталог продукции"
+        description="Каталог металлопроката, промышленного оборудования, медицинского оборудования и химических реактивов. Более 1400 видов продукции с доставкой по Казахстану и СНГ."
+        url="/catalog"
+      />
       <TopBar onCallbackClick={() => setIsCallbackOpen(true)}/>
       <Header onCallbackClick={() => setIsCallbackOpen(true)} />
 

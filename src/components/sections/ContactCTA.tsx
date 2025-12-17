@@ -11,27 +11,27 @@ const ContactCTA = ({ onCallbackClick }: ContactCTAProps) => {
       <div className="container-custom">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Свяжитесь с нашим отделом продаж
+            У вас есть вопросы?
           </h2>
           <p className="text-primary-foreground/80 text-lg mb-8">
-            Узнайте о выгодных предложениях и получите персональную консультацию
+              Оставьте заявку и наши менеджеры свяжутся с вами в ближайшее время и ответят на все ваши вопросы.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
             <a
-              href="mailto:zakaz@company.kz"
+              href="mailto:sales@supratrade.kz"
               className="flex items-center gap-2 text-lg hover:text-primary-foreground/80 transition-colors"
             >
               <Mail size={20} />
-              <span>zakaz@company.kz</span>
+              <span>sales@supratrade.kz</span>
             </a>
             <span className="hidden sm:block text-primary-foreground/50">|</span>
             <a
-              href="tel:+77006801500"
+              href="tel:+7 708 376 71 89"
               className="flex items-center gap-2 text-lg hover:text-primary-foreground/80 transition-colors"
             >
               <Phone size={20} />
-              <span>+7 700 680 15 00</span>
+              <span>+7 708 376 71 89</span>
             </a>
           </div>
 

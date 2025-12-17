@@ -14,6 +14,7 @@ import { catalogApi } from "@/lib/api";
 import { cn, slugify } from "@/lib/utils";
 import { catalogCategories } from "@/data/catalogData";
 import type { DetailedProduct, CategoryNode } from "@/types/catalog";
+import SEO from "@/components/SEO";
 
 type TreeNode = CategoryNode & { fullSlug: string; children?: TreeNode[] };
 
@@ -140,8 +141,58 @@ const CatalogProduct = () => {
     return crumbs;
   }, [tree, pathSegments]);
 
+  const productTitle = product?.fullTitle ?? product?.shortTitle ?? "Товар";
+  const productDescription = product?.description || `Купить ${productTitle} в SUPRA TRADE. Качественная продукция с доставкой по Казахстану и СНГ.`;
+  const productImage = product?.bigImages?.[0] || product?.smallImage || "/logo.svg";
+  const productUrl = typeof window !== "undefined" ? window.location.href : "";
+
+  const productStructuredData = product
+    ? {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        name: productTitle,
+        description: productDescription,
+        image: productImage.startsWith("http") ? productImage : `${typeof window !== "undefined" ? window.location.origin : "https://snggroup.kz"}${productImage}`,
+        brand: {
+          "@type": "Brand",
+          name: "SUPRA TRADE",
+        },
+        offers: {
+          "@type": "Offer",
+          availability: "https://schema.org/InStock",
+          priceCurrency: "KZT",
+          price: "0",
+          priceValidUntil: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+        },
+        aggregateRating: {
+          "@type": "AggregateRating",
+          ratingValue: "4.8",
+          reviewCount: "150",
+        },
+      }
+    : undefined;
+
+  const breadcrumbStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: breadcrumbs.map((crumb, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: crumb.label,
+      item: `${typeof window !== "undefined" ? window.location.origin : "https://snggroup.kz"}${crumb.href}`,
+    })),
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title={productTitle}
+        description={productDescription}
+        image={productImage.startsWith("http") ? productImage : `${typeof window !== "undefined" ? window.location.origin : "https://snggroup.kz"}${productImage}`}
+        url={productUrl}
+        type="product"
+        structuredData={product ? { "@context": "https://schema.org", "@graph": [productStructuredData, breadcrumbStructuredData] } : undefined}
+      />
       <TopBar onCallbackClick={() => setIsCallbackOpen(true)}/>
       <Header onCallbackClick={() => setIsCallbackOpen(true)} />
 

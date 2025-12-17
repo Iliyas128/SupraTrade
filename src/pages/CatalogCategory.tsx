@@ -14,6 +14,7 @@ import { catalogApi } from "@/lib/api";
 import { cn, slugify } from "@/lib/utils";
 import { catalogCategories } from "@/data/catalogData";
 import type { ApiProduct, CategoryNode } from "@/types/catalog";
+import SEO from "@/components/SEO";
 
 const PAGE_SIZE = 15;
 type TreeNode = CategoryNode & { fullSlug: string; children?: TreeNode[] };
@@ -222,8 +223,16 @@ const CatalogCategory = () => {
     </ul>
   );
 
+  const categoryName = activeLeaf?.name ?? "Категория";
+  const categoryDescription = `Товары категории "${categoryName}" в каталоге SUPRA TRADE. Широкий ассортимент продукции с доставкой по Казахстану и СНГ.`;
+
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title={categoryName}
+        description={categoryDescription}
+        url={`/catalog/${categoryPath}`}
+      />
       <TopBar onCallbackClick={() => setIsCallbackOpen(true)} />
       <Header onCallbackClick={() => setIsCallbackOpen(true)} />
 

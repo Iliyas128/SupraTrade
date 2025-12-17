@@ -9,8 +9,6 @@ const navItems = [
   { label: "Направления", href: "#directions" },
   { label: "О нас", href: "#about" },
   { label: "Услуги", href: "#services" },
-  { label: "Производство", href: "#production" },
-  { label: "Новости", href: "#news" },
   { label: "Контакты", href: "#contacts" },
 ];
 
@@ -54,16 +52,9 @@ const Header = ({ onCallbackClick }: HeaderProps) => {
 
   return (
     <header className="bg-white sticky top-0 z-50 shadow-sm border-b border-border">
-      <div className="container-custom px-4 py-3">
+      <div className="container-custom px-1 py-2">
         {/* Мобильная верхняя полоса */}
         <div className="flex items-center justify-between gap-3 lg:hidden">
-          <a href="/" className="flex items-center gap-2">
-            <img src="/favicon.ico" alt="SUPRA TRADE" className="w-16 h-8 rounded-lg" />
-            <div className="leading-tight">
-              <div className="text-base font-bold text-foreground">SUPRA TRADE</div>
-              <div className="text-[10px] text-muted-foreground uppercase tracking-wide">Industrial Solutions</div>
-            </div>
-          </a>
           <button
             className="p-2 text-foreground"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
