@@ -73,8 +73,8 @@ const Footer = () => {
               onClick={() => handleNavigate("/")} 
               className="inline-flex items-center gap-3 mb-5 group"
             >
-              <div className="w-11 h-11 bg-white/10 backdrop-blur rounded-xl flex items-center justify-center group-hover:bg-white/15 transition-colors">
-                <img src="/favicon.ico" alt="SUPRA TRADE" className="w-8 h-8 rounded" />
+              <div className="w-11 h-11 flex items-center justify-center transition-colors">
+                <img src="/favicon.ico" alt="SUPRA TRADE" className="w-11 h-8" />
               </div>
               <div className="flex items-baseline">
                 <span className="text-primary font-bold text-xl tracking-tight">SUPRA</span>
