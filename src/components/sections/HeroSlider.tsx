@@ -27,7 +27,7 @@ const HeroSlider = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="relative h-[600px] md:h-[700px] mb-24 md:mb-28">
+    <section className="relative h-[500px] sm:h-[600px] md:h-[700px] mb-0 sm:mb-24 md:mb-28">
       {/* Background Image */}
       <div className="absolute inset-0 overflow-hidden">
         <img
@@ -62,10 +62,10 @@ const HeroSlider = () => {
         </div>
       </div>
 
-      {/* Bottom Feature Boxes - выходят за Hero */}
-      <div className="absolute -bottom-16 md:-bottom-20 left-0 right-0 z-10">
+      {/* Bottom Feature Boxes - выходят за Hero, скрыты на мобильных */}
+      <div className="absolute -bottom-16 md:-bottom-20 left-0 right-0 z-10 hidden sm:block">
         <div className="container-custom">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
+          <div className="grid sm:grid-cols-3 gap-4 md:gap-6">
             {features.map((feature, index) => (
               <div
                 key={index}
