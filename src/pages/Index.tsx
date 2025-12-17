@@ -23,8 +23,8 @@ const organizationStructuredData = {
   "@type": "Organization",
   name: "SUPRA TRADE",
   description: "Надёжный поставщик металлопроката, химических реактивов, медицинского и промышленного оборудования в Казахстане и СНГ",
-  url: "https://snggroup.kz",
-  logo: "https://snggroup.kz/logo.svg",
+  url: typeof window !== "undefined" ? window.location.origin : "",
+  logo: typeof window !== "undefined" ? `${window.location.origin}/logo.svg` : "/logo.svg",
   contactPoint: {
     "@type": "ContactPoint",
     contactType: "Customer Service",

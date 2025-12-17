@@ -3,8 +3,5 @@ Allow: /
 Disallow: /admin/
 Disallow: /api/
 
-# Sitemap
-Sitemap: https://snggroup.kz/sitemap.xml
-
 # Crawl-delay
 Crawl-delay: 1

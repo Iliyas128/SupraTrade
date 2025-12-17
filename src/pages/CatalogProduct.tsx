@@ -152,7 +152,7 @@ const CatalogProduct = () => {
         "@type": "Product",
         name: productTitle,
         description: productDescription,
-        image: productImage.startsWith("http") ? productImage : `${typeof window !== "undefined" ? window.location.origin : "https://snggroup.kz"}${productImage}`,
+        image: productImage.startsWith("http") ? productImage : `${typeof window !== "undefined" ? window.location.origin : ""}${productImage}`,
         brand: {
           "@type": "Brand",
           name: "SUPRA TRADE",
@@ -179,7 +179,7 @@ const CatalogProduct = () => {
       "@type": "ListItem",
       position: index + 1,
       name: crumb.label,
-      item: `${typeof window !== "undefined" ? window.location.origin : "https://snggroup.kz"}${crumb.href}`,
+      item: `${typeof window !== "undefined" ? window.location.origin : ""}${crumb.href}`,
     })),
   };
 
@@ -188,7 +188,7 @@ const CatalogProduct = () => {
       <SEO
         title={productTitle}
         description={productDescription}
-        image={productImage.startsWith("http") ? productImage : `${typeof window !== "undefined" ? window.location.origin : "https://snggroup.kz"}${productImage}`}
+        image={productImage.startsWith("http") ? productImage : `${typeof window !== "undefined" ? window.location.origin : ""}${productImage}`}
         url={productUrl}
         type="product"
         structuredData={product ? { "@context": "https://schema.org", "@graph": [productStructuredData, breadcrumbStructuredData] } : undefined}

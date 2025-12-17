@@ -15,7 +15,7 @@ const defaultDescription =
   "Надёжный поставщик металлопроката, химических реактивов, медицинского и промышленного оборудования в Казахстане и СНГ. Более 1400 видов продукции.";
 const defaultKeywords =
   "металлопрокат, промышленное оборудование, медицинское оборудование, химические реактивы, поставщик, Казахстан, СНГ, металл, оборудование";
-const siteUrl = typeof window !== "undefined" ? window.location.origin : "https://snggroup.kz";
+const siteUrl = typeof window !== "undefined" ? window.location.origin : "";
 const defaultImage = `${siteUrl}/logo.svg`;
 
 const SEO = ({

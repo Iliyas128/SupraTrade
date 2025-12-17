@@ -27,8 +27,8 @@ const About = () => {
     "@type": "Organization",
     name: "SUPRA TRADE",
     description: "Комплексные решения в сфере снабжения, производства и подбора промышленной продукции",
-    url: "https://snggroup.kz",
-    logo: "https://snggroup.kz/logo.svg",
+    url: typeof window !== "undefined" ? window.location.origin : "",
+    logo: typeof window !== "undefined" ? `${window.location.origin}/logo.svg` : "/logo.svg",
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "Customer Service",
