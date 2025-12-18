@@ -22,7 +22,7 @@ const AdminLogin = () => {
     setStatus("requesting");
     try {
       await adminAuth.requestOtp(trimmedEmail);
-      setMessage("Код отправлен на master email. Введите код для входа.");
+      setMessage("Код отправлен на email админа. Проверьте почту админа и введите полученный OTP код.");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Не удалось отправить код");
     } finally {
@@ -66,11 +66,12 @@ const AdminLogin = () => {
             />
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium text-foreground">Код из SMS</label>
+            <label className="text-sm font-medium text-foreground">OTP код</label>
             <Input
-              placeholder="Например 123456"
+              placeholder="Введите код из email админа"
               value={code}
               onChange={(e) => setCode(e.target.value)}
+              maxLength={6}
             />
           </div>
 

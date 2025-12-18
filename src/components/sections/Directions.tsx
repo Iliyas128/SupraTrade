@@ -18,6 +18,7 @@ const directionDescriptions: Record<string, string> = {
   "elektrika-i-avtomatika": "Осуществляем поставки электротехнической продукции и компонентов автоматики для промышленного оборудования и инженерных систем. Помогаем с подбором решений под конкретные задачи и условия эксплуатации.",
   "promyshlennoe-oborudovanie": "Поставляем оборудование и узлы для производственных и технологических процессов. Подбираем оптимальные решения с учётом технических требований, условий эксплуатации и бюджета.",
   "podshipniki-i-mekhanika": "Предлагаем широкий ассортимент подшипников и механических компонентов для различного оборудования. Подбираем аналоги и обеспечиваем поставки для надёжной и бесперебойной работы механизмов.",
+  "podshipniki-i-mehanika": "Предлагаем широкий ассортимент подшипников и механических компонентов для различного оборудования. Подбираем аналоги и обеспечиваем поставки для надёжной и бесперебойной работы механизмов.",
   "polimernye-materialy": "Поставляем полимерные материалы и изделия для промышленного применения. Подбираем продукцию с учётом условий эксплуатации, нагрузок и специфики использования.",
 };
 
@@ -45,14 +46,11 @@ const Directions = () => {
             .slice(0, 5);
 
           const mappedDirections = parentCategories.map((cat: CategoryNode) => {
-            const rawSlug = cat.slug || "";
-            const normalizedSlug = rawSlug || slugify(cat.name);
-
+            const slug = cat.slug || "";
             return {
               ...cat,
-              // Пытаемся найти описание по нормализованному slug, иначе берём имя
-              description: directionDescriptions[normalizedSlug] || directionDescriptions[rawSlug] || cat.name,
-              image: (cat as any).image || directionImages[normalizedSlug] || directionImages[rawSlug] || heroIndustrial,
+              description: directionDescriptions[slug] || cat.name,
+              image: (cat as any).image || directionImages[slug] || heroIndustrial,
             };
           });
 
