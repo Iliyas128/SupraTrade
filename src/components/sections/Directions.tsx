@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { catalogApi } from "@/lib/api";
 import type { CategoryNode } from "@/types/catalog";
 import SEO from "@/components/SEO";
+import { slugify } from "@/lib/utils";
 
 // Описания для направлений
 const directionDescriptions: Record<string, string> = {
@@ -44,11 +45,14 @@ const Directions = () => {
             .slice(0, 5);
 
           const mappedDirections = parentCategories.map((cat: CategoryNode) => {
-            const slug = cat.slug || "";
+            const rawSlug = cat.slug || "";
+            const normalizedSlug = rawSlug || slugify(cat.name);
+
             return {
               ...cat,
-              description: directionDescriptions[slug] || cat.name,
-              image: (cat as any).image || directionImages[slug] || heroIndustrial,
+              // Пытаемся найти описание по нормализованному slug, иначе берём имя
+              description: directionDescriptions[normalizedSlug] || directionDescriptions[rawSlug] || cat.name,
+              image: (cat as any).image || directionImages[normalizedSlug] || directionImages[rawSlug] || heroIndustrial,
             };
           });
 
