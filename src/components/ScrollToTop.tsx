@@ -8,6 +8,7 @@ const ScrollToTop = () => {
     const segments = pathname.split("/").filter(Boolean);
     const isProductPage = segments[0] === "catalog" && segments.length >= 4;
 
+    // Если есть hash, скроллим к элементу
     if (hash) {
       const targetId = hash.replace("#", "");
       const scrollToTarget = () => {
@@ -26,9 +27,9 @@ const ScrollToTop = () => {
       return;
     }
 
-    if (isProductPage) {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
+    // Для всех страниц (кроме product pages с hash) скроллим наверх
+    // Используем instant для мгновенного скролла без анимации
+    window.scrollTo({ top: 0, behavior: "instant" });
   }, [pathname, hash]);
 
   return null;

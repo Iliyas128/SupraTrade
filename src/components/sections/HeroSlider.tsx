@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import heroMetal from "@/assets/hero-metal.jpg";
+import heroMetal from "@/assets/goupgo.png";
 import { useNavigate } from "react-router-dom";
 import defenseMiniIcon from "@/assets/HeroIcons/defenseMiniIcon.png";
 import rostMiniIcon from "@/assets/HeroIcons/RostMiniIcon.png";
@@ -42,12 +42,12 @@ const HeroSlider = () => {
       <div className="absolute inset-0 flex items-center">
         <div className="container-custom">
           <div className="max-w-2xl text-primary-foreground">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
-              Цветной металлопрокат
-              <span className="block text-primary">высшего качества</span>
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-primary">
+              Поставка материалов, комплектующих и оборудования
+              <span className="block text-primary">для промышленных и коммерческих предприятий</span>
             </h1>
-            <p className="text-lg md:text-xl text-primary-foreground/90 mb-8">
-              Нержавеющая сталь, латунь, медь, алюминий — в наличии и под заказ с доставкой по всему Казахстану и СНГ
+            <p className="text-sm md:text-base text-primary-foreground/90 mb-8">
+            Мы предоставляем комплексные решения для предприятий: снабжение, производство под заказ и подбор промышленной продукции. Работаем с проверенными партнёрами, обеспечиваем качество, надёжность и удобный сервис «под ключ».
             </p>
             <div className="flex flex-wrap gap-4">
               <Button
