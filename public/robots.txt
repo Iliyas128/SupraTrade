@@ -3,5 +3,8 @@ Allow: /
 Disallow: /admin/
 Disallow: /api/
 
+# Sitemap
+Sitemap: https://supratrade.kz/sitemap.xml
+
 # Crawl-delay
 Crawl-delay: 1

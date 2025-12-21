@@ -23,18 +23,23 @@ const About = () => {
     "@type": "Organization",
     name: "SUPRA TRADE",
     description: "Комплексные решения в сфере снабжения, производства и подбора промышленной продукции",
-    url: typeof window !== "undefined" ? window.location.origin : "",
-    logo: typeof window !== "undefined" ? `${window.location.origin}/logo.svg` : "/logo.svg",
+    url: typeof window !== "undefined" ? window.location.origin : "https://supratrade.kz",
+    logo: typeof window !== "undefined" ? `${window.location.origin}/logo.svg` : "https://supratrade.kz/logo.svg",
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "Customer Service",
+      telephone: "+77083767189",
+      email: "sales@supratrade.kz",
       areaServed: ["KZ", "RU", "BY", "UZ"],
       availableLanguage: ["Russian"],
     },
     address: {
       "@type": "PostalAddress",
+      streetAddress: "ул. Магзи Абулкасымова, 115",
+      addressLocality: "Кокшетау",
       addressCountry: "KZ",
     },
+    sameAs: []
   };
 
   return (

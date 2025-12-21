@@ -6,74 +6,74 @@
   
   <!-- Главная страница -->
   <url>
-    <loc>/</loc>
-    <lastmod>2024-01-01</lastmod>
+    <loc>https://supratrade.kz/</loc>
+    <lastmod>2024-12-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   
   <!-- Каталог -->
   <url>
-    <loc>/catalog</loc>
-    <lastmod>2024-01-01</lastmod>
+    <loc>https://supratrade.kz/catalog</loc>
+    <lastmod>2024-12-19</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   
   <!-- О компании -->
   <url>
-    <loc>/about</loc>
-    <lastmod>2024-01-01</lastmod>
+    <loc>https://supratrade.kz/about</loc>
+    <lastmod>2024-12-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <!-- Основные категории -->
   <url>
-    <loc>/catalog/metalloprokat</loc>
-    <lastmod>2024-01-01</lastmod>
+    <loc>https://supratrade.kz/catalog/metalloprokat</loc>
+    <lastmod>2024-12-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>/catalog/meditsinskoe-oborudovanie</loc>
-    <lastmod>2024-01-01</lastmod>
+    <loc>https://supratrade.kz/catalog/meditsinskoe-oborudovanie</loc>
+    <lastmod>2024-12-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>/catalog/promyshlennoe-oborudovanie</loc>
-    <lastmod>2024-01-01</lastmod>
+    <loc>https://supratrade.kz/catalog/promyshlennoe-oborudovanie</loc>
+    <lastmod>2024-12-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>/catalog/himicheskie-reaktivy-dlya-zavodov-i-promyshlennosti</loc>
-    <lastmod>2024-01-01</lastmod>
+    <loc>https://supratrade.kz/catalog/himicheskie-reaktivy-dlya-zavodov-i-promyshlennosti</loc>
+    <lastmod>2024-12-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>/catalog/elektrika-i-avtomatika</loc>
-    <lastmod>2024-01-01</lastmod>
+    <loc>https://supratrade.kz/catalog/elektrika-i-avtomatika</loc>
+    <lastmod>2024-12-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>/catalog/podshipniki-i-mekhanika</loc>
-    <lastmod>2024-01-01</lastmod>
+    <loc>https://supratrade.kz/catalog/podshipniki-i-mekhanika</loc>
+    <lastmod>2024-12-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>/catalog/polimernye-materialy</loc>
-    <lastmod>2024-01-01</lastmod>
+    <loc>https://supratrade.kz/catalog/polimernye-materialy</loc>
+    <lastmod>2024-12-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

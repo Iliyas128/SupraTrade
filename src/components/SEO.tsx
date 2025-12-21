@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import type { ComponentType } from "react";
 
 interface SEOProps {
   title?: string;
@@ -15,7 +16,7 @@ const defaultDescription =
   "Надёжный поставщик металлопроката, химических реактивов, медицинского и промышленного оборудования в Казахстане и СНГ. Более 1400 видов продукции.";
 const defaultKeywords =
   "металлопрокат, промышленное оборудование, медицинское оборудование, химические реактивы, поставщик, Казахстан, СНГ, металл, оборудование";
-const siteUrl = typeof window !== "undefined" ? window.location.origin : "";
+const siteUrl = typeof window !== "undefined" ? window.location.origin : "https://supratrade.kz";
 const defaultImage = `${siteUrl}/logo.svg`;
 
 const SEO = ({
@@ -30,8 +31,11 @@ const SEO = ({
   const fullTitle = title ? `${title} | SUPRA TRADE` : defaultTitle;
   const fullUrl = url ? `${siteUrl}${url}` : (typeof window !== "undefined" ? window.location.href : siteUrl);
 
+  // Исправление проблемы с типами react-helmet-async
+  const HelmetComponent = Helmet as unknown as ComponentType<{ children?: React.ReactNode }>;
+
   return (
-    <Helmet>
+    <HelmetComponent>
       {/* Основные мета-теги */}
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
@@ -67,7 +71,7 @@ const SEO = ({
       {structuredData && (
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
       )}
-    </Helmet>
+    </HelmetComponent>
   );
 };
 
