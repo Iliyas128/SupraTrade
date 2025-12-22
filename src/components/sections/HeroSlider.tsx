@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import heroMetal from "@/assets/goupgo_11zon.png";
+import heroMetal from "@/assets/goupgo.jpg";
 import { useNavigate } from "react-router-dom";
 import defenseMiniIcon from "@/assets/HeroIcons/defenseMiniIcon.png";
 import rostMiniIcon from "@/assets/HeroIcons/RostMiniIcon.png";
