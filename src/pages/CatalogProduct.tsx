@@ -196,7 +196,7 @@ const CatalogProduct = () => {
       <TopBar onCallbackClick={() => setIsCallbackOpen(true)}/>
       <Header onCallbackClick={() => setIsCallbackOpen(true)} />
 
-      <main className="pb-20 md:pb-16">
+      <main>
         <section className="border-b border-border/40 bg-gradient-to-b from-primary/5 to-transparent py-3 md:py-4">
           <div className="container-custom space-y-3 md:space-y-4">
             <div className="flex flex-wrap items-center gap-1.5 md:gap-2 text-xs md:text-sm text-muted-foreground">
