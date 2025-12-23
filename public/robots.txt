@@ -8,3 +8,6 @@ Sitemap: https://supratrade.kz/sitemap.xml
 
 # Crawl-delay
 Crawl-delay: 1
+
+# Yandex-specific
+Host: supratrade.kz
