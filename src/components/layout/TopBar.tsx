@@ -10,7 +10,7 @@ const TopBar = ({ onCallbackClick }: TopBarProps) => {
       <div className="p-2 px-[5vw]">
         <div className="flex items-center justify-between gap-6">
           <a href="/" className="flex items-center gap-3">
-            <img src="/favicon.ico" alt="SUPRA TRADE" className="w-32 h-14" />
+            <img src="/faviconFull.ico" alt="SUPRA TRADE" className="w-32 h-14" />
             <div className="leading-tight">
               <div className="text-lg font-bold text-foreground">Комплексные решения</div>
               <div className="text-sm text-muted-foreground uppercase">снабжения и производства</div>
