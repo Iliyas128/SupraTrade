@@ -28,6 +28,8 @@ type NewCategoryForm = {
   name: string;
   parentId: string;
   image: string;
+  nameEn: string;
+  nameZh: string;
 };
 
 const AdminCatalog = () => {
@@ -47,6 +49,10 @@ const AdminCatalog = () => {
     image: "",
     parentId: "",
   });
+  const [editCategoryTranslations, setEditCategoryTranslations] = useState<{ en: string; zh: string }>({
+    en: "",
+    zh: "",
+  });
   const [editCategoryError, setEditCategoryError] = useState<string | null>(null);
   const [editCategorySuccess, setEditCategorySuccess] = useState<string | null>(null);
   const [newProduct, setNewProduct] = useState<NewProductForm>({
@@ -64,6 +70,15 @@ const AdminCatalog = () => {
     name: "",
     parentId: "",
     image: "",
+    nameEn: "",
+    nameZh: "",
+  });
+  const [newProductTranslations, setNewProductTranslations] = useState<{
+    en: { short: string; full: string; desc: string; tags: string; chars: string };
+    zh: { short: string; full: string; desc: string; tags: string; chars: string };
+  }>({
+    en: { short: "", full: "", desc: "", tags: "", chars: "" },
+    zh: { short: "", full: "", desc: "", tags: "", chars: "" },
   });
 
   useEffect(() => {
@@ -104,6 +119,46 @@ const AdminCatalog = () => {
       const autoSlug =
         newProduct.url?.trim() ||
         slugify(newProduct.short_title || newProduct.full_title || "product");
+
+      const buildChars = (input: string) =>
+        input
+          ? Object.fromEntries(
+              input
+                .split("\n")
+                .map((line) => line.trim())
+                .filter(Boolean)
+                .map((line) => {
+                  const [k, ...rest] = line.split(":");
+                  return [k.trim(), rest.join(":").trim()];
+                }),
+            )
+          : undefined;
+
+      const buildTags = (input: string) =>
+        input
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean);
+
+      const translations: any = {};
+      if (newProductTranslations.en.short || newProductTranslations.en.full || newProductTranslations.en.desc || newProductTranslations.en.tags || newProductTranslations.en.chars) {
+        translations.en = {
+          short_title: newProductTranslations.en.short || undefined,
+          full_title: newProductTranslations.en.full || undefined,
+          description: newProductTranslations.en.desc || undefined,
+          tags: newProductTranslations.en.tags ? buildTags(newProductTranslations.en.tags) : undefined,
+          characteristics: buildChars(newProductTranslations.en.chars),
+        };
+      }
+      if (newProductTranslations.zh.short || newProductTranslations.zh.full || newProductTranslations.zh.desc || newProductTranslations.zh.tags || newProductTranslations.zh.chars) {
+        translations.zh = {
+          short_title: newProductTranslations.zh.short || undefined,
+          full_title: newProductTranslations.zh.full || undefined,
+          description: newProductTranslations.zh.desc || undefined,
+          tags: newProductTranslations.zh.tags ? buildTags(newProductTranslations.zh.tags) : undefined,
+          characteristics: buildChars(newProductTranslations.zh.chars),
+        };
+      }
       const payload = {
         short_title: newProduct.short_title || newProduct.full_title || "Без названия",
         full_title: newProduct.full_title || newProduct.short_title,
@@ -114,23 +169,10 @@ const AdminCatalog = () => {
           .split(",")
           .map((s) => s.trim())
           .filter(Boolean),
-        tags: newProduct.tags
-          .split(",")
-          .map((s) => s.trim())
-          .filter(Boolean),
+        tags: buildTags(newProduct.tags),
         categoryId: newProduct.categoryId,
-        characteristics: newProduct.characteristics
-          ? Object.fromEntries(
-              newProduct.characteristics
-                .split("\n")
-                .map((line) => line.trim())
-                .filter(Boolean)
-                .map((line) => {
-                  const [k, ...rest] = line.split(":");
-                  return [k.trim(), rest.join(":").trim()];
-                }),
-            )
-          : undefined,
+        characteristics: buildChars(newProduct.characteristics),
+        translations: Object.keys(translations).length ? translations : undefined,
       };
       const res = await adminCatalogApi.createProduct(token, payload);
       setCreateSuccess("Товар создан");
@@ -144,6 +186,10 @@ const AdminCatalog = () => {
         tags: "",
         categoryId: "",
         characteristics: "",
+      });
+      setNewProductTranslations({
+        en: { short: "", full: "", desc: "", tags: "", chars: "" },
+        zh: { short: "", full: "", desc: "", tags: "", chars: "" },
       });
     } catch (err) {
       setCreateError(err instanceof Error ? err.message : "Не удалось создать товар");
@@ -170,6 +216,8 @@ const AdminCatalog = () => {
     setCategoryError(null);
     setCategorySuccess(null);
     const name = newCategory.name.trim();
+    const nameEn = newCategory.nameEn.trim();
+    const nameZh = newCategory.nameZh.trim();
     const parentId = newCategory.parentId || null;
     const image = newCategory.image.trim();
     if (!name) {
@@ -177,13 +225,17 @@ const AdminCatalog = () => {
       return;
     }
     try {
+      const translations: any = {};
+      if (nameEn) translations.en = { name: nameEn };
+      if (nameZh) translations.zh = { name: nameZh };
       await adminCatalogApi.createCategory(token, {
         name,
         slug: slugify(name),
         parentId: parentId || null,
         image: image || undefined,
+        translations: Object.keys(translations).length ? translations : undefined,
       });
-      setNewCategory({ name: "", parentId: "", image: "" });
+      setNewCategory({ name: "", parentId: "", image: "", nameEn: "", nameZh: "" });
       setCategorySuccess(parentId ? "Подкатегория создана" : "Родительская категория создана");
       await loadAll();
     } catch (err) {
@@ -197,6 +249,10 @@ const AdminCatalog = () => {
       name: category.name,
       image: category.image || "",
       parentId: category.parentId || "",
+    });
+    setEditCategoryTranslations({
+      en: (category as any).translations?.en?.name || "",
+      zh: (category as any).translations?.zh?.name || "",
     });
     setEditCategoryError(null);
     setEditCategorySuccess(null);
@@ -237,6 +293,11 @@ const AdminCatalog = () => {
       if (currentParentIdStr !== newParentIdStr) {
         payload.parentId = newParentId;
       }
+
+      const translations: any = {};
+      if (editCategoryTranslations.en.trim()) translations.en = { name: editCategoryTranslations.en.trim() };
+      if (editCategoryTranslations.zh.trim()) translations.zh = { name: editCategoryTranslations.zh.trim() };
+      payload.translations = Object.keys(translations).length ? translations : undefined;
       
       await adminCatalogApi.updateCategory(token, editingCategory._id, payload);
       setEditCategorySuccess("Категория обновлена");
@@ -348,6 +409,16 @@ const AdminCatalog = () => {
                 onChange={(e) => handleCategoryField("name", e.target.value)}
               />
               <Input
+                placeholder="Название категории (EN)"
+                value={newCategory.nameEn}
+                onChange={(e) => handleCategoryField("nameEn", e.target.value)}
+              />
+              <Input
+                placeholder="Название категории (ZH)"
+                value={newCategory.nameZh}
+                onChange={(e) => handleCategoryField("nameZh", e.target.value)}
+              />
+              <Input
                 placeholder="Фото (URL, опционально)"
                 value={newCategory.image}
                 onChange={(e) => handleCategoryField("image", e.target.value)}
@@ -409,6 +480,26 @@ const AdminCatalog = () => {
                 onChange={(e) => handleChange("full_title", e.target.value)}
               />
               <Input
+                placeholder="Короткое название (EN)"
+                value={newProductTranslations.en.short}
+                onChange={(e) => setNewProductTranslations((prev) => ({ ...prev, en: { ...prev.en, short: e.target.value } }))}
+              />
+              <Input
+                placeholder="Полное название (EN)"
+                value={newProductTranslations.en.full}
+                onChange={(e) => setNewProductTranslations((prev) => ({ ...prev, en: { ...prev.en, full: e.target.value } }))}
+              />
+              <Input
+                placeholder="Короткое название (ZH)"
+                value={newProductTranslations.zh.short}
+                onChange={(e) => setNewProductTranslations((prev) => ({ ...prev, zh: { ...prev.zh, short: e.target.value } }))}
+              />
+              <Input
+                placeholder="Полное название (ZH)"
+                value={newProductTranslations.zh.full}
+                onChange={(e) => setNewProductTranslations((prev) => ({ ...prev, zh: { ...prev.zh, full: e.target.value } }))}
+              />
+              <Input
                 placeholder="URL (catalog/slug)"
                 value={newProduct.url}
                 onChange={(e) => handleChange("url", e.target.value)}
@@ -450,9 +541,39 @@ const AdminCatalog = () => {
               onChange={(e) => handleChange("description", e.target.value)}
             />
             <Textarea
+              placeholder="Описание (EN)"
+              value={newProductTranslations.en.desc}
+              onChange={(e) => setNewProductTranslations((prev) => ({ ...prev, en: { ...prev.en, desc: e.target.value } }))}
+            />
+            <Textarea
+              placeholder="Описание (ZH)"
+              value={newProductTranslations.zh.desc}
+              onChange={(e) => setNewProductTranslations((prev) => ({ ...prev, zh: { ...prev.zh, desc: e.target.value } }))}
+            />
+            <Textarea
               placeholder="Характеристики (каждая строка: Ключ: Значение)"
               value={newProduct.characteristics}
               onChange={(e) => handleChange("characteristics", e.target.value)}
+            />
+            <Textarea
+              placeholder="Характеристики (EN, каждая строка: Key: Value)"
+              value={newProductTranslations.en.chars}
+              onChange={(e) => setNewProductTranslations((prev) => ({ ...prev, en: { ...prev.en, chars: e.target.value } }))}
+            />
+            <Textarea
+              placeholder="Характеристики (ZH, каждая строка: Key: Value)"
+              value={newProductTranslations.zh.chars}
+              onChange={(e) => setNewProductTranslations((prev) => ({ ...prev, zh: { ...prev.zh, chars: e.target.value } }))}
+            />
+            <Input
+              placeholder="Теги (EN, через запятую)"
+              value={newProductTranslations.en.tags}
+              onChange={(e) => setNewProductTranslations((prev) => ({ ...prev, en: { ...prev.en, tags: e.target.value } }))}
+            />
+            <Input
+              placeholder="Теги (ZH, через запятую)"
+              value={newProductTranslations.zh.tags}
+              onChange={(e) => setNewProductTranslations((prev) => ({ ...prev, zh: { ...prev.zh, tags: e.target.value } }))}
             />
 
             {createError && (
@@ -486,6 +607,22 @@ const AdminCatalog = () => {
                   placeholder="Название категории"
                 />
               </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Название (EN)</label>
+              <Input
+                value={editCategoryTranslations.en}
+                onChange={(e) => setEditCategoryTranslations((prev) => ({ ...prev, en: e.target.value }))}
+                placeholder="Name (EN)"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Название (ZH)</label>
+              <Input
+                value={editCategoryTranslations.zh}
+                onChange={(e) => setEditCategoryTranslations((prev) => ({ ...prev, zh: e.target.value }))}
+                placeholder="名称 (ZH)"
+              />
+            </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium">Фото (URL, опционально)</label>
                 <Input

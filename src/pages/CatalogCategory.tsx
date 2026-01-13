@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import TopBar from "@/components/layout/TopBar";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -40,6 +41,7 @@ const ProductCardSkeleton = () => (
 );
 
 const CatalogCategory = () => {
+  const { i18n } = useTranslation();
   const location = useLocation();
   const [isCallbackOpen, setIsCallbackOpen] = useState(false);
   const [tree, setTree] = useState<TreeNode[]>([]);
@@ -106,7 +108,7 @@ const CatalogCategory = () => {
       }
     };
     loadTree();
-  }, [fallbackTree]);
+  }, [fallbackTree, i18n.language]);
 
   const loadProducts = useCallback(
     async (pageToLoad: number, append = false) => {
@@ -140,7 +142,7 @@ const CatalogCategory = () => {
         append ? setLoadingMore(false) : setLoading(false);
       }
     },
-    [categoryPath],
+    [categoryPath, i18n.language],
   );
 
   useEffect(() => {
@@ -153,7 +155,7 @@ const CatalogCategory = () => {
     };
     bootstrap();
     autoScrolledRef.current = false;
-  }, [categoryPath, loadProducts, navigate]);
+  }, [categoryPath, loadProducts, navigate, i18n.language]);
 
   useEffect(() => {
     if (loading || products.length === 0 || autoScrolledRef.current) return;

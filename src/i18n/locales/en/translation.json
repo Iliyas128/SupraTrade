@@ -1,0 +1,211 @@
+{
+    "nav": {
+      "directions": "Directions",
+      "about": "About Us",
+      "services": "Services",
+      "contacts": "Contacts"
+    },
+    "buttons": {
+    "search": "Search",
+    "send": "Send",
+    "submit": "Submit",
+    "back": "Back",
+    "more": "Show more"
+    },
+    "search": {
+    "placeholder": "Search"
+  },
+  "callback": {
+    "title": "Request a call",
+    "subtitle": "Fill out the form and we will contact you",
+    "name": "Name",
+    "phone": "Phone",
+    "email": "Email",
+    "message": "Message",
+    "submit": "Send request",
+    "submitting": "Sending...",
+    "successTitle": "Request sent!",
+    "successDesc": "We will contact you soon.",
+    "privacy": "By clicking the button, you agree to the privacy policy",
+    "namePlaceholder": "Your name",
+    "phonePlaceholder": "+7 (___) ___-__-__",
+    "emailPlaceholder": "email@example.com",
+    "messagePlaceholder": "Your message..."
+  },
+  "chat": {
+    "title": "AI Assistant",
+    "online": "Online",
+    "webhookMissing": "Webhook is not configured. Add VITE_N8N_WEBHOOK_URL",
+    "placeholder": "Enter a message...",
+    "welcome": "Hello! 👋 I am the SUPRA TRADE AI assistant. How can I help?",
+    "sendingError": "Failed to send. Please try again later.",
+    "sentDefault": "Thanks! Message sent, we'll respond soon.",
+    "responseTime": "response will be within a few minutes.",
+    "aria": "Chat with assistant"
+  },
+  "footer": {
+    "aboutText": "Comprehensive supply of materials, components and equipment for industrial and commercial needs.",
+    "catalog": "Catalog",
+    "allDirections": "All directions",
+    "contacts": "Contacts",
+    "address": "Kokshetau, ul. Magzi Abulkasymova, 115",
+    "worktime": "Mon-Fri: 9:00 – 18:00\nSat: 10:00 – 15:00",
+    "rights": "All rights reserved."
+  },
+  "notFound": {
+    "title": "404",
+    "message": "Oops! Page not found",
+    "home": "Return to home"
+    },
+    "hero": {
+      "title": "Supply of materials, components and equipment",
+      "subtitle": "for industrial and commercial enterprises",
+      "description": "We provide end-to-end solutions: supply, custom production, and industrial product selection. We work with trusted partners to ensure quality and convenient turnkey service.",
+      "viewCatalog": "View catalog",
+      "quality": "Quality guarantee",
+      "qualityDesc": "All products are certified",
+      "growth": "Rich assortment",
+      "growthDesc": "Over 1400 product types",
+      "delivery": "Fast delivery",
+      "deliveryDesc": "Across Kazakhstan and CIS"
+  },
+  "topbar": {
+    "address": "Kokshetau, Magzi Abulkasymova 115",
+    "phone": "+7 708 376 71 89",
+    "email": "sales@supratrade.kz",
+    "orderCallback": "Request a call",
+    "tagline1": "Integrated solutions",
+    "tagline2": "for supply and production",
+    "sales": "Sales department:"
+  },
+  "directions": {
+    "label": "5 supply directions",
+    "title": "Our directions",
+    "subtitle": "From steel to high-precision equipment — pick a vertical and get a full proposal",
+    "tag": "Direction",
+    "fallbackName1": "Metal products",
+    "fallbackName2": "Electrics & automation",
+    "fallbackName3": "Industrial equipment",
+    "fallbackName4": "Bearings & mechanics",
+    "fallbackName5": "Polymer materials",
+    "fallback1": "Metal products for industrial and commercial use. Matching technical requirements, volumes and timelines.",
+    "fallback2": "Electrical and automation components for equipment and engineering systems.",
+    "fallback3": "Equipment and assemblies for production processes. Optimal solutions by requirements, operation and budget.",
+    "fallback4": "Bearings and mechanical components. Analogs and supply for reliable operation.",
+    "fallback5": "Polymer materials and products for industrial use, considering conditions and loads."
+  },
+  "stats": {
+    "title": "SUPRA TRADE in numbers",
+    "items": {
+      "experience": { "value": "10+ years", "desc": "Experience in supply and manufacturing" },
+      "products": { "value": "1400+", "desc": "Items in assortment" },
+      "clients": { "value": "500+", "desc": "Clients across CIS" },
+      "delivery": { "value": "24/7", "desc": "Logistics and support" }
+    },
+    "formTitle": "Fast and convenient order",
+    "subtitle": "Attach a file with the required products and we will prepare a personalized quote.",
+    "name": "Name",
+    "phone": "Phone",
+    "attached": "Attached file",
+    "formNote": "Please contact me to clarify the details of the order.",
+    "namePlaceholder": "Enter name*",
+    "phonePlaceholder": "+7",
+    "attach": "Attach pdf, excel, word, jpg",
+    "file": "File",
+    "submit": "Submit request",
+    "disclaimer": "By clicking «Submit request» you agree to personal data processing.",
+    "success": "Request sent (demo). We will contact you soon.",
+    "imageAlt": "Fast and convenient order SUPRA TRADE"
+  },
+  "services": {
+    "title": "Our services",
+    "subtitle": "From selection to delivery — full supply cycle",
+    "list": [
+      "Comprehensive enterprise supply",
+      "Custom manufacturing by drawings",
+      "Selection and analog replacement"
+    ],
+    "listDesc1": "We organize the full supply cycle: selection, procurement, and delivery of materials, components, and equipment to keep production stable.",
+    "listDesc2": "We manufacture parts and components to your drawings and technical specs. Work with various materials, ensuring accuracy, quality, and deadlines.",
+    "listDesc3": "We select a wide range of industrial products: bearings, electrical components, sealants, and consumables for various industries."
+  },
+  "quality": {
+    "title": "Why quality is our core",
+    "items": [
+      "Certified suppliers",
+      "Quality control before shipment",
+      "Documents and certificates",
+      "Warranty obligations and service"
+    ]
+  },
+  "aboutSection": {
+    "title": "About company",
+    "text": "SUPRA TRADE — end-to-end solutions in supply, manufacturing and industrial product selection. We ensure quality, reliability, and project support.",
+    "text1": "Our strategic goal is to provide enterprises with integrated solutions in supply, manufacturing, and industrial product selection, covering key business needs in one place.",
+    "text2": "We specialize in full-cycle supply, custom manufacturing, and industrial product delivery. We arrange materials and equipment, produce to drawings/specs, and select optimal solutions.",
+    "features": [
+      "Partnership with 700+ suppliers",
+      "Guaranteed product quality",
+      "Competitive prices"
+    ],
+    "button": "Learn more"
+  },
+  "about": {
+    "hero": {
+      "badge": "About company",
+      "title": "Integrated solutions for your business",
+      "subtitle": "We provide end-to-end solutions in supply, manufacturing, and industrial product selection.",
+      "point1": "Delivery accuracy",
+      "point2": "Quality assurance",
+      "back": "Back to home"
+    },
+    "mission": {
+      "badge": "Our mission",
+      "title": "Covering key business needs in one place",
+      "subtitle": "We focus on full-cycle supply, custom manufacturing, and industrial product delivery for various industries.",
+      "cards": [
+        { "title": "Comprehensive supply", "desc": "We arrange materials, components, and equipment for uninterrupted operations." },
+        { "title": "Custom production", "desc": "We manufacture to drawings and specs to match your requirements." },
+        { "title": "Solution selection", "desc": "We choose optimal options for your tasks and needs." },
+        { "title": "Long-term partnership", "desc": "We build lasting relationships, continuously improving service." }
+      ]
+    },
+    "values": {
+      "badge": "Our values",
+      "title": "Focus on quality, reliability, and timing",
+      "subtitle": "Convenient terms for kitting, payment, and delivery. We improve service and expand capabilities.",
+      "pill1": "Personal approach",
+      "pill2": "Flexible terms",
+      "pill3": "Wide assortment",
+      "cards": [
+        { "title": "Quality", "desc": "Trusted suppliers and partners ensure consistent product characteristics." },
+        { "title": "Deadlines", "desc": "We keep supplies uninterrupted and meet agreed timelines." },
+        { "title": "Reliability", "desc": "We work only with reliable manufacturers and suppliers." },
+        { "title": "Partnership", "desc": "We value every partner and build long-term relations." }
+      ]
+    },
+    "partners": {
+      "badge": "Our suppliers & partners",
+      "title": "We work only with reliable partners",
+      "subtitle": "We collaborate with trusted manufacturers and suppliers to guarantee high quality of delivered materials, components, and equipment.",
+      "list": [
+        "Direct supplies from manufacturers",
+        "Product quality guarantee",
+        "Deliveries within agreed timelines",
+        "Flexible cooperation terms"
+      ],
+      "note": "On request we supply products from specific manufacturers within agreed timelines, selecting optimal solutions for stable operation of your enterprise."
+    },
+    "cta": {
+      "title": "Ready to collaborate?",
+      "subtitle": "Contact us to discuss your needs and get a tailored offer for your enterprise.",
+      "contact": "Contact us",
+      "email": "Send an email"
+    }
+  },
+  "cta": {
+    "title": "Need a consultation?",
+    "subtitle": "Leave a request and we will pick a solution for your task",
+    "button": "Get consultation"
+    }
+  }

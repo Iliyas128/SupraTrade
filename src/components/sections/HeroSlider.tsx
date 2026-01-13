@@ -1,30 +1,20 @@
 import { Button } from "@/components/ui/button";
 import heroMetal from "@/assets/goupgo.jpg";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import defenseMiniIcon from "@/assets/HeroIcons/defenseMiniIcon.png";
 import rostMiniIcon from "@/assets/HeroIcons/RostMiniIcon.png";
 import transferIcon from "@/assets/HeroIcons/transferIcon.png";
 
-const features = [
-  {
-    icon: defenseMiniIcon,
-    title: "Гарантия качества",
-    description: "Вся продукция сертифицирована",
-  },
-  {
-    icon: rostMiniIcon,
-    title: "Рост продаж",
-    description: "Более 1400 видов продукции",
-  },
-  {
-    icon: transferIcon,
-    title: "Быстрая доставка",
-    description: "По всему Казахстану и СНГ",
-  },
-];
-
 const HeroSlider = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
+
+  const features = [
+    { icon: defenseMiniIcon, title: t("hero.quality"), description: t("hero.qualityDesc") },
+    { icon: rostMiniIcon, title: t("hero.growth"), description: t("hero.growthDesc") },
+    { icon: transferIcon, title: t("hero.delivery"), description: t("hero.deliveryDesc") },
+  ];
 
   return (
     <section className="relative h-[500px] sm:h-[600px] md:h-[700px] mb-0 sm:mb-24 md:mb-28">
@@ -43,11 +33,11 @@ const HeroSlider = () => {
         <div className="container-custom">
           <div className="max-w-2xl text-primary-foreground">
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-primary">
-              Поставка материалов, комплектующих и оборудования
-              <span className="block text-primary">для промышленных и коммерческих предприятий</span>
+              {t("hero.title")}
+              <span className="block text-primary">{t("hero.subtitle")}</span>
             </h1>
             <p className="text-sm md:text-base text-primary-foreground/90 mb-8">
-            Мы предоставляем комплексные решения для предприятий: снабжение, производство под заказ и подбор промышленной продукции. Работаем с проверенными партнёрами, обеспечиваем качество, надёжность и удобный сервис «под ключ».
+              {t("hero.description")}
             </p>
             <div className="flex flex-wrap gap-4">
               <Button
@@ -55,7 +45,7 @@ const HeroSlider = () => {
                 variant="hero" 
                 size="xl"
               >
-                Смотреть каталог
+                {t("hero.viewCatalog")}
               </Button>
             </div>
           </div>

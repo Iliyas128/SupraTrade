@@ -1,8 +1,10 @@
 import { Building2, Target, Shield, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
+import { useTranslation } from "react-i18next";
 
 const HeroSection = () => {
+  const { t } = useTranslation();
   return (
     <section className="relative min-h-[70vh] bg-hero-gradient overflow-hidden">
       {/* Кнопка "Назад на главную" */}
@@ -14,7 +16,7 @@ const HeroSection = () => {
         >
           <Link to="/">
             <ArrowLeft className="w-4 h-4" />
-            Назад на главную
+            {t("about.hero.back")}
           </Link>
         </Button>
       </div>
@@ -42,25 +44,25 @@ const HeroSection = () => {
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-foreground/10 backdrop-blur-sm mb-8 animate-fade-up">
             <Building2 className="w-4 h-4 text-primary-foreground" />
-            <span className="text-sm font-medium text-primary-foreground">О компании</span>
+            <span className="text-sm font-medium text-primary-foreground">{t("about.hero.badge")}</span>
           </div>
 
           <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground mb-6 animate-fade-up delay-100">
-            Комплексные решения для вашего бизнеса
+            {t("about.hero.title")}
           </h1>
 
           <p className="text-lg md:text-xl text-primary-foreground/80 max-w-3xl mx-auto animate-fade-up delay-200">
-            Обеспечиваем предприятия комплексными решениями в сфере снабжения, производства и подбора промышленной продукции.
+            {t("about.hero.subtitle")}
           </p>
 
           <div className="flex flex-wrap justify-center gap-6 mt-12 animate-fade-up delay-300">
             <div className="flex items-center gap-3 px-5 py-3 rounded-xl bg-primary-foreground/10 backdrop-blur-sm">
               <Target className="w-5 h-5 text-primary-foreground" />
-              <span className="text-primary-foreground font-medium">Точность поставок</span>
+              <span className="text-primary-foreground font-medium">{t("about.hero.point1")}</span>
             </div>
             <div className="flex items-center gap-3 px-5 py-3 rounded-xl bg-primary-foreground/10 backdrop-blur-sm">
               <Shield className="w-5 h-5 text-primary-foreground" />
-              <span className="text-primary-foreground font-medium">Гарантия качества</span>
+              <span className="text-primary-foreground font-medium">{t("about.hero.point2")}</span>
             </div>
           </div>
         </div>

@@ -65,7 +65,8 @@ const AdminProducts = () => {
     if (!token) return navigate("/admin/login");
     if (!confirm("Удалить товар?")) return;
     try {
-      await adminCatalogApi.deleteProduct(token, id);
+      const targetId = (id as any)?.$oid || id;
+      await adminCatalogApi.deleteProduct(token, targetId);
       setProducts((prev) => prev.filter((p) => p.id !== id && p._id !== id));
     } catch (err) {
       alert(err instanceof Error ? err.message : "Не удалось удалить");
@@ -114,6 +115,24 @@ const AdminProducts = () => {
             .map(([k, v]) => `${k}: ${v}`)
             .join("\n")
         : "",
+      en_short: product.translations?.en?.short_title || "",
+      en_full: product.translations?.en?.full_title || "",
+      en_desc: product.translations?.en?.description || "",
+      en_tagsInput: (product.translations?.en?.tags || []).join(", "),
+      en_charsInput: product.translations?.en?.characteristics
+        ? Object.entries(product.translations.en.characteristics)
+            .map(([k, v]) => `${k}: ${v}`)
+            .join("\n")
+        : "",
+      zh_short: product.translations?.zh?.short_title || "",
+      zh_full: product.translations?.zh?.full_title || "",
+      zh_desc: product.translations?.zh?.description || "",
+      zh_tagsInput: (product.translations?.zh?.tags || []).join(", "),
+      zh_charsInput: product.translations?.zh?.characteristics
+        ? Object.entries(product.translations.zh.characteristics)
+            .map(([k, v]) => `${k}: ${v}`)
+            .join("\n")
+        : "",
     });
   };
 
@@ -130,24 +149,15 @@ const AdminProducts = () => {
     setSaving(true);
     setSaveError(null);
     try {
-      const payload: any = {
-        short_title: editing.short_title || editing.shortTitle,
-        full_title: editing.full_title || editing.fullTitle,
-        description: editing.description,
-        small_image: editing.small_image || editing.smallImage,
-        big_images: (editing.bigImagesInput as string)
-          ?.split(",")
+      const buildTags = (input?: string) =>
+        (input || "")
+          .split(",")
           .map((s) => s.trim())
-          .filter(Boolean),
-        tags: (editing.tagsInput as string)
-          ?.split(",")
-          .map((s) => s.trim())
-          .filter(Boolean),
-        url: editing.url,
-        categoryId: editing.categoryId,
-        characteristics: editing.characteristicsInput
+          .filter(Boolean);
+      const buildChars = (input?: string) =>
+        input
           ? Object.fromEntries(
-              (editing.characteristicsInput as string)
+              (input as string)
                 .split("\n")
                 .map((line) => line.trim())
                 .filter(Boolean)
@@ -156,11 +166,42 @@ const AdminProducts = () => {
                   return [k.trim(), rest.join(":").trim()];
                 }),
             )
-          : undefined,
+          : undefined;
+      const translations: any = {};
+      if (editing.en_short || editing.en_full || editing.en_desc || editing.en_tagsInput || editing.en_charsInput) {
+        translations.en = {
+          short_title: editing.en_short || undefined,
+          full_title: editing.en_full || undefined,
+          description: editing.en_desc || undefined,
+          tags: buildTags(editing.en_tagsInput),
+          characteristics: buildChars(editing.en_charsInput),
+        };
+      }
+      if (editing.zh_short || editing.zh_full || editing.zh_desc || editing.zh_tagsInput || editing.zh_charsInput) {
+        translations.zh = {
+          short_title: editing.zh_short || undefined,
+          full_title: editing.zh_full || undefined,
+          description: editing.zh_desc || undefined,
+          tags: buildTags(editing.zh_tagsInput),
+          characteristics: buildChars(editing.zh_charsInput),
+        };
+      }
+      const payload: any = {
+        short_title: editing.short_title || editing.shortTitle,
+        full_title: editing.full_title || editing.fullTitle,
+        description: editing.description,
+        small_image: editing.small_image || editing.smallImage,
+        big_images: buildTags(editing.bigImagesInput as string),
+        tags: buildTags(editing.tagsInput as string),
+        url: editing.url,
+        categoryId: editing.categoryId,
+        characteristics: buildChars(editing.characteristicsInput),
+        translations: Object.keys(translations).length ? translations : undefined,
       };
-      const res = await adminCatalogApi.updateProduct(token, editing.id || editing._id, payload);
+      const targetId = (editing._id as any)?.$oid || editing._id || editing.id;
+      const res = await adminCatalogApi.updateProduct(token, targetId, payload);
       setProducts((prev) =>
-        prev.map((p) => (p.id === (editing.id || editing._id) || p._id === (editing.id || editing._id) ? res.product : p)),
+        prev.map((p) => (p.id === targetId || p._id === targetId ? res.product : p)),
       );
       setEditing(null);
     } catch (err) {
@@ -348,6 +389,26 @@ const AdminProducts = () => {
                     value={editing.full_title || editing.fullTitle || ""}
                     onChange={(e) => handleEditField("full_title", e.target.value)}
                   />
+                <Input
+                  placeholder="Короткое название (EN)"
+                  value={editing.en_short || ""}
+                  onChange={(e) => handleEditField("en_short", e.target.value)}
+                />
+                <Input
+                  placeholder="Полное название (EN)"
+                  value={editing.en_full || ""}
+                  onChange={(e) => handleEditField("en_full", e.target.value)}
+                />
+                <Input
+                  placeholder="Короткое название (ZH)"
+                  value={editing.zh_short || ""}
+                  onChange={(e) => handleEditField("zh_short", e.target.value)}
+                />
+                <Input
+                  placeholder="Полное название (ZH)"
+                  value={editing.zh_full || ""}
+                  onChange={(e) => handleEditField("zh_full", e.target.value)}
+                />
                   <Input
                     placeholder="URL"
                     value={editing.url || ""}
@@ -368,6 +429,16 @@ const AdminProducts = () => {
                     value={editing.tagsInput || ""}
                     onChange={(e) => handleEditField("tagsInput", e.target.value)}
                   />
+                <Input
+                  placeholder="Теги (EN, через запятую)"
+                  value={editing.en_tagsInput || ""}
+                  onChange={(e) => handleEditField("en_tagsInput", e.target.value)}
+                />
+                <Input
+                  placeholder="Теги (ZH, через запятую)"
+                  value={editing.zh_tagsInput || ""}
+                  onChange={(e) => handleEditField("zh_tagsInput", e.target.value)}
+                />
                 </div>
                 <Textarea
                   placeholder="Описание"
@@ -375,9 +446,29 @@ const AdminProducts = () => {
                   onChange={(e) => handleEditField("description", e.target.value)}
                 />
                 <Textarea
+                  placeholder="Описание (EN)"
+                  value={editing.en_desc || ""}
+                  onChange={(e) => handleEditField("en_desc", e.target.value)}
+                />
+                <Textarea
+                  placeholder="Описание (ZH)"
+                  value={editing.zh_desc || ""}
+                  onChange={(e) => handleEditField("zh_desc", e.target.value)}
+                />
+                <Textarea
                   placeholder="Характеристики (каждая строка: Ключ: Значение)"
                   value={editing.characteristicsInput || ""}
                   onChange={(e) => handleEditField("characteristicsInput", e.target.value)}
+                />
+                <Textarea
+                  placeholder="Характеристики (EN, Key: Value)"
+                  value={editing.en_charsInput || ""}
+                  onChange={(e) => handleEditField("en_charsInput", e.target.value)}
+                />
+                <Textarea
+                  placeholder="Характеристики (ZH, Key: Value)"
+                  value={editing.zh_charsInput || ""}
+                  onChange={(e) => handleEditField("zh_charsInput", e.target.value)}
                 />
                 <div className="flex flex-col gap-2">
                   <label className="text-sm text-muted-foreground">Категория</label>

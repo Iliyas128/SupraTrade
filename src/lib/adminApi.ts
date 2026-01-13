@@ -55,6 +55,17 @@ export const adminAuth = {
   },
 };
 
+type ProductTranslations = Record<
+  string,
+  {
+    short_title?: string;
+    full_title?: string;
+    description?: string;
+    tags?: string[];
+    characteristics?: Record<string, string>;
+  }
+>;
+
 type AdminProductPayload = {
   short_title: string;
   full_title?: string;
@@ -65,9 +76,12 @@ type AdminProductPayload = {
   url?: string;
   categoryId: string;
   characteristics?: Record<string, string>;
+  translations?: ProductTranslations;
 };
 
 type AdminProductUpdatePayload = Partial<AdminProductPayload>;
+
+type CategoryTranslations = Record<string, { name?: string }>;
 
 type AdminCategoryPayload = {
   name: string;
@@ -75,6 +89,7 @@ type AdminCategoryPayload = {
   parentId?: string | null;
   order?: number;
   image?: string;
+  translations?: CategoryTranslations;
 };
 
 export const adminCatalogApi = {

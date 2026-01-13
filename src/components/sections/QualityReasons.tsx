@@ -2,23 +2,15 @@ import { useEffect, useRef, useState } from "react";
 import armaturaIcon from "@/assets/maxIcons/armaturaIcon.png";
 import papersIcon from "@/assets/maxIcons/PapersIcon.png";
 import transferIcon from "@/assets/maxIcons/ApparatIcon.png";
-
-const reasons = [
-  {
-    icon: armaturaIcon,
-    title: "Только проверенные поставщики",
-  },
-  {
-    icon: papersIcon,
-    title: "На всю продукцию есть сертификаты качества",
-  },
-  {
-    icon: transferIcon,
-    title: "Высокотехнологичное производство",
-  },
-];
+import { useTranslation } from "react-i18next";
 
 const QualityReasons = () => {
+  const { t } = useTranslation();
+  const reasons = [
+    { icon: armaturaIcon, title: t("quality.items.0") },
+    { icon: papersIcon, title: t("quality.items.1") },
+    { icon: transferIcon, title: t("quality.items.2") },
+  ];
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -48,7 +40,7 @@ const QualityReasons = () => {
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
-          Почему мы уверены в качестве нашей продукции?
+          {t("quality.title")}
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">

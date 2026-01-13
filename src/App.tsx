@@ -14,24 +14,24 @@ import AdminProducts from "./pages/AdminProducts";
 import ScrollToTop from "./components/ScrollToTop";
 
 const App = () => (
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-      <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/catalog" element={<Catalog />} />
-          <Route path="/catalog/:primarySlug/*" element={<CatalogCategory />} />
-          <Route path="/product/*" element={<CatalogProduct />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin/catalog" element={<AdminCatalog />} />
-          <Route path="/admin/products" element={<AdminProducts />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+  <TooltipProvider>
+    <Toaster />
+    <Sonner />
+    <BrowserRouter>
+    <ScrollToTop />
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/catalog" element={<Catalog />} />
+        <Route path="/catalog/:primarySlug/*" element={<CatalogCategory />} />
+        <Route path="/product/*" element={<CatalogProduct />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin/catalog" element={<AdminCatalog />} />
+        <Route path="/admin/products" element={<AdminProducts />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
+  </TooltipProvider>
 );
 
 export default App;

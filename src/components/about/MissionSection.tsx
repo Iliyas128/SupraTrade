@@ -1,44 +1,26 @@
 import { Cog, Package, Wrench, TrendingUp } from "lucide-react";
-
-const services = [
-  {
-    icon: Package,
-    title: "Комплексное снабжение",
-    description:
-      "Организуем поставки материалов, комплектующих и оборудования для бесперебойной работы вашего предприятия.",
-  },
-  {
-    icon: Cog,
-    title: "Производство под заказ",
-    description: "Изготавливаем изделия по индивидуальным чертежам и техническим требованиям заказчика.",
-  },
-  {
-    icon: Wrench,
-    title: "Подбор решений",
-    description: "Подбираем оптимальные решения под конкретные задачи и потребности вашего бизнеса.",
-  },
-  {
-    icon: TrendingUp,
-    title: "Долгосрочное партнёрство",
-    description:
-      "Выстраиваем долгосрочные деловые отношения, постоянно совершенствуя уровень сервиса.",
-  },
-];
+import { useTranslation } from "react-i18next";
 
 const MissionSection = () => {
+  const { t } = useTranslation();
+  const services = [
+    { icon: Package, title: t("about.mission.cards.0.title"), description: t("about.mission.cards.0.desc") },
+    { icon: Cog, title: t("about.mission.cards.1.title"), description: t("about.mission.cards.1.desc") },
+    { icon: Wrench, title: t("about.mission.cards.2.title"), description: t("about.mission.cards.2.desc") },
+    { icon: TrendingUp, title: t("about.mission.cards.3.title"), description: t("about.mission.cards.3.desc") },
+  ];
   return (
     <section className="py-20 lg:py-28 bg-section-gradient">
       <div className="container-custom">
         <div className="max-w-3xl mx-auto text-center mb-16">
           <span className="inline-block text-sm font-semibold text-primary uppercase tracking-wider mb-4">
-            Наша миссия
+            {t("about.mission.badge")}
           </span>
           <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-6">
-            Закрываем ключевые потребности бизнеса в одном месте
+            {t("about.mission.title")}
           </h2>
           <p className="text-lg text-muted-foreground">
-            Мы специализируемся на комплексном снабжении предприятий, производстве изделий под заказ и поставке
-            промышленной продукции для различных отраслей.
+            {t("about.mission.subtitle")}
           </p>
         </div>
 

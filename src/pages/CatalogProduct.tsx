@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Loader2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import TopBar from "@/components/layout/TopBar";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -19,6 +20,7 @@ import SEO from "@/components/SEO";
 type TreeNode = CategoryNode & { fullSlug: string; children?: TreeNode[] };
 
 const CatalogProduct = () => {
+  const { t, i18n } = useTranslation();
   const location = useLocation();
   const [product, setProduct] = useState<DetailedProduct | null>(null);
   const [tree, setTree] = useState<TreeNode[]>([]);
@@ -82,7 +84,7 @@ const CatalogProduct = () => {
       }
     };
     loadTree();
-  }, [fallbackTree]);
+  }, [fallbackTree, i18n.language]);
 
   useEffect(() => {
     const loadProduct = async () => {
@@ -99,7 +101,7 @@ const CatalogProduct = () => {
       }
     };
     loadProduct();
-  }, [catalogPath]);
+  }, [catalogPath, i18n.language]);
 
   const galleryImages = useMemo(() => {
     if (!product) return [];
@@ -122,8 +124,8 @@ const CatalogProduct = () => {
 
   const breadcrumbs = useMemo(() => {
     const crumbs = [
-      { label: "Главная", href: "/" },
-      { label: "Каталог", href: "/catalog" },
+      { label: t("breadcrumbs.home"), href: "/" },
+      { label: t("breadcrumbs.catalog"), href: "/catalog" },
     ];
 
     // Убираем последний сегмент (это сам товар), оставляем только категории
@@ -264,12 +266,12 @@ const CatalogProduct = () => {
                   <div className="space-y-4 h-full">
                     <div className="rounded-2xl border border-border/60 bg-card/70 p-5 md:p-6 shadow-custom-md h-full flex flex-col gap-4">
                       <div className="space-y-1">
-                        <div className="text-xl md:text-2xl font-bold text-foreground">Цена по запросу</div>
-                        <div className="text-xs md:text-sm text-emerald-600 font-semibold">В наличии</div>
+                        <div className="text-xl md:text-2xl font-bold text-foreground">{t("product.priceOnRequest")}</div>
+                        <div className="text-xs md:text-sm text-emerald-600 font-semibold">{t("product.inStock")}</div>
                       </div>
                       {product.characteristics && Object.keys(product.characteristics).length > 0 && (
                         <div className="space-y-2">
-                          <h2 className="text-base md:text-lg font-semibold text-foreground">Технические характеристики</h2>
+                          <h2 className="text-base md:text-lg font-semibold text-foreground">{t("product.specsTitle")}</h2>
                           <dl className="space-y-2 text-sm md:text-base text-muted-foreground">
                             {Object.entries(product.characteristics)
                               .slice(0, 3)
@@ -285,23 +287,23 @@ const CatalogProduct = () => {
                               className="text-primary text-sm font-semibold hover:underline"
                               onClick={() => setActiveTab("specs")}
                             >
-                              Все характеристики
+                              {t("product.allSpecs")}
                             </button>
                           )}
                         </div>
                       )}
                       <div className="mt-auto flex flex-col sm:flex-row flex-wrap gap-3">
                         <Button size="lg" className="w-full sm:w-auto" onClick={() => setIsCallbackOpen(true)}>
-                          Запросить КП
+                          {t("product.requestOffer")}
                         </Button>
                         <Button variant="outline" size="lg" asChild className="w-full sm:w-auto">
-                          <Link to="/catalog">Вернуться в каталог</Link>
+                          <Link to="/catalog">{t("product.backToCatalog")}</Link>
                         </Button>
                       </div>
 
                       {product.tags && product.tags.length > 0 && (
                         <div className="space-y-2 pt-2">
-                          <p className="text-sm md:text-base font-semibold text-foreground">Теги</p>
+                          <p className="text-sm md:text-base font-semibold text-foreground">{t("product.tags")}</p>
                           <div className="flex flex-wrap gap-2 pr-2">
                             {product.tags.slice(0, 12).map((tag) => (
                               <Badge key={tag} variant="outline" className="border-border/60 bg-background/60">
@@ -318,11 +320,11 @@ const CatalogProduct = () => {
                 <div className="rounded-2xl border border-border/70 bg-card/80 p-5 md:p-6 shadow-custom-lg space-y-4 md:space-y-5">
                   <div className="flex gap-2 overflow-x-auto scrollbar-none pr-4 -mr-2 pb-2 pl-1 md:pr-0 md:mr-0">
                     {[
-                      { id: "description", label: "Описание" },
-                      { id: "specs", label: "Характеристики" },
-                      { id: "guarantee", label: "Гарантии" },
-                      { id: "delivery", label: "Доставка" },
-                      { id: "payment", label: "Оплата" },
+                      { id: "description", label: t("product.tabs.description") },
+                      { id: "specs", label: t("product.tabs.specs") },
+                      { id: "guarantee", label: t("product.tabs.guarantee") },
+                      { id: "delivery", label: t("product.tabs.delivery") },
+                      { id: "payment", label: t("product.tabs.payment") },
                     ].map((tab) => (
                       <Button
                         key={tab.id}
@@ -337,16 +339,16 @@ const CatalogProduct = () => {
 
                   {activeTab === "description" && (
                     <div className="space-y-3 md:space-y-4">
-                      <h2 className="text-lg md:text-xl font-semibold text-foreground">Описание</h2>
+                      <h2 className="text-lg md:text-xl font-semibold text-foreground">{t("product.tabs.description")}</h2>
                       <p className="text-sm md:text-base text-muted-foreground whitespace-pre-line leading-relaxed">
-                        {product.description || "Описание будет доступно по запросу."}
+                        {product.description || t("product.noDescription")}
                       </p>
                     </div>
                   )}
 
                   {activeTab === "specs" && (
                     <div className="space-y-3 md:space-y-4">
-                      <h2 className="text-lg md:text-xl font-semibold text-foreground">Технические характеристики</h2>
+                      <h2 className="text-lg md:text-xl font-semibold text-foreground">{t("product.specsTitle")}</h2>
                       {product.characteristics && Object.keys(product.characteristics).length > 0 ? (
                         <dl className="grid gap-3 text-sm md:text-base text-muted-foreground">
                           {Object.entries(product.characteristics).map(([key, value]) => (
@@ -360,41 +362,41 @@ const CatalogProduct = () => {
                           ))}
                         </dl>
                       ) : (
-                        <p className="text-muted-foreground">Характеристики отсутствуют.</p>
+                        <p className="text-muted-foreground">{t("product.noSpecs")}</p>
                       )}
                     </div>
                   )}
 
                   {activeTab === "guarantee" && (
                     <div className="space-y-3 md:space-y-4">
-                      <h2 className="text-lg md:text-xl font-semibold text-foreground">Гарантии</h2>
+                      <h2 className="text-lg md:text-xl font-semibold text-foreground">{t("product.tabs.guarantee")}</h2>
                       <ul className="list-disc space-y-2 pl-5 text-sm md:text-base text-muted-foreground leading-relaxed">
-                        <li>Сертифицированный товар</li>
-                        <li>Официальная гарантия 12 месяцев</li>
-                        <li>Собственный сервисный центр</li>
-                        <li>Возврат без проблем</li>
+                        <li>{t("product.guarantee.item1")}</li>
+                        <li>{t("product.guarantee.item2")}</li>
+                        <li>{t("product.guarantee.item3")}</li>
+                        <li>{t("product.guarantee.item4")}</li>
                       </ul>
                     </div>
                   )}
 
                   {activeTab === "delivery" && (
                     <div className="space-y-3 md:space-y-4">
-                      <h2 className="text-lg md:text-xl font-semibold text-foreground">Доставка</h2>
+                      <h2 className="text-lg md:text-xl font-semibold text-foreground">{t("product.tabs.delivery")}</h2>
                       <ul className="list-disc space-y-2 pl-5 text-sm md:text-base text-muted-foreground leading-relaxed">
-                        <li>Доставка по всему Казахстану</li>
-                        <li>Самовывоз со склада</li>
-                        <li>Курьерская доставка по городу</li>
-                        <li>Проверка товара перед отправкой</li>
+                        <li>{t("product.delivery.item1")}</li>
+                        <li>{t("product.delivery.item2")}</li>
+                        <li>{t("product.delivery.item3")}</li>
+                        <li>{t("product.delivery.item4")}</li>
                       </ul>
                     </div>
                   )}
 
                   {activeTab === "payment" && (
                     <div className="space-y-3 md:space-y-4">
-                      <h2 className="text-lg md:text-xl font-semibold text-foreground">Оплата</h2>
+                      <h2 className="text-lg md:text-xl font-semibold text-foreground">{t("product.tabs.payment")}</h2>
                       <ul className="list-disc space-y-2 pl-5 text-sm md:text-base text-muted-foreground leading-relaxed">
-                        <li>Заказы принимаются после 100% предоплаты или по согласованию</li>
-                        <li>Договор и акт при необходимости</li>
+                        <li>{t("product.payment.item1")}</li>
+                        <li>{t("product.payment.item2")}</li>
                       </ul>
                     </div>
                   )}
@@ -402,7 +404,7 @@ const CatalogProduct = () => {
               </div>
             ) : (
               <div className="rounded-2xl border border-border/70 bg-card/80 p-10 text-center shadow-custom-lg">
-                Товар не найден.
+                {t("product.notFound")}
               </div>
             )}
           </div>

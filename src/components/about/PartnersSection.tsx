@@ -1,13 +1,14 @@
 import { Factory, Truck, Handshake, ShieldCheck } from "lucide-react";
-
-const features = [
-  { icon: Factory, text: "Прямые поставки от производителей" },
-  { icon: ShieldCheck, text: "Гарантия качества продукции" },
-  { icon: Truck, text: "Поставки в согласованные сроки" },
-  { icon: Handshake, text: "Индивидуальные условия сотрудничества" },
-];
+import { useTranslation } from "react-i18next";
 
 const PartnersSection = () => {
+  const { t } = useTranslation();
+  const features = [
+    { icon: Factory, text: t("about.partners.list.0") },
+    { icon: ShieldCheck, text: t("about.partners.list.1") },
+    { icon: Truck, text: t("about.partners.list.2") },
+    { icon: Handshake, text: t("about.partners.list.3") },
+  ];
   return (
     <section className="py-20 lg:py-28 bg-hero-gradient relative overflow-hidden">
       <div className="absolute inset-0">
@@ -18,14 +19,13 @@ const PartnersSection = () => {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-14">
             <span className="inline-block text-sm font-semibold text-primary-foreground/80 uppercase tracking-wider mb-4">
-              Наши поставщики и партнёры
+              {t("about.partners.badge")}
             </span>
             <h2 className="font-display text-3xl md:text-4xl font-bold text-primary-foreground mb-6">
-              Работаем только с надёжными партнёрами
+              {t("about.partners.title")}
             </h2>
             <p className="text-lg text-primary-foreground/80 max-w-2xl mx-auto">
-              Мы работаем только с надёжными производителями и поставщиками промышленной продукции. Это позволяет нам
-              гарантировать высокое качество поставляемых материалов, комплектующих и оборудования.
+              {t("about.partners.subtitle")}
             </p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -43,8 +43,7 @@ const PartnersSection = () => {
           </div>
           <div className="mt-14 p-8 rounded-2xl bg-primary-foreground/10 backdrop-blur-sm border border-primary-foreground/10 text-center">
             <p className="text-primary-foreground/90 text-lg leading-relaxed">
-              По запросу клиента обеспечиваем поставку продукции от конкретного производителя и в согласованные сроки,
-              подбирая оптимальные решения для стабильной работы вашего предприятия.
+              {t("about.partners.note")}
             </p>
           </div>
         </div>

@@ -6,6 +6,7 @@ import { catalogApi } from "@/lib/api";
 import { catalogCategories, CatalogCategory as StaticCategory } from "@/data/catalogData";
 import { cn, slugify } from "@/lib/utils";
 import type { CategoryNode } from "@/types/catalog";
+import { useTranslation } from "react-i18next";
 
 interface CatalogDropdownProps {
   isOpen: boolean;
@@ -23,7 +24,7 @@ type SidebarNode = {
 const CatalogDropdown = ({ isOpen, onToggle, onClose }: CatalogDropdownProps) => {
   const [tree, setTree] = useState<TreeNode[]>([]);
   const [active, setActive] = useState<SidebarNode | null>(null);
-
+  const { t } = useTranslation();
   const withPaths = (nodes: CategoryNode[], parent = ""): TreeNode[] =>
     nodes.map((n) => {
       const fullSlug = [parent, n.slug].filter(Boolean).join("/");
@@ -122,7 +123,7 @@ const CatalogDropdown = ({ isOpen, onToggle, onClose }: CatalogDropdownProps) =>
     <div className="relative">
       <Button variant="catalog" onClick={onToggle} className="flex items-center gap-2">
         <Menu size={18} />
-        <span>Каталог</span>
+        <span>{t("footer.catalog")}</span>
       </Button>
 
       {isOpen && (

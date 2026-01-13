@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Mail, Phone, MapPin, Clock, ChevronRight, Send } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { catalogApi } from "@/lib/api";
 import { catalogCategories } from "@/data/catalogData";
 import { slugify } from "@/lib/utils";
@@ -11,6 +12,7 @@ interface CategoryLink {
 }
 
 const Footer = () => {
+  const { t } = useTranslation();
   const currentYear = new Date().getFullYear();
   const navigate = useNavigate();
   const [categories, setCategories] = useState<CategoryLink[]>([]);
@@ -82,7 +84,7 @@ const Footer = () => {
               </div>
             </button>
             <p className="text-slate-400 text-sm leading-relaxed mb-6">
-              Комплексное снабжение предприятий материалами, комплектующими и оборудованием для промышленных и коммерческих нужд.
+              {t("footer.aboutText")}
             </p>
             <div className="flex items-center gap-3">
               <a 
@@ -115,7 +117,7 @@ const Footer = () => {
           <div>
             <h3 className="font-semibold text-white text-base mb-5 flex items-center gap-2">
               <span className="w-1.5 h-5 bg-primary rounded-full" />
-              Каталог
+              {t("footer.catalog")}
             </h3>
             <ul className="space-y-2.5">
               {categories.map((cat) => (
@@ -134,7 +136,7 @@ const Footer = () => {
                   onClick={() => handleNavigate("/catalog")}
                   className="inline-flex items-center text-primary hover:text-primary/80 text-sm font-medium mt-1 transition-colors"
                 >
-                  Все направления
+                  {t("footer.allDirections")}
                   <ChevronRight size={14} className="ml-0.5" />
                 </button>
               </li>
@@ -145,7 +147,7 @@ const Footer = () => {
           <div>
             <h3 className="font-semibold text-white text-base mb-5 flex items-center gap-2">
               <span className="w-1.5 h-5 bg-primary rounded-full" />
-              Контакты
+              {t("footer.contacts")}
             </h3>
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
@@ -153,7 +155,7 @@ const Footer = () => {
                   <MapPin size={15} className="text-primary" />
                 </div>
                 <span className="text-slate-400 text-sm leading-relaxed">
-                  г. Кокшетау,<br />ул. Магзи Абулкасымова, 115
+                  {t("footer.address")}
                 </span>
               </li>
               <li className="flex items-center gap-3">
@@ -182,9 +184,8 @@ const Footer = () => {
                 <div className="w-8 h-8 bg-white/5 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
                   <Clock size={15} className="text-primary" />
                 </div>
-                <div className="text-slate-400 text-sm leading-relaxed">
-                  <span className="text-slate-300">Пн-Пт:</span> 9:00 – 18:00<br />
-                  <span className="text-slate-300">Сб:</span> 10:00 – 15:00
+                <div className="text-slate-400 text-sm leading-relaxed" style={{ whiteSpace: "pre-line" }}>
+                  {t("footer.worktime")}
                 </div>
               </li>
             </ul>
@@ -196,19 +197,19 @@ const Footer = () => {
 
         {/* Copyright */}
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-500">
-          <p>© {currentYear} SUPRA TRADE. Все права защищены.</p>
+          <p>© {currentYear} SUPRA TRADE. {t("footer.rights")}</p>
           <div className="flex gap-6">
             <button 
               onClick={() => handleNavigate("/about")} 
               className="hover:text-slate-300 transition-colors"
             >
-              О компании
+              {t("nav.about")}
             </button>
             <button 
               onClick={() => handleNavigate("/catalog")} 
               className="hover:text-slate-300 transition-colors"
             >
-              Каталог
+              {t("footer.catalog")}
             </button>
           </div>
         </div>

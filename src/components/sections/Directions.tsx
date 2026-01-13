@@ -1,26 +1,13 @@
 import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import heroMetal from "@/assets/hero-metal.jpg";
-import heroMedical from "@/assets/hero-medical.jpg";
 import heroIndustrial from "@/assets/hero-industrial.jpg";
 import categoryChemicals from "@/assets/category-chemicals.jpg";
-import categoryWelding from "@/assets/category-welding.jpg";
-import categoryPipes from "@/assets/category-pipes.jpg";
 import { Link } from "react-router-dom";
 import { catalogApi } from "@/lib/api";
 import type { CategoryNode } from "@/types/catalog";
 import SEO from "@/components/SEO";
-import { slugify } from "@/lib/utils";
-
-// Описания для направлений
-const directionDescriptions: Record<string, string> = {
-  "metalloprokat": "Поставляем металлопрокат различного назначения для промышленного и коммерческого применения. Обеспечиваем подбор продукции под технические требования, объёмы и сроки заказчика.",
-  "elektrika-i-avtomatika": "Осуществляем поставки электротехнической продукции и компонентов автоматики для промышленного оборудования и инженерных систем. Помогаем с подбором решений под конкретные задачи и условия эксплуатации.",
-  "promyshlennoe-oborudovanie": "Поставляем оборудование и узлы для производственных и технологических процессов. Подбираем оптимальные решения с учётом технических требований, условий эксплуатации и бюджета.",
-  "podshipniki-i-mekhanika": "Предлагаем широкий ассортимент подшипников и механических компонентов для различного оборудования. Подбираем аналоги и обеспечиваем поставки для надёжной и бесперебойной работы механизмов.",
-  "podshipniki-i-mehanika": "Предлагаем широкий ассортимент подшипников и механических компонентов для различного оборудования. Подбираем аналоги и обеспечиваем поставки для надёжной и бесперебойной работы механизмов.",
-  "polimernye-materialy": "Поставляем полимерные материалы и изделия для промышленного применения. Подбираем продукцию с учётом условий эксплуатации, нагрузок и специфики использования.",
-};
+import { useTranslation } from "react-i18next";
 
 // Fallback изображения для направлений
 const directionImages: Record<string, string> = {
@@ -32,6 +19,7 @@ const directionImages: Record<string, string> = {
 };
 
 const Directions = () => {
+  const { t, i18n } = useTranslation();
   const [directions, setDirections] = useState<Array<CategoryNode & { description: string; image: string }>>([]);
   const [loading, setLoading] = useState(true);
 
@@ -49,7 +37,7 @@ const Directions = () => {
             const slug = cat.slug || "";
             return {
               ...cat,
-              description: directionDescriptions[slug] || cat.name,
+              description: (cat as any).description || cat.name,
               image: (cat as any).image || directionImages[slug] || heroIndustrial,
             };
           });
@@ -62,37 +50,37 @@ const Directions = () => {
         const fallbackDirections = [
           {
             _id: "metalloprokat",
-            name: "Металлопрокат",
+            name: t("directions.fallbackName1"),
             slug: "metalloprokat",
-            description: directionDescriptions["metalloprokat"],
+            description: t("directions.fallback1"),
             image: directionImages["metalloprokat"],
           },
           {
             _id: "elektrika-i-avtomatika",
-            name: "Электрика и автоматика",
+            name: t("directions.fallbackName2"),
             slug: "elektrika-i-avtomatika",
-            description: directionDescriptions["elektrika-i-avtomatika"],
+            description: t("directions.fallback2"),
             image: directionImages["elektrika-i-avtomatika"],
           },
           {
             _id: "promyshlennoe-oborudovanie",
-            name: "Промышленное оборудование",
+            name: t("directions.fallbackName3"),
             slug: "promyshlennoe-oborudovanie",
-            description: directionDescriptions["promyshlennoe-oborudovanie"],
+            description: t("directions.fallback3"),
             image: directionImages["promyshlennoe-oborudovanie"],
           },
           {
             _id: "podshipniki-i-mekhanika",
-            name: "Подшипники и механика",
+            name: t("directions.fallbackName4"),
             slug: "podshipniki-i-mekhanika",
-            description: directionDescriptions["podshipniki-i-mekhanika"],
+            description: t("directions.fallback4"),
             image: directionImages["podshipniki-i-mekhanika"],
           },
           {
             _id: "polimernye-materialy",
-            name: "Полимерные материалы",
+            name: t("directions.fallbackName5"),
             slug: "polimernye-materialy",
-            description: directionDescriptions["polimernye-materialy"],
+            description: t("directions.fallback5"),
             image: directionImages["polimernye-materialy"],
           },
         ];
@@ -103,7 +91,7 @@ const Directions = () => {
     };
 
     loadDirections();
-  }, []);
+  }, [t, i18n.language]);
 
   if (loading) {
     return (
@@ -111,13 +99,13 @@ const Directions = () => {
         <div className="container-custom">
           <div className="flex flex-col items-center gap-3 mb-12">
             <span className="px-4 py-1 rounded-full bg-primary/10 text-primary text-sm font-semibold">
-              5 направлений для комплексных поставок
+              {t("directions.label")}
             </span>
             <h2 className="text-3xl md:text-4xl font-bold text-center">
-              Наши <span className="text-primary">направления</span>
+              {t("directions.title")}
             </h2>
             <p className="text-muted-foreground text-center max-w-2xl">
-              От металлопроката до высокоточного оборудования — выбирайте готовую вертикаль и получайте комплексное предложение
+              {t("directions.subtitle")}
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -139,21 +127,21 @@ const Directions = () => {
   return (
     <>
       <SEO
-        title="Наши направления"
-        description={`5 основных направлений SUPRA TRADE: ${directionsList}. Комплексные поставки металлопроката, промышленного оборудования, электрики и автоматики, подшипников и полимерных материалов для промышленности в Казахстане и СНГ.`}
-        keywords="металлопрокат, электрика и автоматика, промышленное оборудование, подшипники, механика, полимерные материалы, SUPRA TRADE, Супра трейд, поставщик, Казахстан"
+        title={t("directions.title")}
+        description={t("directions.subtitle")}
+        keywords="supra trade, directions"
       />
       <section id="directions" className="section-padding bg-background">
       <div className="container-custom">
         <div className="flex flex-col items-center gap-3 mb-12">
           <span className="px-4 py-1 rounded-full bg-primary/10 text-primary text-sm font-semibold">
-            5 направлений для комплексных поставок
+            {t("directions.label")}
           </span>
           <h2 className="text-3xl md:text-4xl font-bold text-center">
-            Наши <span className="text-primary">направления</span>
+            {t("directions.title")}
           </h2>
           <p className="text-muted-foreground text-center max-w-2xl">
-            От металлопроката до высокоточного оборудования — выбирайте готовую вертикаль и получайте комплексное предложение
+            {t("directions.subtitle")}
           </p>
         </div>
 
@@ -170,7 +158,7 @@ const Directions = () => {
                 <span className="w-6 h-6 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center">
                   {index + 1}
                 </span>
-                Направление
+              {t("directions.tag")}
               </span>
               <div className="p-6 flex flex-col items-center gap-5">
                 <div className="relative w-66 md:w-74 aspect-square transition-all duration-700 ease-out md:group-hover:aspect-[4/3]">
@@ -212,7 +200,7 @@ const Directions = () => {
                 <span className="w-6 h-6 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center">
                   {index + 4}
                 </span>
-                Направление
+              {t("directions.tag")}
               </span>
               <div className="p-6 flex flex-col items-center gap-5">
                 <div className="relative w-66 md:w-74 aspect-square transition-all duration-700 ease-out md:group-hover:aspect-[4/3]">

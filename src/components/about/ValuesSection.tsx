@@ -1,31 +1,14 @@
 import { CheckCircle2, Clock, Award, Users } from "lucide-react";
-
-const values = [
-  {
-    icon: Award,
-    title: "Качество",
-    description:
-      "Сотрудничаем с проверенными поставщиками и производственными партнёрами, гарантируя стабильные характеристики продукции.",
-  },
-  {
-    icon: Clock,
-    title: "Соблюдение сроков",
-    description:
-      "Обеспечиваем бесперебойность поставок и точное соблюдение согласованных сроков выполнения заказов.",
-  },
-  {
-    icon: CheckCircle2,
-    title: "Надёжность",
-    description: "Работаем только с надёжными производителями и поставщиками промышленной продукции.",
-  },
-  {
-    icon: Users,
-    title: "Партнёрство",
-    description: "Ценим каждого партнёра и выстраиваем долгосрочные деловые отношения.",
-  },
-];
+import { useTranslation } from "react-i18next";
 
 const ValuesSection = () => {
+  const { t } = useTranslation();
+  const values = [
+    { icon: Award, title: t("about.values.cards.0.title"), description: t("about.values.cards.0.desc") },
+    { icon: Clock, title: t("about.values.cards.1.title"), description: t("about.values.cards.1.desc") },
+    { icon: CheckCircle2, title: t("about.values.cards.2.title"), description: t("about.values.cards.2.desc") },
+    { icon: Users, title: t("about.values.cards.3.title"), description: t("about.values.cards.3.desc") },
+  ];
   return (
     <section className="py-20 lg:py-28 bg-background relative overflow-hidden">
       <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent" />
@@ -33,24 +16,23 @@ const ValuesSection = () => {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div>
             <span className="inline-block text-sm font-semibold text-primary uppercase tracking-wider mb-4">
-              Наши ценности
+              {t("about.values.badge")}
             </span>
             <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-6">
-              Акцент на качестве, надёжности и соблюдении сроков
+              {t("about.values.title")}
             </h2>
             <p className="text-lg text-muted-foreground mb-8">
-              Предлагаем удобные условия комплектации, оплаты и доставки заказов с учётом требований и пожеланий клиента.
-              Постоянно совершенствуем уровень сервиса и расширяем возможности для наших клиентов.
+              {t("about.values.subtitle")}
             </p>
             <div className="flex flex-wrap gap-4">
               <div className="px-5 py-3 rounded-full bg-primary/10 text-primary font-medium text-sm">
-                Индивидуальный подход
+                {t("about.values.pill1")}
               </div>
               <div className="px-5 py-3 rounded-full bg-primary/10 text-primary font-medium text-sm">
-                Гибкие условия
+                {t("about.values.pill2")}
               </div>
               <div className="px-5 py-3 rounded-full bg-primary/10 text-primary font-medium text-sm">
-                Широкий ассортимент
+                {t("about.values.pill3")}
               </div>
             </div>
           </div>

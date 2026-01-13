@@ -7,8 +7,14 @@ import type {
   ProductCategory,
 } from "@/types/catalog";
 import { slugify } from "@/lib/utils";
+import i18n from "@/i18n/config";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "/api";
+
+const withLang = (url: string) => {
+  const lang = i18n.language || "ru";
+  return url.includes("?") ? `${url}&lang=${lang}` : `${url}?lang=${lang}`;
+};
 
 const mapProduct = (product: any): ApiProduct => {
   const id =
@@ -62,7 +68,7 @@ const handleResponse = async <T>(res: Response): Promise<T> => {
 export const catalogApi = {
   async getRandomProducts(): Promise<ApiProduct[]> {
     const res = await handleResponse<{ success: boolean; products: any[] }>(
-      await fetch(`${API_BASE}/products/random`),
+      await fetch(withLang(`${API_BASE}/products/random`)),
     );
     if (!res.success) {
       throw new Error("Не удалось получить товары");
@@ -71,7 +77,7 @@ export const catalogApi = {
   },
 
   async getCategories(): Promise<ApiCategoryGroup[]> {
-    const res = await handleResponse<CategoriesResponse>(await fetch(`${API_BASE}/categories`));
+    const res = await handleResponse<CategoriesResponse>(await fetch(withLang(`${API_BASE}/categories`)));
     if (!res.success) {
       throw new Error("Не удалось получить категории");
     }
@@ -79,13 +85,15 @@ export const catalogApi = {
   },
 
   async getCategoryTree() {
-    return handleResponse<{ success: boolean; tree: any[] }>(await fetch(`${API_BASE}/categories/tree`));
+    return handleResponse<{ success: boolean; tree: any[] }>(
+      await fetch(withLang(`${API_BASE}/categories/tree`)),
+    );
   },
 
   async getProductsByCategory(slug: string, page = 1, limit = 15): Promise<ApiProductListResponse> {
     const params = new URLSearchParams({ page: String(page), limit: String(limit) });
     const res = await handleResponse<any>(
-      await fetch(`${API_BASE}/products/category/${slug}?${params.toString()}`),
+      await fetch(withLang(`${API_BASE}/products/category/${slug}?${params.toString()}`)),
     );
     if (!res.success) {
       throw new Error("Не удалось получить товары категории");
@@ -103,7 +111,7 @@ export const catalogApi = {
   async searchProducts(query: string, page = 1, limit = 15): Promise<ApiProductListResponse> {
     const params = new URLSearchParams({ q: query, page: String(page), limit: String(limit) });
     const res = await handleResponse<any>(
-      await fetch(`${API_BASE}/products/search?${params.toString()}`),
+      await fetch(withLang(`${API_BASE}/products/search?${params.toString()}`)),
     );
     if (!res.success) {
       throw new Error("Ошибка поиска товаров");
@@ -121,7 +129,7 @@ export const catalogApi = {
   async getProductByPath(path: string): Promise<DetailedProduct> {
     const trimmedPath = path.replace(/^catalog\//, "");
     const res = await handleResponse<{ success: boolean; product: any }>(
-      await fetch(`${API_BASE}/products/by-url/${trimmedPath}`),
+      await fetch(withLang(`${API_BASE}/products/by-url/${trimmedPath}`)),
     );
     if (!res.success) {
       throw new Error("Товар не найден");

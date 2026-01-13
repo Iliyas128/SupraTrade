@@ -2,6 +2,7 @@ import { useState } from "react";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "react-i18next";
 
 interface CallbackModalProps {
   isOpen: boolean;
@@ -9,6 +10,7 @@ interface CallbackModalProps {
 }
 
 const CallbackModal = ({ isOpen, onClose }: CallbackModalProps) => {
+  const { t } = useTranslation();
   const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: "",
@@ -22,26 +24,12 @@ const CallbackModal = ({ isOpen, onClose }: CallbackModalProps) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Формируем сообщение для WhatsApp
-    const message = `Заявка с сайта SUPRA TRADE
-
-👤 Имя: ${formData.name}
-📞 Телефон: ${formData.phone}
-${formData.email ? `📧 Email: ${formData.email}` : ''}
-${formData.message ? `💬 Сообщение: ${formData.message}` : ''}
-
-Прошу связаться со мной.`;
-
-    // Номер WhatsApp (без + и пробелов)
-    const whatsappNumber = "77083767189";
-    
-    // Открываем WhatsApp с сообщением
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
+    // Simulate form submission
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     toast({
-      title: "Заявка отправлена!",
-      description: "Мы свяжемся с вами в ближайшее время.",
+      title: t("callback.successTitle"),
+      description: t("callback.successDesc"),
     });
 
     setFormData({ name: "", phone: "", email: "", message: "" });
@@ -68,55 +56,55 @@ ${formData.message ? `💬 Сообщение: ${formData.message}` : ''}
           <X size={24} />
         </button>
 
-        <h2 className="text-2xl font-bold mb-2">Оставить заявку</h2>
+        <h2 className="text-2xl font-bold mb-2">{t("callback.title")}</h2>
         <p className="text-muted-foreground mb-6">
-          Заполните форму и мы свяжемся с вами
+          {t("callback.subtitle")}
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-2">Имя *</label>
+            <label className="block text-sm font-medium mb-2">{t("callback.name")} *</label>
             <input
               type="text"
               required
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary transition-all"
-              placeholder="Ваше имя"
+              placeholder={t("callback.namePlaceholder")}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">Телефон *</label>
+            <label className="block text-sm font-medium mb-2">{t("callback.phone")} *</label>
             <input
               type="tel"
               required
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
               className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary transition-all"
-              placeholder="+7 (___) ___-__-__"
+              placeholder={t("callback.phonePlaceholder")}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">Email</label>
+            <label className="block text-sm font-medium mb-2">{t("callback.email")}</label>
             <input
               type="email"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary transition-all"
-              placeholder="email@example.com"
+              placeholder={t("callback.emailPlaceholder")}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">Сообщение</label>
+            <label className="block text-sm font-medium mb-2">{t("callback.message")}</label>
             <textarea
               value={formData.message}
               onChange={(e) => setFormData({ ...formData, message: e.target.value })}
               rows={3}
               className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary transition-all resize-none"
-              placeholder="Ваше сообщение..."
+              placeholder={t("callback.messagePlaceholder")}
             />
           </div>
 
@@ -126,12 +114,12 @@ ${formData.message ? `💬 Сообщение: ${formData.message}` : ''}
             size="lg"
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Отправка..." : "Отправить заявку"}
+            {isSubmitting ? t("callback.submitting") : t("callback.submit")}
           </Button>
         </form>
 
         <p className="text-xs text-muted-foreground text-center mt-4">
-          Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности
+          {t("callback.privacy")}
         </p>
       </div>
     </div>

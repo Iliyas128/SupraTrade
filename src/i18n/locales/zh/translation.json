@@ -1,0 +1,211 @@
+{
+  "nav": {
+    "directions": "方向",
+    "about": "关于我们",
+    "services": "服务",
+    "contacts": "联系方式"
+  },
+  "buttons": {
+    "search": "搜索",
+    "send": "发送",
+    "submit": "提交",
+    "back": "返回",
+    "more": "更多"
+  },
+  "search": {
+    "placeholder": "搜索"
+  },
+  "callback": {
+    "title": "提交请求",
+    "subtitle": "填写表单，我们将尽快联系您",
+    "name": "姓名",
+    "phone": "电话",
+    "email": "邮箱",
+    "message": "留言",
+    "submit": "提交请求",
+    "submitting": "提交中...",
+    "successTitle": "请求已发送！",
+    "successDesc": "我们会尽快与您联系。",
+    "privacy": "点击按钮即表示同意隐私政策",
+    "namePlaceholder": "您的姓名",
+    "phonePlaceholder": "+7 (___) ___-__-__",
+    "emailPlaceholder": "email@example.com",
+    "messagePlaceholder": "您的留言..."
+  },
+  "chat": {
+    "title": "AI 助手",
+    "online": "在线",
+    "webhookMissing": "Webhook 未配置，请添加 VITE_N8N_WEBHOOK_URL",
+    "placeholder": "输入消息...",
+    "welcome": "您好！👋 这里是 SUPRA TRADE AI 助手，需要什么帮助？",
+    "sendingError": "发送失败，请稍后重试。",
+    "sentDefault": "谢谢！消息已发送，我们很快联系您。",
+    "responseTime": "回复将在几分钟内完成。",
+    "aria": "与助手聊天"
+  },
+  "footer": {
+    "aboutText": "为工业和商业领域提供材料、部件和设备的一体化供应。",
+    "catalog": "目录",
+    "allDirections": "全部方向",
+    "contacts": "联系方式",
+    "address": "科克舍套市，Magzi Abulkasymova 街 115",
+    "worktime": "周一至周五: 9:00 – 18:00\n周六: 10:00 – 15:00",
+    "rights": "版权所有。"
+  },
+  "notFound": {
+    "title": "404",
+    "message": "页面未找到",
+    "home": "返回首页"
+  },
+  "hero": {
+    "title": "为工业和商业企业提供材料、部件和设备",
+    "subtitle": "一站式供应解决方案",
+    "description": "我们提供端到端的解决方案：供应、定制生产和工业产品选型。与可信赖的合作伙伴合作，确保质量并提供便捷的交付服务。",
+    "viewCatalog": "查看目录",
+    "quality": "质量保证",
+    "qualityDesc": "所有产品均通过认证",
+    "growth": "品类丰富",
+    "growthDesc": "超过1400种产品",
+    "delivery": "快速交付",
+    "deliveryDesc": "覆盖哈萨克斯坦及独联体"
+  },
+  "topbar": {
+    "address": "科克舍套市，Magzi Abulkasymova 街 115",
+    "phone": "+7 708 376 71 89",
+    "email": "sales@supratrade.kz",
+    "orderCallback": "请求回电",
+    "tagline1": "综合解决方案",
+    "tagline2": "供应与生产",
+    "sales": "销售部："
+  },
+  "directions": {
+    "label": "5 大供应方向",
+    "title": "我们的方向",
+    "subtitle": "从钢材到高精度设备——选择垂直领域即可获得完整方案",
+    "tag": "方向",
+    "fallbackName1": "金属产品",
+    "fallbackName2": "电气与自动化",
+    "fallbackName3": "工业设备",
+    "fallbackName4": "轴承与机械",
+    "fallbackName5": "高分子材料",
+    "fallback1": "为工业和商业用途提供各类金属产品，匹配技术要求、数量和交期。",
+    "fallback2": "为设备和工程系统提供电气与自动化元件。",
+    "fallback3": "生产流程所需的设备与组件，兼顾要求、环境与预算。",
+    "fallback4": "轴承与机械部件，提供替代方案与可靠供应。",
+    "fallback5": "用于工业的高分子材料与制品，考虑工况与载荷。"
+  },
+  "stats": {
+    "title": "SUPRA TRADE 数据",
+    "items": {
+      "experience": { "value": "10+ 年", "desc": "供应与生产经验" },
+      "products": { "value": "1400+", "desc": "产品种类" },
+      "clients": { "value": "500+", "desc": "独联体客户" },
+      "delivery": { "value": "24/7", "desc": "物流与支持" }
+    },
+    "formTitle": "快捷下单",
+    "subtitle": "附上所需产品清单文件，我们将为您准备个性化报价。",
+    "name": "姓名",
+    "phone": "电话",
+    "attached": "已附文件",
+    "formNote": "请与我联系以确认订单详情。",
+    "namePlaceholder": "请输入姓名*",
+    "phonePlaceholder": "+7",
+    "attach": "可附 pdf、excel、word、jpg",
+    "file": "文件",
+    "submit": "提交请求",
+    "disclaimer": "点击“提交请求”即表示同意处理个人数据。",
+    "success": "请求已发送（演示）。我们会尽快联系您。",
+    "imageAlt": "快捷下单 SUPRA TRADE"
+  },
+  "services": {
+    "title": "我们的服务",
+    "subtitle": "从选型到交付——覆盖供应全流程",
+    "list": [
+      "企业综合供应",
+      "按图纸定制生产",
+      "选型与替代方案"
+    ],
+    "listDesc1": "组织完整供应流程：选型、采购和交付材料、部件和设备，保障生产稳定运行。",
+    "listDesc2": "根据图纸和技术要求定制生产部件与组件。处理多种材料，确保精度、质量与交期。",
+    "listDesc3": "为各行业挑选广泛的工业产品：轴承、电气元件、密封胶和耗材等。"
+  },
+  "quality": {
+    "title": "品质是我们的核心",
+    "items": [
+      "与认证供应商合作",
+      "出货前质量管控",
+      "文件与合格证随单",
+      "质保承诺与服务"
+    ]
+  },
+  "aboutSection": {
+    "title": "关于公司",
+    "text": "SUPRA TRADE——在供应、生产和工业产品选型领域提供端到端方案。我们确保品质、可靠性，并为每个项目提供支持。",
+    "text1": "我们的战略目标是为企业提供供应、生产和工业产品选型的一体化解决方案，在一个地方满足关键业务需求。",
+    "text2": "专注于全流程供应、按需定制生产和工业产品交付。我们组织材料和设备供给，按图纸/技术要求生产，并为客户选择最优方案。",
+    "features": [
+      "与 700+ 供应商合作",
+      "产品质量有保障",
+      "具竞争力的价格"
+    ],
+    "button": "了解更多"
+  },
+  "about": {
+    "hero": {
+      "badge": "关于公司",
+      "title": "为您的业务提供综合解决方案",
+      "subtitle": "我们在供应、生产和工业产品选型方面提供端到端方案。",
+      "point1": "精准交付",
+      "point2": "质量保证",
+      "back": "返回首页"
+    },
+    "mission": {
+      "badge": "我们的使命",
+      "title": "在同一处满足业务关键需求",
+      "subtitle": "专注全流程供应、按需定制生产和工业产品交付，覆盖多行业。",
+      "cards": [
+        { "title": "综合供应", "desc": "组织材料、部件和设备的供应，保障稳定运营。" },
+        { "title": "定制生产", "desc": "按照图纸与技术要求进行生产，满足您的需求。" },
+        { "title": "方案选型", "desc": "为您的任务和需求选择最优解决方案。" },
+        { "title": "长期合作", "desc": "建立长期合作关系，不断提升服务水平。" }
+      ]
+    },
+    "values": {
+      "badge": "我们的价值观",
+      "title": "聚焦质量、可靠性与时效",
+      "subtitle": "提供便捷的配套、付款和配送条件，不断提升服务并拓展能力。",
+      "pill1": "个性化服务",
+      "pill2": "灵活条件",
+      "pill3": "丰富品类",
+      "cards": [
+        { "title": "质量", "desc": "与可信赖的供应商合作，确保产品性能稳定。" },
+        { "title": "时效", "desc": "保障供应不中断并按约定时限完成交付。" },
+        { "title": "可靠性", "desc": "仅与可靠的制造商和供应商合作。" },
+        { "title": "合作伙伴", "desc": "重视每一位合作伙伴，建立长期合作关系。" }
+      ]
+    },
+    "partners": {
+      "badge": "我们的供应商与合作伙伴",
+      "title": "我们只与可靠的伙伴合作",
+      "subtitle": "与可信赖的制造商和供应商合作，确保交付的材料、部件和设备具备高品质。",
+      "list": [
+        "厂家直供",
+        "品质保证",
+        "按期交付",
+        "灵活合作条件"
+      ],
+      "note": "可按客户需求在约定时间内供货指定品牌，为企业稳定运行选择最优方案。"
+    },
+    "cta": {
+      "title": "准备好合作了吗？",
+      "subtitle": "联系我们，讨论需求并获取为您定制的报价方案。",
+      "contact": "联系我们",
+      "email": "发送邮件"
+    }
+  },
+  "cta": {
+    "title": "需要咨询吗？",
+    "subtitle": "留下需求，我们将为您提供合适方案",
+    "button": "获取咨询"
+  }
+}

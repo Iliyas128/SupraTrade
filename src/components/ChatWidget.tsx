@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { MessageSquare, X, Send } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 
 type ChatMessage = {
@@ -9,17 +10,12 @@ type ChatMessage = {
 };
 
 const ChatWidget = () => {
+  const { t, i18n } = useTranslation();
   const webhookUrl = import.meta.env.VITE_N8N_WEBHOOK_URL ?? "";
 
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    {
-      id: "welcome",
-      role: "system",
-      text: "Здравствуйте! 👋 Я AI-ассистент SUPRA TRADE. Чем могу помочь?",
-    },
-  ]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isSending, setIsSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [sessionId, setSessionId] = useState<string | null>(null);
@@ -34,6 +30,13 @@ const ChatWidget = () => {
     }
     setSessionId(existing);
   }, []);
+
+  // welcome message per language
+  useEffect(() => {
+    setMessages([
+      { id: "welcome", role: "system", text: t("chat.welcome") },
+    ]);
+  }, [i18n.language, t]);
 
   const isWebhookConfigured = useMemo(() => Boolean(webhookUrl), [webhookUrl]);
 
@@ -54,7 +57,7 @@ const ChatWidget = () => {
     if (!isWebhookConfigured) {
       setMessages((prev) => [
         ...prev,
-        { id: crypto.randomUUID(), role: "system", text: "Webhook не настроен. Добавьте VITE_N8N_WEBHOOK_URL." },
+        { id: crypto.randomUUID(), role: "system", text: t("chat.webhookMissing") },
       ]);
       setIsSending(false);
       return;
@@ -77,7 +80,7 @@ const ChatWidget = () => {
         throw new Error(`Webhook responded with ${res.status}`);
       }
 
-      let botText = "Спасибо! Сообщение отправлено, скоро свяжемся.";
+      let botText = t("chat.sentDefault");
       try {
         const contentType = res.headers.get("content-type");
         if (contentType && contentType.includes("application/json")) {
@@ -105,10 +108,10 @@ const ChatWidget = () => {
         { id: crypto.randomUUID(), role: "system", text: botText },
       ]);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Не удалось отправить сообщение");
+      setError(err instanceof Error ? err.message : t("chat.sendingError"));
       setMessages((prev) => [
         ...prev,
-        { id: crypto.randomUUID(), role: "system", text: "Не удалось отправить. Попробуйте позже." },
+        { id: crypto.randomUUID(), role: "system", text: t("chat.sendingError") },
       ]);
     } finally {
       setIsSending(false);
@@ -128,7 +131,7 @@ const ChatWidget = () => {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="fixed left-4 bottom-4 z-50 w-14 h-14 bg-primary text-primary-foreground rounded-full shadow-custom-xl flex items-center justify-center hover:scale-110 transition-all"
-        aria-label="Чат с ассистентом"
+        aria-label={t("chat.aria")}
       >
         {isOpen ? <X size={24} /> : <MessageSquare size={24} />}
       </button>
@@ -143,9 +146,9 @@ const ChatWidget = () => {
                 <MessageSquare size={20} />
               </div>
               <div>
-                <h3 className="font-bold">AI Ассистент</h3>
+                <h3 className="font-bold">{t("chat.title")}</h3>
                 <p className="text-sm text-primary-foreground/80">
-                  {isWebhookConfigured ? "Онлайн" : "Webhook не настроен"}
+                  {isWebhookConfigured ? t("chat.online") : t("chat.webhookMissing")}
                 </p>
               </div>
             </div>
@@ -186,7 +189,7 @@ const ChatWidget = () => {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="Введите сообщение..."
+                placeholder={t("chat.placeholder")}
                 className="flex-1 px-4 py-2 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary text-sm"
               />
               <Button size="icon" disabled={!message.trim() || isSending} onClick={sendMessage}>
@@ -195,7 +198,7 @@ const ChatWidget = () => {
             </div>
             <p className="text-xs text-muted-foreground text-center mt-2">
               {isWebhookConfigured
-                ? "ответ будет в течений нескольких минут."
+                ? t("chat.responseTime")
                 : "Добавьте VITE_N8N_WEBHOOK_URL в .env"}
             </p>
           </div>

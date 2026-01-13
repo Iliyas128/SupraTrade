@@ -4,24 +4,28 @@ import { Menu, X, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import CatalogDropdown from "@/components/CatalogDropdown";
 import { cn } from "@/lib/utils";
-
-const navItems = [
-  { label: "Направления", href: "#directions" },
-  { label: "О нас", href: "#about" },
-  { label: "Услуги", href: "#services" },
-  { label: "Контакты", href: "#contacts" },
-];
+import { useTranslation } from 'react-i18next';
+import { LanguageSwitcher } from "@/components/languageSwitcher";
 
 interface HeaderProps {
   onCallbackClick: () => void;
 }
 
 const Header = ({ onCallbackClick }: HeaderProps) => {
+  const { t, i18n } = useTranslation(); // СНАЧАЛА вызываем хук
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCatalogOpen, setIsCatalogOpen] = useState(false);
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
+
+  // ПОТОМ определяем navItems ВНУТРИ компонента ПОСЛЕ хуков
+  const navItems = [
+    { label: t("nav.directions"), href: "#directions" },
+    { label: t("nav.about"), href: "#about" },
+    { label: t("nav.services"), href: "#services" },
+    { label: t("nav.contacts"), href: "#contacts" },
+  ];
 
   const handleNavClick = (href: string) => {
     const hash = href.startsWith("#") ? href : `#${href}`;
@@ -70,10 +74,11 @@ const Header = ({ onCallbackClick }: HeaderProps) => {
               isOpen={isCatalogOpen}
               onToggle={() => setIsCatalogOpen(!isCatalogOpen)}
               onClose={() => setIsCatalogOpen(false)}
+              key={i18n.language}
             />
             {navItems.map((item) => (
               <button
-                key={item.label}
+                key={item.href}
                 onClick={() => handleNavClick(item.href)}
                 className="px-4 py-2 text-foreground/80 hover:text-primary font-medium transition-colors"
               >
@@ -89,13 +94,14 @@ const Header = ({ onCallbackClick }: HeaderProps) => {
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Поиск"
+                placeholder={t("search.placeholder")}
                 className="w-full rounded-lg border border-border bg-background pl-9 pr-3 py-2 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/30"
               />
             </div>
             <Button type="submit" size="sm" className="whitespace-nowrap">
-              Искать
+              {t("buttons.search")}
             </Button>
+            <LanguageSwitcher />
           </form>
         </div>
 
@@ -110,7 +116,7 @@ const Header = ({ onCallbackClick }: HeaderProps) => {
                     type="text"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    placeholder="Поиск"
+                    placeholder={t("search.placeholder")}
                     className="w-full rounded-lg border border-border bg-background pl-9 pr-3 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/30"
                   />
                 </div>
@@ -118,10 +124,11 @@ const Header = ({ onCallbackClick }: HeaderProps) => {
                   <Search className="h-4 w-4" />
                 </Button>
               </form>
+              <LanguageSwitcher />
 
               {navItems.map((item) => (
                 <button
-                  key={item.label}
+                  key={item.href}
                   className={cn(
                     "px-4 py-3 text-foreground/80 hover:text-primary hover:bg-secondary rounded-lg font-medium transition-all",
                     location.hash === item.href && "text-primary",

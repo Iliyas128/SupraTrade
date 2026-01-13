@@ -1,7 +1,9 @@
 import { useState } from "react";
 import STPMachine1 from "@/assets/STPMachine1.png";
+import { useTranslation } from "react-i18next";
 
 const Stats = () => {
+  const { t } = useTranslation();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("+7");
   const [fileName, setFileName] = useState<string | null>(null);
@@ -11,13 +13,13 @@ const Stats = () => {
     e.preventDefault();
     
     // Формируем сообщение для WhatsApp
-    const message = `Заявка с сайта SUPRA TRADE
+    const message = `${t("stats.formTitle")}
     
-👤 Имя: ${name}
-📞 Телефон: ${phone}
-${fileName ? `📎 Прикреплён файл: ${fileName}` : ''}
+👤 ${t("stats.name")}: ${name}
+📞 ${t("stats.phone")}: ${phone}
+${fileName ? `📎 ${t("stats.attached")}: ${fileName}` : ''}
 
-Прошу связаться со мной для уточнения деталей заказа.`;
+${t("stats.formNote")}`;
 
     // Номер WhatsApp (без + и пробелов)
     const whatsappNumber = "77083767189";
@@ -40,11 +42,10 @@ ${fileName ? `📎 Прикреплён файл: ${fileName}` : ''}
             {/* Левая колонка: текст + форма — масштабируется */}
             <div className="relative z-10" style={{ fontSize: 'clamp(0.75rem, 1vw, 1rem)' }}>
               <h2 style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2.25rem)' }} className="font-bold mb-3 lg:mb-4">
-                Быстрый и удобный заказ
+                {t("stats.title")}
               </h2>
               <p className="text-primary-foreground/80 mb-6 lg:mb-8" style={{ fontSize: 'clamp(0.875rem, 1.1vw, 1.125rem)' }}>
-                Прикрепите файл с перечнем необходимой продукции и наши менеджеры
-                сформируют для вас индивидуальное предложение.
+                {t("stats.subtitle")}
               </p>
 
               <form
@@ -57,7 +58,7 @@ ${fileName ? `📎 Прикреплён файл: ${fileName}` : ''}
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="Введите имя*"
+                    placeholder={t("stats.namePlaceholder")}
                     className="flex-1 rounded-md bg-[#2A2A2A] border border-[#3A3A3A] px-3 lg:px-4 py-2.5 lg:py-3 text-sm lg:text-base text-primary-foreground placeholder:text-primary-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                   <input
@@ -65,7 +66,7 @@ ${fileName ? `📎 Прикреплён файл: ${fileName}` : ''}
                     required
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    placeholder="+7"
+                    placeholder={t("stats.phonePlaceholder")}
                     className="w-full sm:w-40 lg:w-48 rounded-md bg-[#2A2A2A] border border-[#3A3A3A] px-3 lg:px-4 py-2.5 lg:py-3 text-sm lg:text-base text-primary-foreground placeholder:text-primary-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                 </div>
@@ -77,11 +78,11 @@ ${fileName ? `📎 Прикреплён файл: ${fileName}` : ''}
                     </span>
                     <div className="flex flex-col">
                       <span className="text-xs sm:text-sm lg:text-base text-primary-foreground">
-                        Прикрепить pdf, excel, word, jpg
+                        {t("stats.attach")}
                       </span>
                       {fileName && (
                         <span className="text-xs text-primary-foreground/70 mt-0.5">
-                          Файл: {fileName}
+                          {t("stats.file")}: {fileName}
                         </span>
                       )}
                     </div>
@@ -99,18 +100,17 @@ ${fileName ? `📎 Прикреплён файл: ${fileName}` : ''}
                     type="submit"
                     className="inline-flex items-center justify-center px-5 lg:px-6 py-2.5 lg:py-3 rounded-md bg-[#FF2D2D] text-white text-sm lg:text-base font-semibold whitespace-nowrap hover:bg-[#ff4444] transition-colors"
                   >
-                    Оставить заявку
+                    {t("stats.submit")}
                   </button>
                 </div>
 
                 <p className="text-[10px] sm:text-[11px] lg:text-xs text-primary-foreground/60 leading-snug max-w-md">
-                  Нажимая на кнопку «Оставить заявку», вы подтверждаете своё согласие на
-                  обработку пользовательских данных.
+                  {t("stats.disclaimer")}
                 </p>
 
                 {isSubmitted && (
                   <p className="text-xs text-emerald-400">
-                    Заявка отправлена (демо). Мы свяжемся с вами в ближайшее время.
+                    {t("stats.success")}
                   </p>
                 )}
               </form>
@@ -121,7 +121,7 @@ ${fileName ? `📎 Прикреплён файл: ${fileName}` : ''}
               <div className="relative w-full -my-20 lg:-my-24 xl:-my-28">
                 <img
                   src={STPMachine1}
-                  alt="Быстрый и удобный заказ SUPRA TRADE"
+                  alt={t("stats.imageAlt")}
                   className="w-full h-auto object-contain"
                 />
               </div>
