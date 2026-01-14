@@ -207,5 +207,28 @@
     "title": "需要咨询吗？",
     "subtitle": "留下需求，我们将为您提供合适方案",
     "button": "获取咨询"
+  },
+  "common": {
+    "back": "返回"
+  },
+  "categoryPage": {
+    "category": "类别",
+    "categories": "类别",
+    "products": "商品",
+    "count": "{{count}} 个商品",
+    "empty": "该类别暂无商品。",
+    "seoDescription": "SUPRA TRADE 目录中“{{name}}”类别的商品。丰富品类，可配送至哈萨克斯坦及独联体。"
+  },
+  "catalogPage": {
+    "title": "产品目录",
+    "description": "金属产品、工业设备、医疗设备和化学试剂目录。超过 1400 种产品，可配送至哈萨克斯坦及独联体。",
+    "allCategories": "全部类别",
+    "mainDirections": "主要方向",
+    "categories": "类别",
+    "categoriesCount": "{{count}} 个类别",
+    "productCards": "商品卡片",
+    "selection": "解决方案精选",
+    "positions": "{{count}} 个商品",
+    "notFound": "未找到商品，请尝试其他查询。"
   }
 }

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowUpRight, ChevronDown, ChevronRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import TopBar from "@/components/layout/TopBar";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -41,6 +42,7 @@ const ProductCardSkeleton = () => (
 );
 
 const Catalog = () => {
+  const { t, i18n } = useTranslation();
   const [isCallbackOpen, setIsCallbackOpen] = useState(false);
   const [tree, setTree] = useState<TreeNode[]>([]);
   const [products, setProducts] = useState<ApiProduct[]>([]);
@@ -119,7 +121,7 @@ const Catalog = () => {
     };
 
     loadInitialData();
-  }, [searchQuery, fallbackTree]);
+  }, [searchQuery, fallbackTree, i18n.language]);
 
   const toggleNode = (slug: string) => setExpanded((prev) => ({ ...prev, [slug]: !prev[slug] }));
 
@@ -155,8 +157,8 @@ const Catalog = () => {
     return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Каталог продукции"
-        description="Каталог металлопроката, промышленного оборудования, медицинского оборудования и химических реактивов. Более 1400 видов продукции с доставкой по Казахстану и СНГ."
+        title={t("catalogPage.title")}
+        description={t("catalogPage.description")}
         url="/catalog"
       />
       <TopBar onCallbackClick={() => setIsCallbackOpen(true)}/>
@@ -167,14 +169,14 @@ const Catalog = () => {
           <div className="container-custom space-y-2">
             <nav className="flex items-center gap-2 text-sm text-muted-foreground">
               <Link to="/" className="transition-colors hover:text-primary">
-                Главная
+                {t("breadcrumbs.home")}
               </Link>
               <ChevronRight className="h-4 w-4" />
-              <span className="text-foreground">Каталог</span>
+              <span className="text-foreground">{t("breadcrumbs.catalog")}</span>
             </nav>
             <div>
               <h1 className="text-3xl font-bold text-foreground md:text-4xl">
-                Все категории
+                {t("catalogPage.allCategories")}
               </h1>
             </div>
           </div>
@@ -186,11 +188,11 @@ const Catalog = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-2xl font-bold text-foreground md:text-xl">
-                    Основные направления
+                    {t("catalogPage.mainDirections")}
                   </h2>
                 </div>
                 <Badge variant="outline" className="border-border/60 bg-background/60">
-                  {tree.length} категорий
+                  {t("catalogPage.categoriesCount", { count: tree.length })}
                 </Badge>
               </div>
               <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
@@ -264,7 +266,9 @@ const Catalog = () => {
               <div className="grid gap-10 lg:grid-cols-[320px,minmax(0,1fr)]">
                 {/* Древовидный каталог - скрыт на мобильных */}
                 <aside className="hidden lg:block h-fit rounded-2xl border border-border/70 bg-card/70 p-6 shadow-custom-lg lg:sticky lg:top-24">
-                  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">Категории</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+                    {t("catalogPage.categories")}
+                  </p>
                   <div className="mt-4">{renderTree(tree)}</div>
                 </aside>
 
@@ -272,18 +276,18 @@ const Catalog = () => {
                   <div className="flex flex-wrap items-center justify-between gap-4">
                     <div>
                       <p className="text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-                        Карточки товаров
+                        {t("catalogPage.productCards")}
                       </p>
-                      <h2 className="text-2xl font-bold text-foreground">Подборка решений</h2>
+                      <h2 className="text-2xl font-bold text-foreground">{t("catalogPage.selection")}</h2>
                     </div>
                     <Badge variant="outline" className="border-border/60 bg-background/60">
-                      {products.length} позиций
+                      {t("catalogPage.positions", { count: products.length })}
                     </Badge>
                   </div>
 
                   {products.length === 0 ? (
                     <div className="rounded-2xl border border-border/70 bg-card/80 p-10 text-center shadow-custom-lg">
-                      Товары не найдены. Попробуйте другой запрос.
+                      {t("catalogPage.notFound")}
                     </div>
                   ) : (
                     <div className="grid gap-6 md:grid-cols-3">
@@ -305,14 +309,14 @@ const Catalog = () => {
                               <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
                                 {product.categoryPath?.[product.categoryPath.length - 1]?.name ??
                                   product.categories?.[0]?.name ??
-                                  "Категория"}
+                                  t("categoryPage.category")}
                               </p>
                               <h3 className="mt-2 text-lg font-semibold text-foreground">{product.shortTitle}</h3>
                               <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">{product.description}</p>
                             </div>
                             <div className="mt-auto flex items-center justify-between gap-3">
                               <Button className="flex-1" size="sm" onClick={() => setIsCallbackOpen(true)}>
-                                Запросить КП
+                                {t("product.requestOffer")}
                               </Button>
                               <Button variant="outline" size="icon" asChild>
                                 <Link to={`/product${product.fullUrl.replace(/^\/catalog/, "")}`}>

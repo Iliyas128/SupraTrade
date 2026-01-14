@@ -41,7 +41,7 @@ const ProductCardSkeleton = () => (
 );
 
 const CatalogCategory = () => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const location = useLocation();
   const [isCallbackOpen, setIsCallbackOpen] = useState(false);
   const [tree, setTree] = useState<TreeNode[]>([]);
@@ -190,8 +190,8 @@ const CatalogCategory = () => {
   }, [childCategories]);
 
   const breadcrumbs = [
-    { label: "Главная", href: "/" },
-    { label: "Каталог", href: "/catalog" },
+    { label: t("breadcrumbs.home"), href: "/" },
+    { label: t("breadcrumbs.catalog"), href: "/catalog" },
     ...activePath.map((node, idx) => ({
       label: node.name,
       href: `/catalog/${activePath.slice(0, idx + 1).map((n) => n.slug).join("/")}`,
@@ -225,8 +225,11 @@ const CatalogCategory = () => {
     </ul>
   );
 
-  const categoryName = activeLeaf?.name ?? "Категория";
-  const categoryDescription = `Товары категории "${categoryName}" в каталоге SUPRA TRADE. Широкий ассортимент продукции с доставкой по Казахстану и СНГ.`;
+  const categoryName = activeLeaf?.name ?? t("categoryPage.category");
+  const categoryDescription = t("categoryPage.seoDescription", {
+    name: categoryName,
+    defaultValue: `Товары категории "${categoryName}" в каталоге SUPRA TRADE. Широкий ассортимент продукции с доставкой по Казахстану и СНГ.`,
+  });
 
   return (
     <div className="min-h-screen bg-background">
@@ -254,15 +257,15 @@ const CatalogCategory = () => {
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-                  Категория
+                  {t("categoryPage.category")}
                 </p>
                 <h1 className="text-3xl font-bold text-foreground md:text-4xl">
-                  {activeLeaf?.name ?? "Категория"}
+                  {activeLeaf?.name ?? t("categoryPage.category")}
                 </h1>
               </div>
               <Button variant="outline" className="gap-2" onClick={() => navigate(-1)}>
                 <ArrowLeft className="h-4 w-4" />
-                Назад
+                {t("common.back")}
               </Button>
             </div>
           </div>
@@ -339,19 +342,19 @@ const CatalogCategory = () => {
                 </div>
               ) : (products.length === 0 && fallbackProducts.length === 0) ? (
                 <div className="rounded-2xl border border-border/70 bg-card/80 p-10 text-center shadow-custom-lg">
-                  В этой категории пока нет товаров.
+                  {t("categoryPage.empty")}
                 </div>
               ) : (
                 <>
                   <div className="flex flex-wrap items-center justify-between gap-4">
                     <div>
                       <p className="text-sm font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-                        Товары
+                        {t("categoryPage.products")}
                       </p>
-                      <h2 className="text-2xl font-bold text-foreground">{activeLeaf?.name ?? "Категория"}</h2>
+                      <h2 className="text-2xl font-bold text-foreground">{activeLeaf?.name ?? t("categoryPage.category")}</h2>
                     </div>
                     <Badge variant="outline" className="border-border/60 bg-background/60">
-                      {(products.length || fallbackProducts.length)} позиций
+                      {t("categoryPage.count", { count: (products.length || fallbackProducts.length) })}
                     </Badge>
                   </div>
 
@@ -374,7 +377,7 @@ const CatalogCategory = () => {
                           <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
                             {product.categoryPath?.[product.categoryPath.length - 1]?.name ??
                               product.categories?.[product.categories.length - 1]?.name ??
-                              "Категория"}
+                              t("categoryPage.category")}
                           </p>
                           <div>
                             <h3 className="text-lg font-semibold text-foreground">{product.shortTitle}</h3>
@@ -382,7 +385,7 @@ const CatalogCategory = () => {
                           </div>
                           <div className="mt-auto flex items-center justify-between gap-3">
                             <Button className="flex-1" size="sm" onClick={() => setIsCallbackOpen(true)}>
-                              Запросить КП
+                              {t("product.requestOffer")}
                             </Button>
                             <Button variant="outline" size="icon" asChild>
                               <Link to={`/product/${product.fullUrl.replace(/^\/?product\//, "").replace(/^\/catalog\//, "")}`}>

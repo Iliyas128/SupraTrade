@@ -207,5 +207,28 @@
     "title": "Need a consultation?",
     "subtitle": "Leave a request and we will pick a solution for your task",
     "button": "Get consultation"
-    }
+  },
+  "common": {
+    "back": "Back"
+  },
+  "categoryPage": {
+    "category": "Category",
+    "categories": "Categories",
+    "products": "Products",
+    "count": "{{count}} items",
+    "empty": "No products in this category yet.",
+    "seoDescription": "Products of category \"{{name}}\" in SUPRA TRADE catalog. Wide assortment with delivery across Kazakhstan and CIS."
+  },
+  "catalogPage": {
+    "title": "Product catalog",
+    "description": "Catalog of metal products, industrial equipment, medical equipment, and chemical reagents. Over 1400 products with delivery across Kazakhstan and CIS.",
+    "allCategories": "All categories",
+    "mainDirections": "Main directions",
+    "categories": "Categories",
+    "categoriesCount": "{{count}} categories",
+    "productCards": "Product cards",
+    "selection": "Solution picks",
+    "positions": "{{count}} items",
+    "notFound": "No products found. Try another query."
+  }
   }

@@ -9,11 +9,11 @@ import "./index.css";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <I18nextProvider i18n={i18n}>
-      <HelmetProvider>
-        <div className="page-background">
-          <App />
-        </div>
-      </HelmetProvider>
+    <HelmetProvider>
+      <div className="page-background">
+        <App />
+      </div>
+    </HelmetProvider>
     </I18nextProvider>
   </StrictMode>,
 );
