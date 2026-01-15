@@ -364,13 +364,13 @@ const CatalogCategory = () => {
                         key={product.id}
                         className="flex h-full flex-col rounded-2xl border border-border/60 bg-card/80 shadow-custom-md transition hover:-translate-y-1 hover:border-primary/40 hover:shadow-custom-lg"
                       >
-                        <div className="relative overflow-hidden rounded-t-2xl bg-muted aspect-[4/3] flex items-center justify-center p-6">
+                        <div className="relative overflow-hidden rounded-t-2xl bg-muted aspect-[4/3] flex items-center justify-center p-1">
                           <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/0 to-black/0" />
                           <img
                             src={product.smallImage || (product as any).small_image || product.bigImages?.[0] || "/placeholder.svg"}
                             alt={product.shortTitle}
                             loading="lazy"
-                            className="mx-auto h-full w-full object-contain"
+                            className=" inset-0 h-full w-full object-cover rounded-t-2xl"
                           />
                         </div>
                         <div className="flex flex-1 flex-col gap-4 p-6">

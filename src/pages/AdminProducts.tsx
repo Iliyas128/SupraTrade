@@ -408,7 +408,7 @@ const AdminProducts = () => {
                   placeholder="Полное название (ZH)"
                   value={editing.zh_full || ""}
                   onChange={(e) => handleEditField("zh_full", e.target.value)}
-                />
+                  />
                   <Input
                     placeholder="URL"
                     value={editing.url || ""}
@@ -438,7 +438,7 @@ const AdminProducts = () => {
                   placeholder="Теги (ZH, через запятую)"
                   value={editing.zh_tagsInput || ""}
                   onChange={(e) => handleEditField("zh_tagsInput", e.target.value)}
-                />
+                  />
                 </div>
                 <Textarea
                   placeholder="Описание"

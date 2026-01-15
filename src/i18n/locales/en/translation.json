@@ -32,6 +32,10 @@
     "emailPlaceholder": "email@example.com",
     "messagePlaceholder": "Your message..."
   },
+  "breadcrumbs": {
+    "home": "Home",
+    "catalog": "Catalog"
+  },
   "chat": {
     "title": "AI Assistant",
     "online": "Online",
@@ -74,7 +78,7 @@
     "phone": "+7 708 376 71 89",
     "email": "sales@supratrade.kz",
     "orderCallback": "Request a call",
-    "tagline1": "Integrated solutions",
+    "tagline1": "Import & Export Co., Ltd",
     "tagline2": "for supply and production",
     "sales": "Sales department:"
   },

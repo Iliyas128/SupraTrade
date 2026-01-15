@@ -76,7 +76,7 @@ const Footer = () => {
               className="inline-flex items-center gap-3 mb-5 group"
             >
               <div className="w-11 h-11 flex items-center justify-center transition-colors">
-                <img src="/favicon.ico" alt="SUPRA TRADE" className="w-11 h-8" />
+                <img src="/faviconFull.ico" alt="SUPRA TRADE" className="w-11 h-8" />
               </div>
               <div className="flex items-baseline">
                 <span className="text-primary font-bold text-xl tracking-tight">SUPRA</span>

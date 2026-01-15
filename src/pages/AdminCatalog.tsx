@@ -621,8 +621,8 @@ const AdminCatalog = () => {
                 value={editCategoryTranslations.zh}
                 onChange={(e) => setEditCategoryTranslations((prev) => ({ ...prev, zh: e.target.value }))}
                 placeholder="名称 (ZH)"
-              />
-            </div>
+                />
+              </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium">Фото (URL, опционально)</label>
                 <Input

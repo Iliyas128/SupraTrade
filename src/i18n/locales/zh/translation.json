@@ -74,8 +74,8 @@
     "phone": "+7 708 376 71 89",
     "email": "sales@supratrade.kz",
     "orderCallback": "请求回电",
-    "tagline1": "综合解决方案",
-    "tagline2": "供应与生产",
+    "tagline1": "超级贸易公司",
+    "tagline2": "进出口有限公司",
     "sales": "销售部："
   },
   "directions": {
@@ -93,6 +93,10 @@
     "fallback3": "生产流程所需的设备与组件，兼顾要求、环境与预算。",
     "fallback4": "轴承与机械部件，提供替代方案与可靠供应。",
     "fallback5": "用于工业的高分子材料与制品，考虑工况与载荷。"
+  },
+  "breadcrumbs": {
+    "home": "首页",
+    "catalog": "目录"
   },
   "stats": {
     "title": "SUPRA TRADE 数据",
