@@ -1,1 +1,1 @@
-https://supra-trade.vercel.app/
+https://supratrade.kz
